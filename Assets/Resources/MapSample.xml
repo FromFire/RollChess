@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Unicode"?>
+<map>
+    <position>
+        <grid x="0" y="0">
+        </grid>
+        <grid x="1" y="1">
+        </grid>
+        <grid x="1" y="0">
+        </grid>
+    </position>
+</map>
