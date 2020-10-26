@@ -1,0 +1,11 @@
+{
+    "num":1,
+    "mapName":"地图示例",
+    "players": {
+        "number":2
+    },
+    "tokens":[
+        {"number":5},
+        {"number":5}
+    ]
+}
