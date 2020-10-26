@@ -44,17 +44,14 @@ public class Board : MonoBehaviour{
         Debug.Assert(!string.IsNullOrEmpty(json));
 
         //转换json
-        Debug.Assert(boardEntity == null);
         boardEntity = JsonUtility.FromJson<BoardEntity>(json);
-        Debug.Assert(boardEntity != null);
 
         //控制台输出信息
-        Debug.Log(boardEntity.num);
         Debug.Log("名称："+boardEntity.mapName);
         Debug.Assert(boardEntity.players != null);
         Debug.Log("玩家数目："+boardEntity.players.number);
         for(int i=0; i<boardEntity.players.number;i++) {
-            Debug.Log("棋子数目"+i+":"+boardEntity.tokens[i].number);
+            Debug.Log("棋子数目"+i+": "+boardEntity.tokens[i].number);
         }
     }
 
@@ -63,23 +60,21 @@ public class Board : MonoBehaviour{
 [System.Serializable]
 public class PlayersEntity
 {
-    public int number { get; set; }
+    public int number;
 }
 
 [System.Serializable]
 public class TokensEntity
 {
-    public int number { get; set; }
+    public int number;
 }
 
 [System.Serializable]
 public class BoardEntity
 {
-    public int num{get;set;}
+    public string mapName;
 
-    public string mapName { get; set; }
+    public PlayersEntity players;
 
-    public PlayersEntity players { get; set; }
-
-    public List<TokensEntity> tokens { get; set; }
+    public List<TokensEntity> tokens;
 }
