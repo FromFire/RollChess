@@ -7,12 +7,16 @@ using UnityEngine;
 public class Board : MonoBehaviour{
 
     BoardEntity boardEntity;
+    MapDisplay mapDisplay;
 
     // Start is called before the first frame update
     void Start() {
         //读取地图json文件
         string filename = "MapSample";
         loadMapFromJson(filename);
+
+        mapDisplay = GameObject.Find("/Grid/Tilemap").GetComponent<MapDisplay>();
+        mapDisplay.display(boardEntity.map);
     }
 
     // Update is called once per frame

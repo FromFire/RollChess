@@ -10,22 +10,20 @@ public class MapDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void display(List<MapEntity> map) {
         tilemap = GameObject.Find("/Grid/Tilemap").GetComponent<Tilemap>();
         Tile tile = Resources.Load<Tile>("Tiles/hex-sliced_114");
-        Debug.Assert(tilemap != null);
-        Debug.Assert(tile != null);
-       // tile.color = Color.yellow;
-        tilemap.SetTile(new Vector3Int(0,0,0), tile);
-        tilemap.SetTile(new Vector3Int(0,1,1), tile);
-        tilemap.SetTile(new Vector3Int(0,5,5), tile);
-        tilemap.SetTile(new Vector3Int(0,-1,-1), tile);
-        tilemap.SetTile(new Vector3Int(0,1,0), tile);
-        tilemap.SetTile(new Vector3Int(0,0,1), tile);
+        foreach(MapEntity grid in map) {
+            tilemap.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
