@@ -7,18 +7,6 @@ using UnityEngine;
 public class Board : MonoBehaviour{
 
     BoardEntity boardEntity;
-    
-    //地图名称
-    string mapName;
-
-    //玩家数目
-    public int playerNumbers{get;} 
-
-    //各方棋子的数量
-    private List<int> tokenNumbers{get;} 
-    
-    //地图
-    private int[] map; 
 
     // Start is called before the first frame update
     void Start() {
@@ -46,13 +34,8 @@ public class Board : MonoBehaviour{
         //转换json
         boardEntity = JsonUtility.FromJson<BoardEntity>(json);
 
-        //控制台输出信息
-        Debug.Log("名称："+boardEntity.mapName);
-        Debug.Assert(boardEntity.players != null);
-        Debug.Log("玩家数目："+boardEntity.players.number);
-        for(int i=0; i<boardEntity.players.number;i++) {
-            Debug.Log("棋子数目"+i+": "+boardEntity.tokens[i].number);
-        }
+        //控制台输出boardEntity
+        boardEntity.toConsole();
     }
 
 }
@@ -70,6 +53,13 @@ public class TokensEntity
 }
 
 [System.Serializable]
+public class MapEntity
+{
+    public int x;
+    public int y;
+}
+
+[System.Serializable]
 public class BoardEntity
 {
     public string mapName;
@@ -77,4 +67,19 @@ public class BoardEntity
     public PlayersEntity players;
 
     public List<TokensEntity> tokens;
+
+    public List<MapEntity> map;
+
+    //控制台输出信息
+    public void toConsole() {
+        Debug.Log("名称："+mapName);
+        Debug.Log("玩家数目："+players.number);
+        for(int i=0; i<players.number;i++) {
+            Debug.Log("棋子数目"+i+": "+tokens[i].number);
+        }
+        for(int i=0; i<map.ToArray().Length;i++) {
+            Debug.Log("x: "+map[i].x + "\t y: " +map[i].y);
+        }
+        
+    }
 }
