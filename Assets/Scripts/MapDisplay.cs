@@ -11,7 +11,7 @@ public class MapDisplay : MonoBehaviour
     void Start()
     {
         tilemap = GameObject.Find("/Grid/Tilemap").GetComponent<Tilemap>();
-        Tile tile = Resources.Load<Tile>("TileSample");
+        Tile tile = Resources.Load<Tile>("Tiles/hex-sliced_114");
         Debug.Assert(tilemap != null);
         Debug.Assert(tile != null);
        // tile.color = Color.yellow;
