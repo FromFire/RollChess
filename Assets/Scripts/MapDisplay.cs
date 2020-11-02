@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// 控制棋局的显示，包括地图、棋子、特效等等，不包括UI
 public class MapDisplay : MonoBehaviour
 {
+    //存储棋盘信息的实体
     BoardEntity boardEntity;
+
+    //Tilemap地图层
     Tilemap tilemapBoard;
+
+    //Tilemap棋子层
     Tilemap tilemapToken;
 
     // Start is called before the first frame update
@@ -14,6 +20,9 @@ public class MapDisplay : MonoBehaviour
     {
         
     }
+
+
+    //初始化显示
 
     public void display(BoardEntity entity) {
         boardEntity = entity;
