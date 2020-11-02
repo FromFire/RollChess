@@ -5,7 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class MapDisplay : MonoBehaviour
 {
-    Tilemap tilemap;
+    BoardEntity boardEntity;
+    Tilemap tilemapBoard;
+    Tilemap tilemapToken;
 
     // Start is called before the first frame update
     void Start()
@@ -13,12 +15,26 @@ public class MapDisplay : MonoBehaviour
         
     }
 
-    public void display(List<MapEntity> map) {
-        tilemap = GameObject.Find("/Grid/Tilemap").GetComponent<Tilemap>();
+    public void display(BoardEntity entity) {
+        boardEntity = entity;
+
+        //显示TilemapBoard层，地图格子
+        tilemapBoard = GameObject.Find("/Grid/TilemapBoard").GetComponent<Tilemap>();
         Tile tile = Resources.Load<Tile>("Tiles/hex-sliced_114");
-        foreach(MapEntity grid in map) {
-            tilemap.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
+        foreach(SingleMapGridEntity grid in boardEntity.map) {
+            tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
         }
+
+        //显示TileMapToken层，棋子
+        tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
+        tile = Resources.Load<Tile>("Tiles/hex-sliced_117");
+        for(int player = 0; player < boardEntity.players.number; player++) {
+            foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
+                tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
+            }
+        }
+
+        
     }
 
     // Update is called once per frame

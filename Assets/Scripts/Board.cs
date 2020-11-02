@@ -15,8 +15,8 @@ public class Board : MonoBehaviour{
         string filename = "MapSample";
         loadMapFromJson(filename);
 
-        mapDisplay = GameObject.Find("/Grid/Tilemap").GetComponent<MapDisplay>();
-        mapDisplay.display(boardEntity.map);
+        mapDisplay = GameObject.Find("/Grid").GetComponent<MapDisplay>();
+        mapDisplay.display(boardEntity);
     }
 
     // Update is called once per frame
@@ -44,46 +44,3 @@ public class Board : MonoBehaviour{
 
 }
 
-[System.Serializable]
-public class PlayersEntity
-{
-    public int number;
-}
-
-[System.Serializable]
-public class TokensEntity
-{
-    public int number;
-}
-
-[System.Serializable]
-public class MapEntity
-{
-    public int x;
-    public int y;
-}
-
-[System.Serializable]
-public class BoardEntity
-{
-    public string mapName;
-
-    public PlayersEntity players;
-
-    public List<TokensEntity> tokens;
-
-    public List<MapEntity> map;
-
-    //控制台输出信息
-    public void toConsole() {
-        Debug.Log("名称："+mapName);
-        Debug.Log("玩家数目："+players.number);
-        for(int i=0; i<players.number;i++) {
-            Debug.Log("棋子数目"+i+": "+tokens[i].number);
-        }
-        for(int i=0; i<map.ToArray().Length;i++) {
-            Debug.Log("x: "+map[i].x + "\t y: " +map[i].y);
-        }
-        
-    }
-}
