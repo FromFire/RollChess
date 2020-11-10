@@ -5,8 +5,6 @@ using UnityEngine;
 //棋子类：单个棋子
 public class Token : MonoBehaviour{
     
-    
-    
     // Start is called before the first frame update
     void Start()
     {

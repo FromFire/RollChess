@@ -36,10 +36,10 @@ public class MapDisplay : MonoBehaviour
 
         //显示TileMapToken层，棋子
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
-        tile = Resources.Load<Tile>("Tiles/hex-sliced_117");
+        tile = Resources.Load<Tile>("Tiles/hex-sliced_140");
         for(int player = 0; player < boardEntity.players.number; player++) {
             foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
-                tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
+                tilemapToken.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
             }
         }
 
