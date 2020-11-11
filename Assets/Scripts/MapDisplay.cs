@@ -36,19 +36,30 @@ public class MapDisplay : MonoBehaviour
 
         //显示TileMapToken层，棋子
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
-        tile = Resources.Load<Tile>("Tiles/hex-sliced_140");
+        //不同阵营棋子外观不同
+        List<Tile> tokenTiles = new List<Tile>();
+        tokenTiles.Add(Resources.Load<Tile>("Tiles/hex-sliced_140"));
+        tokenTiles.Add(Resources.Load<Tile>("Tiles/hex-sliced_145"));
+        //分阵营显示棋子
         for(int player = 0; player < boardEntity.players.number; player++) {
             foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
-                tilemapToken.SetTile(new Vector3Int(grid.x, grid.y, 0), tile);
+                tilemapToken.SetTile(new Vector3Int(grid.x, grid.y, 0), tokenTiles[player]);
             }
         }
 
-        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    // 移动棋子
+    public void moveToken(Vector3Int from, Vector3Int to) {
+        //暂时不考虑某个格有多个棋子的情况
+        Tile tile = (Tile)tilemapToken.GetTile(from);
+        tilemapToken.SetTile(from, null);
+        tilemapToken.SetTile(to, tile);
     }
 }

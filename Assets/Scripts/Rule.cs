@@ -11,8 +11,16 @@ public class Rule : MonoBehaviour {
     //负责棋盘的显示
     MapDisplay mapDisplay;
 
+    //存储棋盘信息
     private Board board;
-    private List<Token> tokens;
+    //存储棋子信息[玩家][棋子]
+    private List<List<Token>> tokens;
+
+    // 当前状态
+    // waiting: 等待玩家操作
+    // moved: 玩家操作完成，等待处理
+    enum Status{waiting, moved};
+    Status status = Status.waiting;
 
     // 初始化棋盘
     void Start()
@@ -20,6 +28,20 @@ public class Rule : MonoBehaviour {
         //读取地图json文件
         string filename = "MapSample";
         loadMapFromJson(filename);
+
+        // //初始化board
+         board = GameObject.Find("/Board").GetComponent<Board>();
+         board.init(boardEntity.map);
+
+        //初始化tokens
+        tokens = new List<List<Token>>(boardEntity.players.number);
+        for(int i=0; i<tokens.ToArray().Length; i++) {
+            tokens[i] = new List<Token>(boardEntity.tokens[i].number);
+            for(int j=0; j<tokens[i].ToArray().Length; j++) {
+                SingleTokenEntity tmpTokenEntity = boardEntity.tokens[i].singleTokens[j];
+                tokens[i][j] = new Token(tmpTokenEntity.x, tmpTokenEntity.y);
+            }
+        }
 
         //显示游戏初始状态
         mapDisplay = GameObject.Find("/Grid").GetComponent<MapDisplay>();
@@ -29,7 +51,32 @@ public class Rule : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // //玩家走子结束，开始处理结果
+        // if(status == Status.moved) {
+
+        // }
+        if(status == Status.waiting) {
+            //move(new Vector2Int(0, 1), new Vector2Int(1, 0));
+            status = Status.moved;
+        }
+            
+    
+    }
+
+    //移动棋子
+    public void move(Vector2Int from, Vector2Int to) {
+        //查找棋子
+        foreach(List<Token> tokenlist in tokens) {
+            foreach(Token token in tokenlist) {
+                if(token.getXY() == from) {
+                    token.setXY(to);
+                    break;
+                }
+            }
+        }
         
+        //显示
+        mapDisplay.moveToken(new Vector3Int(from.x, from.y, 0), new Vector3Int(to.x, to.y, 0));
     }
 
 
@@ -48,7 +95,7 @@ public class Rule : MonoBehaviour {
         boardEntity = JsonUtility.FromJson<BoardEntity>(json);
 
         //控制台输出boardEntity
-        boardEntity.toConsole();
+        //boardEntity.toConsole();
     }
 
 }
