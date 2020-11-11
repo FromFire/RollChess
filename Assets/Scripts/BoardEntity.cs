@@ -2,6 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 地图类，对应json的根
+// 只用于初始化时作为json导入的载体。游戏过程中不使用此类
+
+[System.Serializable]
+public class BoardEntity
+{
+    public string mapName;
+
+    public PlayersEntity players;
+
+    public List<TokensEntity> tokens;
+
+    public List<SingleMapGridEntity> map;
+
+    //控制台输出信息
+    public void toConsole() {
+        Debug.Log("名称："+mapName);
+        Debug.Log("玩家数目："+players.number);
+        for(int i=0; i<players.number;i++) {
+            Debug.Log("棋子数目"+i+": "+tokens[i].number);
+        }
+        for(int i=0; i<map.ToArray().Length;i++) {
+            Debug.Log("x: "+map[i].x + "\t y: " +map[i].y);
+        }
+        
+    }
+}
+
 //描述所有玩家的信息
 
 [System.Serializable]
@@ -38,32 +66,4 @@ public class SingleMapGridEntity
 {
     public int x;
     public int y;
-}
-
-
-// 地图类，对应json的根
-
-[System.Serializable]
-public class BoardEntity
-{
-    public string mapName;
-
-    public PlayersEntity players;
-
-    public List<TokensEntity> tokens;
-
-    public List<SingleMapGridEntity> map;
-
-    //控制台输出信息
-    public void toConsole() {
-        Debug.Log("名称："+mapName);
-        Debug.Log("玩家数目："+players.number);
-        for(int i=0; i<players.number;i++) {
-            Debug.Log("棋子数目"+i+": "+tokens[i].number);
-        }
-        for(int i=0; i<map.ToArray().Length;i++) {
-            Debug.Log("x: "+map[i].x + "\t y: " +map[i].y);
-        }
-        
-    }
 }

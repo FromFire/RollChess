@@ -5,9 +5,6 @@ using UnityEngine;
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
 
-    //存储棋盘初始化信息的实体，也就是从json中读取的信息
-    BoardEntity boardEntity;
-
     //负责棋盘的显示
     MapDisplay mapDisplay;
 
@@ -27,11 +24,11 @@ public class Rule : MonoBehaviour {
     {
         //读取地图json文件
         string filename = "MapSample";
-        loadMapFromJson(filename);
+        BoardEntity boardEntity = loadMapFromJson(filename);
 
-        // //初始化board
-         board = GameObject.Find("/Board").GetComponent<Board>();
-         board.init(boardEntity.map);
+        //初始化board
+        board = GameObject.Find("/Board").GetComponent<Board>();
+        board.init(boardEntity.map);
 
         //初始化tokens
         tokens = new List<List<Token>>(boardEntity.players.number);
@@ -81,21 +78,20 @@ public class Rule : MonoBehaviour {
 
 
     //从json文件中读取地图
-    void loadMapFromJson(string filename) {
+    BoardEntity loadMapFromJson(string filename) {
         Debug.Log("从json中加载地图;" + filename);
 
-        //读取文件
+        //读取json字符串
         string json = "";
         TextAsset text = Resources.Load<TextAsset>(filename);
         json = text.text;
         Debug.Log(json);
         Debug.Assert(!string.IsNullOrEmpty(json));
 
-        //转换json
-        boardEntity = JsonUtility.FromJson<BoardEntity>(json);
-
-        //控制台输出boardEntity
+        //将json字符串转换为BoardEntity类
+        BoardEntity boardEntity = JsonUtility.FromJson<BoardEntity>(json);
         //boardEntity.toConsole();
+        return boardEntity;
     }
 
 }
