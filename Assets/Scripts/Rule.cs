@@ -19,6 +19,12 @@ public class Rule : MonoBehaviour {
     enum Status{waiting, moved};
     Status status = Status.waiting;
 
+    //是否已有格子正在高亮
+    bool isHighlighted = false;
+
+    //当前高亮的格子坐标
+    Vector2Int highlightPosition;
+
     // 初始化棋盘
     void Start()
     {
@@ -92,6 +98,19 @@ public class Rule : MonoBehaviour {
         BoardEntity boardEntity = JsonUtility.FromJson<BoardEntity>(json);
         //boardEntity.toConsole();
         return boardEntity;
+    }
+
+    // 选中格子
+    // 如果是可走的格子，将其高亮，同时将当前已高亮的格子取消
+    // 如果是不可走的格子，则只取消原本高亮的格子
+    public void chooseGrid(Vector3 loc) {
+        Vector2Int pos = mapDisplay.worldToCell(loc);
+
+        mapDisplay.cancelHighlight();
+        if(board.isWalkable(pos)) {
+            mapDisplay.highlightGrid(pos);
+        } 
+        
     }
 
 }

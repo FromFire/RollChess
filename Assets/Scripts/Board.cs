@@ -27,6 +27,11 @@ public class Board : MonoBehaviour{
     void Update() {
         
     }
+
+    // 返回该坐标的格子是否可通过
+    public bool isWalkable(Vector2Int pos) {
+        return map.getData(pos.x, pos.y).walkable;
+    }
 }
 
 // 存储单个地图格子情况
