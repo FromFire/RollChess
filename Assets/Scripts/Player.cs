@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         //鼠标左键点击，检测点击到的格子
         if (Input.GetMouseButtonDown(0))
         {
-            //获取点击坐标
+            //点击高亮格子，再次点击其他格子或空白部分取消高亮
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
             rule.chooseGrid(loc);

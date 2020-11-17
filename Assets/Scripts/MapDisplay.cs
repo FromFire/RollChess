@@ -19,7 +19,11 @@ public class MapDisplay : MonoBehaviour
     List<Tile> tileList;
 
     //Tile在tileList中存储的顺序
-    enum tileKeys{greenFloor, blueFloor, redTank, blueTank};
+    enum TileKeys{greenFloor, //普通地板
+    blueFloor, yellowFloor,  //高亮色
+    redTank, blueTank}; //棋子
+
+    public enum Color{blue, yellow};
 
     //正在高亮的格子坐标
     List<Vector3Int> highlightGridPosition;
@@ -34,6 +38,7 @@ public class MapDisplay : MonoBehaviour
         List<string> tileNames = new List<string> {
             "Tiles/hex-sliced_114", //greenFloor
             "Tiles/hex-sliced_111", //blueFloor
+            "Tiles/hex-sliced_117", //yellowFloor
 
             "Tiles/hex-sliced_145", //redTank
             "Tiles/hex-sliced_140"  //blueTank
@@ -59,15 +64,15 @@ public class MapDisplay : MonoBehaviour
         //显示TilemapBoard层，地图格子
         tilemapBoard = GameObject.Find("/Grid/TilemapBoard").GetComponent<Tilemap>();
         foreach(SingleMapGridEntity grid in boardEntity.map) {
-            tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tileList[(int)tileKeys.greenFloor]);
+            tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tileList[(int)TileKeys.greenFloor]);
         }
 
         //显示TileMapToken层，棋子
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
         //不同阵营棋子外观不同
         List<Tile> tokenTiles = new List<Tile>();
-        tokenTiles.Add(tileList[(int)tileKeys.redTank]);
-        tokenTiles.Add(tileList[(int)tileKeys.blueTank]);
+        tokenTiles.Add(tileList[(int)TileKeys.redTank]);
+        tokenTiles.Add(tileList[(int)TileKeys.blueTank]);
         //分阵营显示棋子
         for(int player = 0; player < boardEntity.players.number; player++) {
             foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
@@ -84,13 +89,27 @@ public class MapDisplay : MonoBehaviour
     }
 
     // 高亮格子
-    public void highlightGrid(Vector2Int pos) {
+    public void highlightGrid(Vector2Int pos, Color color) {
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
-        highlightGridPosition.Add(pos3);
-        highlightGridTile.Add((Tile)tilemapBoard.GetTile(pos3));
-
-        tilemapBoard.SetTile(pos3, tileList[(int)tileKeys.blueFloor]);
+        //记录高亮的位置的原本Tile
+        //如果该格子已被高亮，则不记录它
+        if(!highlightGridPosition.Contains(pos3)) {
+            highlightGridPosition.Add(pos3);
+            highlightGridTile.Add((Tile)tilemapBoard.GetTile(pos3));
+        }
+        
+        //将格子显示为指定的高亮色
+        Tile highlightTile = tileList[(int)TileKeys.blueFloor];
+        switch(color) {
+            case Color.blue:
+                highlightTile = tileList[(int)TileKeys.blueFloor];
+                break;
+            case Color.yellow:
+                highlightTile = tileList[(int)TileKeys.yellowFloor];
+                break;
+        }
+        tilemapBoard.SetTile(pos3, highlightTile);
     }
 
     //取消所有高亮
