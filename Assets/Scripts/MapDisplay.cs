@@ -19,9 +19,9 @@ public class MapDisplay : MonoBehaviour
     List<Tile> tileList;
 
     //Tile在tileList中存储的顺序
-    enum TileKeys{greenFloor, //普通地板
-    blueFloor, yellowFloor,  //高亮色
-    redTank, blueTank}; //棋子
+    enum TileKeys{floorLawnGreen, //普通地板
+    floorSteelBlue, floorYellow,  //高亮色
+    tokenRedTank, tokenBlueTank}; //棋子
 
     public enum Color{blue, yellow};
 
@@ -36,12 +36,12 @@ public class MapDisplay : MonoBehaviour
     {
         // tile顺序按照enum tileKeys中规定的来
         List<string> tileNames = new List<string> {
-            "Tiles/hex-sliced_114", //greenFloor
-            "Tiles/hex-sliced_111", //blueFloor
-            "Tiles/hex-sliced_117", //yellowFloor
+            "Tiles/floor-lawnGreen",    //floorLawnGreen
+            "Tiles/floor-steelBlue",    //floorSteelBlue
+            "Tiles/floor-yellow",       //floorYellow
 
-            "Tiles/hex-sliced_145", //redTank
-            "Tiles/hex-sliced_140"  //blueTank
+            "Tiles/token-redTank",      //tokenRedTank
+            "Tiles/token-blueTank"      //tokenBlueTank
         };
 
         // 读取所有tile
@@ -64,15 +64,15 @@ public class MapDisplay : MonoBehaviour
         //显示TilemapBoard层，地图格子
         tilemapBoard = GameObject.Find("/Grid/TilemapBoard").GetComponent<Tilemap>();
         foreach(SingleMapGridEntity grid in boardEntity.map) {
-            tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tileList[(int)TileKeys.greenFloor]);
+            tilemapBoard.SetTile(new Vector3Int(grid.x, grid.y, 0), tileList[(int)TileKeys.floorLawnGreen]);
         }
 
         //显示TileMapToken层，棋子
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
         //不同阵营棋子外观不同
         List<Tile> tokenTiles = new List<Tile>();
-        tokenTiles.Add(tileList[(int)TileKeys.redTank]);
-        tokenTiles.Add(tileList[(int)TileKeys.blueTank]);
+        tokenTiles.Add(tileList[(int)TileKeys.tokenRedTank]);
+        tokenTiles.Add(tileList[(int)TileKeys.tokenBlueTank]);
         //分阵营显示棋子
         for(int player = 0; player < boardEntity.players.number; player++) {
             foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
@@ -100,13 +100,13 @@ public class MapDisplay : MonoBehaviour
         }
         
         //将格子显示为指定的高亮色
-        Tile highlightTile = tileList[(int)TileKeys.blueFloor];
+        Tile highlightTile = tileList[(int)TileKeys.floorSteelBlue];
         switch(color) {
             case Color.blue:
-                highlightTile = tileList[(int)TileKeys.blueFloor];
+                highlightTile = tileList[(int)TileKeys.floorSteelBlue];
                 break;
             case Color.yellow:
-                highlightTile = tileList[(int)TileKeys.yellowFloor];
+                highlightTile = tileList[(int)TileKeys.floorYellow];
                 break;
         }
         tilemapBoard.SetTile(pos3, highlightTile);

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
@@ -19,11 +18,6 @@ public class Rule : MonoBehaviour {
     // moved: 玩家操作完成，等待处理
     enum Status{waiting, moved};
     Status status = Status.waiting;
-
-    //是否已有格子正在高亮
-    bool isHighlighted = false;
-    //当前高亮的格子坐标
-    Vector2Int highlightPosition;
 
     // 初始化棋盘
     void Start()
@@ -108,7 +102,7 @@ public class Rule : MonoBehaviour {
         //如果格子上有棋子，显示它所有可达位置（目前显示3步的情况）
         if(hasToken) {
             Debug.Log("yes");
-            List<Vector2Int> reachableGrids = getReachableGrids(pos, 2);
+            List<Vector2Int> reachableGrids = board.getReachableGrids(pos, 2);
             //List<Vector2Int> reachableGrids = getNeighbors(pos);
             foreach(Vector2Int grid in reachableGrids) {
                 mapDisplay.highlightGrid(grid, MapDisplay.Color.yellow);
@@ -116,78 +110,7 @@ public class Rule : MonoBehaviour {
         }
     }
 
-    // 显示所有从pos出发前进step步可到达的格子
-    public List<Vector2Int> getReachableGrids(Vector2Int pos, int step) {
-        List<Vector2Int> ret = new List<Vector2Int>();
-
-        //需要的信息：当前格子的坐标、上一步的坐标，已走步数
-        Queue<(Vector2Int now, Vector2Int pre, int step)> queue = new Queue<(Vector2Int now, Vector2Int pre, int step)>();
-
-        //BFS
-        queue.Enqueue( (pos, pos, 0) );
-        while(queue.Count != 0) {
-            var thisTuple = queue.Dequeue();
-
-            //若step足够，不进行操作，直接加入返回列表
-            if(thisTuple.step == step) {
-                ret.Add(thisTuple.now);
-                continue;
-            }
-
-            //得到所有合法的下一步
-            //如果只有一个合法的下一步，说明now在端点上，不考虑它的上一步是否和下一步重合，直接入队
-            List<Vector2Int> nextGrids = getNeighbors(thisTuple.now);
-            if(nextGrids.Count == 1) {
-                queue.Enqueue( (nextGrids[0], thisTuple.now, thisTuple.step+1) );
-                continue;
-            }
-
-            //将所有不和上一步重合的下一步入队
-            foreach(Vector2Int next in nextGrids) {
-                if(next != thisTuple.pre) {
-                    queue.Enqueue( (next, thisTuple.now, thisTuple.step+1) );
-                }
-            }
-
-        }
-
-        //返回列表去重
-        ret = ret.Distinct().ToList();
-
-        return ret;
-    }
-
-    //获取所有与该格子相邻的可走格子
-    public List<Vector2Int> getNeighbors(Vector2Int pos) {
-        List<Vector2Int> ret = new List<Vector2Int>();
-
-        //无论奇偶，上下左右都可达
-        List<Vector2Int> offsets = new List<Vector2Int> {
-            new Vector2Int(1,0),
-            new Vector2Int(-1,0),
-            new Vector2Int(0,1),
-            new Vector2Int(0,-1)
-        };
-        //偶数行：斜向左可达(-1,+1)和(-1,-1)
-        if(pos.y % 2 == 0) {
-            offsets.Add(new Vector2Int(-1,1));
-            offsets.Add(new Vector2Int(-1,-1));
-        }
-        //奇数行：斜向右可达(+1,+1)和(+1,-1)
-        else {
-            offsets.Add(new Vector2Int(1,1));
-            offsets.Add(new Vector2Int(1,-1));
-        }
-
-        //筛选出可到达的格子
-        foreach(Vector2Int offset in offsets) {
-            if(board.isWalkable(pos+offset)) {
-                ret.Add(pos+offset);
-            }
-        }
-
-        return ret;
-    }
+    
 
     //从json文件中读取地图
     BoardEntity loadMapFromJson(string filename) {
