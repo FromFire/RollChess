@@ -10,7 +10,7 @@ public class Rule : MonoBehaviour {
 
     // 存储棋盘信息
     Board board;
-    // 存储棋子信息[棋子]
+    // 存储棋子信息
     TokenSet tokenSet;
 
     // 当前状态
@@ -33,7 +33,6 @@ public class Rule : MonoBehaviour {
         //读取地图json文件
         string filename = "MapSample";
         BoardEntity boardEntity = loadMapFromJson(filename);
-        boardEntity.toConsole();
 
         //初始化board
         board = GameObject.Find("/Board").GetComponent<Board>();
@@ -70,12 +69,20 @@ public class Rule : MonoBehaviour {
     public void move(Vector2Int from, Vector2Int to) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
-        //查找并移动棋子
-        List<Token> tokens = tokenSet.find(from);
-        if(tokens.Count != 0) {
-            tokens[0].setXY(to);
-            mapDisplay.moveToken(from, to);
-        }
+        //查找from上的棋子
+        List<Token> tokensFrom = tokenSet.find(from);
+        Debug.Assert(tokensFrom.Count != 0);
+
+        //移动棋子
+        Token thisToken = tokensFrom[0];
+        thisToken.setXY(to);
+        mapDisplay.moveToken(from, to);
+
+        //吃子：到达的位置有对方的棋子
+        tokenSet.removeEnemies(to, thisToken.player);
+
+        //叠子：到达的位置有己方的棋子
+        
         
     }
 
@@ -127,9 +134,8 @@ public class Rule : MonoBehaviour {
 
         //检测格子上是否有棋子，有则选中它
         List<Token> tokens = tokenSet.find(pos);
-        if(tokens.Count != 0) {
-            AddChoose(pos);
-        }
+        Debug.Assert(tokens.Count != 0);
+        AddChoose(pos);
     }
 
     // 选中棋子，并显示它能到达的所有位置

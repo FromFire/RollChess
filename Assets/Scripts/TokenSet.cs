@@ -15,12 +15,22 @@ public class TokenSet : MonoBehaviour {
         }
     }
 
+    //移除该格子上的所有敌人棋子（pos符合，但阵营不是player的棋子）
+    public void removeEnemies(Vector2Int pos, int player) {
+        for(int i=tokenList.Count-1; i>=0; i--) {
+            if(tokenList[i].getXY() == pos && player != tokenList[i].player) {
+                Debug.Log("remove token: (" + pos.x + "." + pos.y + ") player:" + tokenList[i].player);
+                tokenList.RemoveAt(i);
+            }
+        }
+    }
+
     // 查找棋子
-    // player未指定或为-1时，不查找player
+    // player未指定或为-1时，忽略player
     public List<Token> find(Vector2Int pos, int player=-1) {
         List<Token> ret = new List<Token>();
         foreach(Token token in tokenList) {
-            if(token.getXY() == pos && (player == -1 || player == token.player) ) {
+            if(token.getXY() == pos && (player == -1 || player == token.player)) {
                 ret.Add(token);
             }
         }
@@ -50,6 +60,7 @@ public class Token{
     public Token(int x, int y, int player) {
         this.x = x;
         this.y = y;
+        this.player = player;
     }
 
     public Vector2Int getXY() {
