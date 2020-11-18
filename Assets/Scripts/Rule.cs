@@ -10,8 +10,8 @@ public class Rule : MonoBehaviour {
 
     // 存储棋盘信息
     Board board;
-    // 存储棋子信息[玩家][棋子]
-    List<List<Token>> tokens;
+    // 存储棋子信息[棋子]
+    TokenSet tokenSet;
 
     // 当前状态
     // waiting: 等待玩家操作
@@ -27,26 +27,21 @@ public class Rule : MonoBehaviour {
     // 当前选中棋子可到达的位置
     List<Vector2Int> reachablePos;
 
-    // 初始化棋盘
+    // 初始化全局
     void Start()
     {
         //读取地图json文件
         string filename = "MapSample";
         BoardEntity boardEntity = loadMapFromJson(filename);
+        boardEntity.toConsole();
 
         //初始化board
         board = GameObject.Find("/Board").GetComponent<Board>();
         board.init(boardEntity.map);
 
-        //初始化tokens
-        tokens = new List<List<Token>>();
-        for(int i=0; i<boardEntity.players.number; i++) {
-            tokens.Add(new List<Token>());
-            for(int j=0; j<boardEntity.tokens[i].number; j++) {
-                SingleTokenEntity tmpTokenEntity = boardEntity.tokens[i].singleTokens[j];
-                tokens[i].Add(new Token(tmpTokenEntity.x, tmpTokenEntity.y));
-            }
-        }
+        //初始化tokenSet
+        tokenSet = GameObject.Find("/TokenSet").GetComponent<TokenSet>();
+        tokenSet.init(boardEntity.tokens);
 
         //初始化选中信息
         reachablePos = new List<Vector2Int>();
@@ -73,20 +68,25 @@ public class Rule : MonoBehaviour {
 
     //移动棋子
     public void move(Vector2Int from, Vector2Int to) {
-        //查找棋子
-        Debug.Log("from: ("+ from.x + "." + from.y + ") ");
-        foreach(List<Token> tokenlist in tokens) {
-            foreach(Token token in tokenlist) {
-                Debug.Log("("+ token.getXY().x + "." + token.getXY().y + ") ");
-                if(token.getXY() == from) {
-                    token.setXY(to);
-                    break;
-                }
-            }
+        Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
+
+        //查找并移动棋子
+        List<Token> tokens = tokenSet.find(from);
+        if(tokens.Count != 0) {
+            tokens[0].setXY(to);
+            mapDisplay.moveToken(from, to);
         }
         
-        //显示
-        mapDisplay.moveToken(from, to);
+    }
+
+    //叠加棋子
+    public void pileTokens(Vector2Int pos, int num) {
+
+    }
+
+    //吃子
+    public void killToken(Vector2Int pos) {
+
     }
 
     // 选中格子
@@ -126,13 +126,9 @@ public class Rule : MonoBehaviour {
         }
 
         //检测格子上是否有棋子，有则选中它
-        for(int player=0; player<tokens.Count; player++) {
-            for(int i=0; i<tokens[player].ToArray().Length; i++) {
-                if(tokens[player][i].getXY() == pos) {
-                    AddChoose(pos);
-                    break;
-                }
-            }
+        List<Token> tokens = tokenSet.find(pos);
+        if(tokens.Count != 0) {
+            AddChoose(pos);
         }
     }
 

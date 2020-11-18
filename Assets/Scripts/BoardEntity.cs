@@ -12,21 +12,15 @@ public class BoardEntity
 
     public PlayersEntity players;
 
-    public List<TokensEntity> tokens;
+    public List<TokenEntity> tokens;
 
     public List<SingleMapGridEntity> map;
 
-    //控制台输出信息
     public void toConsole() {
-        Debug.Log("名称："+mapName);
-        Debug.Log("玩家数目："+players.number);
-        for(int i=0; i<players.number;i++) {
-            Debug.Log("棋子数目"+i+": "+tokens[i].number);
-        }
-        for(int i=0; i<map.ToArray().Length;i++) {
-            Debug.Log("x: "+map[i].x + "\t y: " +map[i].y);
-        }
-        
+        string str = "mapName: " + mapName + "\n" +
+            "players - number: " + players.number + "\n" +
+            "tokens - size" + tokens.Count + "\n";
+        Debug.Log(str);
     }
 }
 
@@ -42,22 +36,12 @@ public class PlayersEntity
 // 描述单个棋子的信息
 
 [System.Serializable]
-public class SingleTokenEntity
+public class TokenEntity
 {
     public int x;
     public int y;
+    public int player;
 }
-
-
-// 描述所有棋子的信息
-
-[System.Serializable]
-public class TokensEntity
-{
-    public int number;
-    public List<SingleTokenEntity> singleTokens;
-}
-
 
 // 描述单个地图格子的信息
 

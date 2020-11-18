@@ -74,12 +74,9 @@ public class MapDisplay : MonoBehaviour
         tokenTiles.Add(tileList[(int)TileKeys.tokenRedTank]);
         tokenTiles.Add(tileList[(int)TileKeys.tokenBlueTank]);
         //分阵营显示棋子
-        for(int player = 0; player < boardEntity.players.number; player++) {
-            foreach(SingleTokenEntity grid in boardEntity.tokens[player].singleTokens) {
-                tilemapToken.SetTile(new Vector3Int(grid.x, grid.y, 0), tokenTiles[player]);
-            }
+        foreach(TokenEntity token in boardEntity.tokens) {
+            tilemapToken.SetTile(new Vector3Int(token.x, token.y, 0), tokenTiles[token.player]);
         }
-
     }
 
     // Update is called once per frame
@@ -130,7 +127,6 @@ public class MapDisplay : MonoBehaviour
         Tile tile = (Tile)tilemapToken.GetTile(from3);
         tilemapToken.SetTile(from3, null);
         tilemapToken.SetTile(to3, tile);
-        Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
     }
 
     // 输入坐标，输出格子的坐标
