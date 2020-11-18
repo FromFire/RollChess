@@ -6,7 +6,8 @@ using UnityEngine;
 public class Rule : MonoBehaviour {
 
     // 负责棋盘的显示
-    MapDisplay mapDisplay;
+    BoardDisplay boardDisplay;
+    TokensDisplay tokensDisplay;
 
     // 存储棋盘信息
     Board board;
@@ -46,8 +47,10 @@ public class Rule : MonoBehaviour {
         reachablePos = new List<Vector2Int>();
 
         //显示游戏初始状态
-        mapDisplay = GameObject.Find("/Grid").GetComponent<MapDisplay>();
-        mapDisplay.display(boardEntity);
+        boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
+        boardDisplay.display(boardEntity);
+        tokensDisplay = GameObject.Find("/Grid/TilemapToken").GetComponent<TokensDisplay>();
+        tokensDisplay.display(boardEntity);
     }
 
     // Update is called once per frame
@@ -73,7 +76,7 @@ public class Rule : MonoBehaviour {
         tokenSet.moveToken(from, to);
 
         //显示移动效果
-        mapDisplay.moveToken(from, to);
+        tokensDisplay.moveToken(from, to);
     }
 
     //叠加棋子
@@ -98,7 +101,7 @@ public class Rule : MonoBehaviour {
     //      是：预览可走位置（高亮它可以到达的所有格子）
 
     public void chooseGrid(Vector3 loc) {
-        Vector2Int pos = mapDisplay.worldToCell(loc);
+        Vector2Int pos = boardDisplay.worldToCell(loc);
 
         //检测是否是走子
         if(isTokenChoosed) {
@@ -119,7 +122,7 @@ public class Rule : MonoBehaviour {
 
         //显示选中效果
         if(board.isWalkable(pos)) {
-            mapDisplay.highlightGrid(pos, MapDisplay.Color.blue);
+            boardDisplay.highlightGrid(pos, BoardDisplay.Color.blue);
         }
 
         //检测格子上是否有棋子，有则选中它
@@ -141,7 +144,7 @@ public class Rule : MonoBehaviour {
 
         //显示高亮
         foreach(Vector2Int grid in reachableGrids) {
-            mapDisplay.highlightGrid(grid, MapDisplay.Color.yellow);
+            boardDisplay.highlightGrid(grid, BoardDisplay.Color.yellow);
         }
     }
 
@@ -152,7 +155,7 @@ public class Rule : MonoBehaviour {
         reachablePos.Clear();
 
         //取消所有高光
-        mapDisplay.cancelHighlight();
+        boardDisplay.cancelHighlight();
     }
 
     //从json文件中读取地图
