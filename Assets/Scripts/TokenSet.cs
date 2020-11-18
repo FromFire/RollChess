@@ -15,6 +15,22 @@ public class TokenSet : MonoBehaviour {
         }
     }
 
+    //移动棋子，包括吃子的处理
+    public void moveToken(Vector2Int from, Vector2Int to) {
+        //移动棋子
+        int player = -1;
+        foreach(Token token in tokenList) {
+            if(token.getXY() == from) {
+                player = token.player;
+                token.setXY(to);
+                break;
+            }
+        }
+
+        //吃子判定
+        removeEnemies(to, player);
+    }
+
     //移除该格子上的所有敌人棋子（pos符合，但阵营不是player的棋子）
     public void removeEnemies(Vector2Int pos, int player) {
         for(int i=tokenList.Count-1; i>=0; i--) {

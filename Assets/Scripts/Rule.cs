@@ -69,21 +69,11 @@ public class Rule : MonoBehaviour {
     public void move(Vector2Int from, Vector2Int to) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
-        //查找from上的棋子
-        List<Token> tokensFrom = tokenSet.find(from);
-        Debug.Assert(tokensFrom.Count != 0);
+        //由tokenSet进行数据操作
+        tokenSet.moveToken(from, to);
 
-        //移动棋子
-        Token thisToken = tokensFrom[0];
-        thisToken.setXY(to);
+        //显示移动效果
         mapDisplay.moveToken(from, to);
-
-        //吃子：到达的位置有对方的棋子
-        tokenSet.removeEnemies(to, thisToken.player);
-
-        //叠子：到达的位置有己方的棋子
-        
-        
     }
 
     //叠加棋子
@@ -134,8 +124,9 @@ public class Rule : MonoBehaviour {
 
         //检测格子上是否有棋子，有则选中它
         List<Token> tokens = tokenSet.find(pos);
-        Debug.Assert(tokens.Count != 0);
-        AddChoose(pos);
+        if(tokens.Count != 0) {
+            AddChoose(pos);
+        }
     }
 
     // 选中棋子，并显示它能到达的所有位置

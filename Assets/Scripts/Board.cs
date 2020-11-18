@@ -66,7 +66,7 @@ public class Board : MonoBehaviour{
         return ret;
     }
 
-    // 显示所有从pos出发前进step步可到达的格子
+    // 获取所有从pos出发前进step步可到达的格子
     public List<Vector2Int> getReachableGrids(Vector2Int pos, int step) {
         List<Vector2Int> ret = new List<Vector2Int>();
 
