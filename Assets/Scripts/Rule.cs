@@ -5,19 +5,27 @@ using UnityEngine;
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
 
-    //负责棋盘的显示
+    // 负责棋盘的显示
     MapDisplay mapDisplay;
 
-    //存储棋盘信息
-    private Board board;
-    //存储棋子信息[玩家][棋子]
-    private List<List<Token>> tokens;
+    // 存储棋盘信息
+    Board board;
+    // 存储棋子信息[玩家][棋子]
+    List<List<Token>> tokens;
 
     // 当前状态
     // waiting: 等待玩家操作
     // moved: 玩家操作完成，等待处理
     enum Status{waiting, moved};
     Status status = Status.waiting;
+
+    // 棋子选中情况
+    // 是否已有棋子被选中
+    bool isTokenChoosed = false;
+    // 当前选中的棋子坐标
+    Vector2Int choosedTokenPos;
+    // 当前选中棋子可到达的位置
+    List<Vector2Int> reachablePos;
 
     // 初始化棋盘
     void Start()
@@ -39,6 +47,9 @@ public class Rule : MonoBehaviour {
                 tokens[i].Add(new Token(tmpTokenEntity.x, tmpTokenEntity.y));
             }
         }
+
+        //初始化选中信息
+        reachablePos = new List<Vector2Int>();
 
         //显示游戏初始状态
         mapDisplay = GameObject.Find("/Grid").GetComponent<MapDisplay>();
@@ -63,8 +74,10 @@ public class Rule : MonoBehaviour {
     //移动棋子
     public void move(Vector2Int from, Vector2Int to) {
         //查找棋子
+        Debug.Log("from: ("+ from.x + "." + from.y + ") ");
         foreach(List<Token> tokenlist in tokens) {
             foreach(Token token in tokenlist) {
+                Debug.Log("("+ token.getXY().x + "." + token.getXY().y + ") ");
                 if(token.getXY() == from) {
                     token.setXY(to);
                     break;
@@ -73,44 +86,81 @@ public class Rule : MonoBehaviour {
         }
         
         //显示
-        mapDisplay.moveToken(new Vector3Int(from.x, from.y, 0), new Vector3Int(to.x, to.y, 0));
+        mapDisplay.moveToken(from, to);
     }
 
     // 选中格子
-    // 如果是可走的格子，将其高亮，同时将当前已高亮的格子取消
-    // 如果是不可走的格子，则只取消原本高亮的格子
+    //
+    // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
+    //      是：移动棋子，return
+    //      否：清空棋子选中状态
+    // 2. 判定是否可走的格子
+    //      是：选中该格子（将其高亮，取消先前的高亮）
+    //      否：取消选中（取消先前的高亮）
+    // 3. 判定该格是否有棋子
+    //      是：预览可走位置（高亮它可以到达的所有格子）
+
     public void chooseGrid(Vector3 loc) {
         Vector2Int pos = mapDisplay.worldToCell(loc);
 
-        //显示选中效果
-        mapDisplay.cancelHighlight();
-        if(board.isWalkable(pos)) {
-            mapDisplay.highlightGrid(pos, MapDisplay.Color.blue);
-        }
+        //检测是否是走子
+        if(isTokenChoosed) {
+            foreach(Vector2Int grid in reachablePos) {
+                if(grid == pos) {
+                    //显示走子效果
+                    move(choosedTokenPos, pos);
 
-        //检测格子上是否有棋子
-        bool hasToken = false;
-        for(int player=0; player<tokens.Count; player++) {
-            for(int i=0; i<tokens[player].ToArray().Length; i++) {
-                if(tokens[player][i].getXY() == pos) {
-                    hasToken = true;
-                    break;
+                    //取消所有选中
+                    ClearChoose();
+                    return;
                 }
             }
         }
 
-        //如果格子上有棋子，显示它所有可达位置（目前显示3步的情况）
-        if(hasToken) {
-            Debug.Log("yes");
-            List<Vector2Int> reachableGrids = board.getReachableGrids(pos, 2);
-            //List<Vector2Int> reachableGrids = getNeighbors(pos);
-            foreach(Vector2Int grid in reachableGrids) {
-                mapDisplay.highlightGrid(grid, MapDisplay.Color.yellow);
+        //取消所有选中
+        ClearChoose();
+
+        //显示选中效果
+        if(board.isWalkable(pos)) {
+            mapDisplay.highlightGrid(pos, MapDisplay.Color.blue);
+        }
+
+        //检测格子上是否有棋子，有则选中它
+        for(int player=0; player<tokens.Count; player++) {
+            for(int i=0; i<tokens[player].ToArray().Length; i++) {
+                if(tokens[player][i].getXY() == pos) {
+                    AddChoose(pos);
+                    break;
+                }
             }
         }
     }
 
-    
+    // 选中棋子，并显示它能到达的所有位置
+    void AddChoose(Vector2Int pos) {
+        //获取该棋子它所有可达位置（目前只能显示2步）
+        List<Vector2Int> reachableGrids = board.getReachableGrids(pos, 2);
+
+        //维护选中信息
+        isTokenChoosed = true;
+        choosedTokenPos = pos;
+        this.reachablePos = reachableGrids;
+
+        //显示高亮
+        foreach(Vector2Int grid in reachableGrids) {
+            mapDisplay.highlightGrid(grid, MapDisplay.Color.yellow);
+        }
+    }
+
+    // 取消选中棋子，显示效果
+    void ClearChoose() {
+        //维护选中信息
+        isTokenChoosed = false;
+        reachablePos.Clear();
+
+        //取消所有高光
+        mapDisplay.cancelHighlight();
+    }
 
     //从json文件中读取地图
     BoardEntity loadMapFromJson(string filename) {

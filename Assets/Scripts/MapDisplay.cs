@@ -23,11 +23,11 @@ public class MapDisplay : MonoBehaviour
     floorSteelBlue, floorYellow,  //高亮色
     tokenRedTank, tokenBlueTank}; //棋子
 
+    //供外界传入的颜色参数类
     public enum Color{blue, yellow};
 
     //正在高亮的格子坐标
     List<Vector3Int> highlightGridPosition;
-
     //正在高亮的格子Tile
     List<Tile> highlightGridTile;
 
@@ -122,11 +122,15 @@ public class MapDisplay : MonoBehaviour
     }
 
     // 移动棋子
-    public void moveToken(Vector3Int from, Vector3Int to) {
+    public void moveToken(Vector2Int from, Vector2Int to) {
+        Vector3Int from3 = new Vector3Int(from.x, from.y, 0);
+        Vector3Int to3 = new Vector3Int(to.x, to.y, 0);
+
         //暂时不考虑某个格有多个棋子的情况
-        Tile tile = (Tile)tilemapToken.GetTile(from);
-        tilemapToken.SetTile(from, null);
-        tilemapToken.SetTile(to, tile);
+        Tile tile = (Tile)tilemapToken.GetTile(from3);
+        tilemapToken.SetTile(from3, null);
+        tilemapToken.SetTile(to3, tile);
+        Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
     }
 
     // 输入坐标，输出格子的坐标
