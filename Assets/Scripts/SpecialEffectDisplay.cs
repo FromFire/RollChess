@@ -32,8 +32,10 @@ public class SpecialEffectDisplay : MonoBehaviour
         //初始化tileList
         //tile顺序按照enum tileKeys中规定的来
         List<string> tileNames = new List<string> {
-            "Tiles/floor-steelBlue",    //floorSteelBlue
-            "Tiles/floor-yellow"        //floorYellow
+            // "Tiles/floor-steelBlue",    //floorSteelBlue
+            "Tiles/highlight-blue",
+            // "Tiles/floor-yellow"        //floorYellow
+            "Tiles/highlight-red"
         };
 
         // 读取所有tile
