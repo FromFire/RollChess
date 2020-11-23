@@ -5,6 +5,8 @@ using UnityEngine;
 //管理所有棋子的类
 public class TokenSet : MonoBehaviour {
 
+    TokensDisplay tokensDisplay;
+
     List<Token> tokenList;
 
     // 使用TokensEntity初始化
@@ -13,6 +15,9 @@ public class TokenSet : MonoBehaviour {
         foreach(TokenEntity token in entity) {
             tokenList.Add(new Token(token.x, token.y, token.player));
         }
+
+        tokensDisplay = GameObject.Find("/Grid/TilemapToken").GetComponent<TokensDisplay>();
+        tokensDisplay.display(entity);
     }
 
     //移动棋子，包括吃子的处理
@@ -29,6 +34,12 @@ public class TokenSet : MonoBehaviour {
 
         //吃子判定
         removeEnemies(to, player);
+
+        //更新from格子的显示
+        tokensDisplay.showToken(from, find(from, player).Count, player);
+
+        //更新to格子的显示
+        tokensDisplay.showToken(to, find(to, player).Count, player);
     }
 
     //移除该格子上的所有敌人棋子（pos符合，但阵营不是player的棋子）

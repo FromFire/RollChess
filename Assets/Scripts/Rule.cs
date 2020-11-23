@@ -5,9 +5,7 @@ using UnityEngine;
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
 
-    // 负责棋盘的显示
-    BoardDisplay boardDisplay;
-    TokensDisplay tokensDisplay;
+    SpecialEffectDisplay specialEffectDisplay;
 
     // 存储棋盘信息
     Board board;
@@ -46,11 +44,8 @@ public class Rule : MonoBehaviour {
         //初始化选中信息
         reachablePos = new List<Vector2Int>();
 
-        //显示游戏初始状态
-        boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
-        boardDisplay.display(boardEntity);
-        tokensDisplay = GameObject.Find("/Grid/TilemapToken").GetComponent<TokensDisplay>();
-        tokensDisplay.display(boardEntity);
+        //初始化SpecialEffectDisplay
+        specialEffectDisplay = GameObject.Find("/Grid/TilemapSpecialEffect").GetComponent<SpecialEffectDisplay>();
     }
 
     // Update is called once per frame
@@ -72,11 +67,8 @@ public class Rule : MonoBehaviour {
     public void move(Vector2Int from, Vector2Int to) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
-        //由tokenSet进行数据操作
+        //由tokenSet进行操作
         tokenSet.moveToken(from, to);
-
-        //显示移动效果
-        tokensDisplay.moveToken(from, to);
     }
 
     //叠加棋子
@@ -101,7 +93,7 @@ public class Rule : MonoBehaviour {
     //      是：预览可走位置（高亮它可以到达的所有格子）
 
     public void chooseGrid(Vector3 loc) {
-        Vector2Int pos = boardDisplay.worldToCell(loc);
+        Vector2Int pos = specialEffectDisplay.worldToCell(loc);
 
         //检测是否是走子
         if(isTokenChoosed) {
@@ -122,7 +114,7 @@ public class Rule : MonoBehaviour {
 
         //显示选中效果
         if(board.isWalkable(pos)) {
-            boardDisplay.highlightGrid(pos, BoardDisplay.Color.blue);
+            specialEffectDisplay.highlightGrid(pos, SpecialEffectDisplay.Color.blue);
         }
 
         //检测格子上是否有棋子，有则选中它
@@ -144,7 +136,7 @@ public class Rule : MonoBehaviour {
 
         //显示高亮
         foreach(Vector2Int grid in reachableGrids) {
-            boardDisplay.highlightGrid(grid, BoardDisplay.Color.yellow);
+            specialEffectDisplay.highlightGrid(grid, SpecialEffectDisplay.Color.yellow);
         }
     }
 
@@ -155,7 +147,7 @@ public class Rule : MonoBehaviour {
         reachablePos.Clear();
 
         //取消所有高光
-        boardDisplay.cancelHighlight();
+        specialEffectDisplay.cancelHighlight();
     }
 
     //从json文件中读取地图

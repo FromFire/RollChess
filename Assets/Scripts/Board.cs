@@ -6,6 +6,8 @@ using System.Linq;
 // 地图类
 // 加载地图、管理地图状态
 public class Board : MonoBehaviour{
+    //棋盘的显示
+    BoardDisplay boardDisplay;
 
     //存储每一个格子
     BaseBoard<SingleGrid> map;
@@ -22,6 +24,9 @@ public class Board : MonoBehaviour{
         foreach(SingleMapGridEntity grid in entity) {
             map.setData(grid.x, grid.y, new SingleGrid(true));
         }
+
+        boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
+        boardDisplay.display(entity);
     }
 
     // Update is called once per frame

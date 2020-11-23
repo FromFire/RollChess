@@ -44,6 +44,9 @@ TagManager:
   - name: Board
     uniqueID: 1610566685
     locked: 0
+  - name: Highlight
+    uniqueID: 2005920107
+    locked: 0
   - name: Token
     uniqueID: 667999085
     locked: 0
