@@ -71,16 +71,6 @@ public class Rule : MonoBehaviour {
         tokenSet.moveToken(from, to);
     }
 
-    //叠加棋子
-    public void pileTokens(Vector2Int pos, int num) {
-
-    }
-
-    //吃子
-    public void killToken(Vector2Int pos) {
-
-    }
-
     // 选中格子
     //
     // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
@@ -93,6 +83,7 @@ public class Rule : MonoBehaviour {
     //      是：预览可走位置（高亮它可以到达的所有格子）
 
     public void chooseGrid(Vector3 loc) {
+        //获取点击的点在tilemap上的坐标
         Vector2Int pos = specialEffectDisplay.worldToCell(loc);
 
         //检测是否是走子
