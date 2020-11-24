@@ -18,8 +18,10 @@ public class Rule : MonoBehaviour {
     public enum Status{waiting, moved};
     public Status status = Status.waiting;
 
+    // 玩家总数
+    public int totalPlayer;
     // 目前正在行动的玩家，他只能移动己方的棋子
-    public int nowPlayer = 0;
+    public int nowPlayer;
 
     // 棋子选中情况
     // 是否已有棋子被选中
@@ -36,9 +38,13 @@ public class Rule : MonoBehaviour {
         string filename = "MapSample";
         BoardEntity boardEntity = loadMapFromJson(filename);
 
+        //初始化玩家信息
+        totalPlayer = boardEntity.players.number;
+        nowPlayer = 0;
+
         //初始化board
         board = GameObject.Find("/Board").GetComponent<Board>();
-        board.init(boardEntity.map);
+        board.init(boardEntity.map, boardEntity.special);
 
         //初始化tokenSet
         tokenSet = GameObject.Find("/TokenSet").GetComponent<TokenSet>();
@@ -82,6 +88,7 @@ public class Rule : MonoBehaviour {
     public void chooseGrid(Vector3 loc) {
         //获取点击的点在tilemap上的坐标
         Vector2Int pos = specialEffectDisplay.worldToCell(loc);
+        Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
 
         //检测是否是走子
         if(isTokenChoosed) {
@@ -140,13 +147,12 @@ public class Rule : MonoBehaviour {
 
     //从json文件中读取地图
     public BoardEntity loadMapFromJson(string filename) {
-        Debug.Log("从json中加载地图;" + filename);
+        Debug.Log("加载地图：" + filename);
 
         //读取json字符串
         string json = "";
         TextAsset text = Resources.Load<TextAsset>(filename);
         json = text.text;
-        Debug.Log(json);
         Debug.Assert(!string.IsNullOrEmpty(json));
 
         //将json字符串转换为BoardEntity类

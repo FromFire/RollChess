@@ -19,12 +19,8 @@ public class Player : MonoBehaviour
         //初始化Rule
         rule = GameObject.Find("/Rule").GetComponent<Rule>();
 
-        //读取地图json文件
-        string filename = "MapSample";
-        BoardEntity boardEntity = rule.loadMapFromJson(filename);
-
         //初始化玩家人数
-        totalPlayer = boardEntity.players.number;
+        totalPlayer = rule.totalPlayer;
     }
 
     // Update is called once per frame

@@ -18,15 +18,29 @@ public class Board : MonoBehaviour{
     }
 
     //初始化
-    public void init(List<SingleMapGridEntity> entity) {
+    public void init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity) {
         //导入地图信息
         map = new BaseBoard<SingleGrid>();
-        foreach(SingleMapGridEntity grid in entity) {
+        foreach(SingleMapGridEntity grid in mapEntity) {
             map.setData(grid.x, grid.y, new SingleGrid(true));
         }
 
+        //导入特殊格子信息
+        foreach(SingleSpecialEntity special in specialEntity) {
+            SingleGrid.Effect effect = SingleGrid.Effect.none;
+            switch(special.effect) {
+                case "doubleStep":
+                    effect = SingleGrid.Effect.doubleStep;
+                    break;
+                case "brokenBridge":
+                    effect = SingleGrid.Effect.brokenBridge;
+                    break;
+            }
+            map.getData(special.x, special.y).SetEffect(effect);
+        }
+        
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
-        boardDisplay.display(entity);
+        boardDisplay.display(mapEntity);
     }
 
     // Update is called once per frame
@@ -123,14 +137,30 @@ public class SingleGrid {
     //棋子是否可通过，默认不可通过
     public bool walkable;
 
+    //表示特殊格子的效果
+    public enum Effect {
+        none, //无效果
+        doubleStep, //倍速：从此格开始时，移动距离加倍
+        brokenBridge //危桥：只能通过一次，之后就会损坏
+    }
+    //此格子的特殊效果
+    public Effect effect;
+
+    //设置特殊效果
+    public void SetEffect(Effect effect) {
+        this.effect = effect;
+    }
+
     //构造函数
     public SingleGrid(bool walkable) {
         this.walkable = walkable;
+        effect = Effect.none;
     }
 
     //默认构造函数，用于BaseBoard初始化，否则运行会崩溃
     public SingleGrid() {
         this.walkable = false;
+        effect = Effect.none;
     }
 }
 

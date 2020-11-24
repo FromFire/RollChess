@@ -16,6 +16,8 @@ public class BoardEntity
 
     public List<SingleMapGridEntity> map;
 
+    public List<SingleSpecialEntity> special;
+
     public void toConsole() {
         string str = "mapName: " + mapName + "\n" +
             "players - number: " + players.number + "\n" +
@@ -24,17 +26,14 @@ public class BoardEntity
     }
 }
 
-//描述所有玩家的信息
-
+// 描述所有玩家的信息
 [System.Serializable]
 public class PlayersEntity
 {
     public int number;
 }
 
-
 // 描述单个棋子的信息
-
 [System.Serializable]
 public class TokenEntity
 {
@@ -44,10 +43,18 @@ public class TokenEntity
 }
 
 // 描述单个地图格子的信息
-
 [System.Serializable]
 public class SingleMapGridEntity
 {
     public int x;
     public int y;
+}
+
+// 描述单个特殊格子的信息
+[System.Serializable]
+public class SingleSpecialEntity 
+{
+    public int x;
+    public int y;
+    public string effect;
 }
