@@ -15,8 +15,11 @@ public class Rule : MonoBehaviour {
     // 当前状态
     // waiting: 等待玩家操作
     // moved: 玩家操作完成，等待处理
-    enum Status{waiting, moved};
-    Status status = Status.waiting;
+    public enum Status{waiting, moved};
+    public Status status = Status.waiting;
+
+    // 目前正在行动的玩家，他只能移动己方的棋子
+    public int nowPlayer = 0;
 
     // 棋子选中情况
     // 是否已有棋子被选中
@@ -51,16 +54,7 @@ public class Rule : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // //玩家走子结束，开始处理结果
-        // if(status == Status.moved) {
 
-        // }
-        if(status == Status.waiting) {
-            //move(new Vector2Int(0, 1), new Vector2Int(1, 0));
-            status = Status.moved;
-        }
-            
-    
     }
 
     //移动棋子
@@ -69,6 +63,9 @@ public class Rule : MonoBehaviour {
 
         //由tokenSet进行操作
         tokenSet.moveToken(from, to);
+
+        //修改状态为moved
+        status = Status.moved;
     }
 
     // 选中格子
@@ -79,7 +76,7 @@ public class Rule : MonoBehaviour {
     // 2. 判定是否可走的格子
     //      是：选中该格子（将其高亮，取消先前的高亮）
     //      否：取消选中（取消先前的高亮）
-    // 3. 判定该格是否有棋子
+    // 3. 判定该格是否有己方棋子
     //      是：预览可走位置（高亮它可以到达的所有格子）
 
     public void chooseGrid(Vector3 loc) {
@@ -108,9 +105,9 @@ public class Rule : MonoBehaviour {
             specialEffectDisplay.highlightGrid(pos, SpecialEffectDisplay.Color.blue);
         }
 
-        //检测格子上是否有棋子，有则选中它
+        //检测格子上是否有己方棋子，有则选中它
         List<Token> tokens = tokenSet.find(pos);
-        if(tokens.Count != 0) {
+        if(tokens.Count != 0 && tokens[0].player == nowPlayer) {
             AddChoose(pos);
         }
     }
@@ -142,7 +139,7 @@ public class Rule : MonoBehaviour {
     }
 
     //从json文件中读取地图
-    BoardEntity loadMapFromJson(string filename) {
+    public BoardEntity loadMapFromJson(string filename) {
         Debug.Log("从json中加载地图;" + filename);
 
         //读取json字符串
