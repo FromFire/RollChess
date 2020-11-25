@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.UI;
 
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
@@ -30,6 +32,13 @@ public class Rule : MonoBehaviour {
     Vector2Int choosedTokenPos;
     // 当前选中棋子可到达的位置
     List<Vector2Int> reachablePos;
+    // 当前可走步数
+    int step;
+
+    //roll点按钮
+    Button rollButton;
+    //roll出的数值
+    Text rollNumber;
 
     // 初始化全局
     void Start()
@@ -55,6 +64,11 @@ public class Rule : MonoBehaviour {
 
         //初始化SpecialEffectDisplay
         specialEffectDisplay = GameObject.Find("/Grid/TilemapSpecialEffect").GetComponent<SpecialEffectDisplay>();
+
+        //绑定roll点按钮和OnClick函数
+        rollButton = GameObject.Find("/HUD/RollButton").GetComponent<Button> ();
+		rollButton.onClick.AddListener(rollDice);
+        rollNumber = GameObject.Find("/HUD/RollNumber").GetComponent<Text> ();
     }
 
     // Update is called once per frame
@@ -62,6 +76,19 @@ public class Rule : MonoBehaviour {
     {
 
     }
+
+    //掷骰子
+    //是RollButton的OnClick函数
+    public void rollDice() {
+        //生成随机数
+        step = new System.Random().Next(6)+1;
+        Debug.Log(step);
+
+        //隐藏按钮
+        rollButton.gameObject.SetActive(false);
+        rollNumber.text = step + "步";
+    }
+
 
     //移动棋子
     public void move(Vector2Int from, Vector2Int to) {
@@ -72,6 +99,10 @@ public class Rule : MonoBehaviour {
 
         //修改状态为moved
         status = Status.moved;
+
+        //显示roll点按钮，隐藏步数按钮
+        rollButton.gameObject.SetActive(true);
+        rollNumber.text = "";
     }
 
     // 选中格子
@@ -122,7 +153,7 @@ public class Rule : MonoBehaviour {
     // 选中棋子，并显示它能到达的所有位置
     void AddChoose(Vector2Int pos) {
         //获取该棋子它所有可达位置（目前只能显示2步）
-        List<Vector2Int> reachableGrids = board.getReachableGrids(pos, 2);
+        List<Vector2Int> reachableGrids = board.getReachableGrids(pos, step);
 
         //维护选中信息
         isTokenChoosed = true;
