@@ -7,7 +7,11 @@ using UnityEngine.UI;
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
 
+    //显示高光tilemap层
     SpecialEffectDisplay specialEffectDisplay;
+
+    //HUD层
+    HUD hud;
 
     // 存储棋盘信息
     Board board;
@@ -35,11 +39,6 @@ public class Rule : MonoBehaviour {
     // 当前可走步数
     int step;
 
-    //roll点按钮
-    Button rollButton;
-    //roll出的数值
-    Text rollNumber;
-
     // 初始化全局
     void Start()
     {
@@ -65,10 +64,9 @@ public class Rule : MonoBehaviour {
         //初始化SpecialEffectDisplay
         specialEffectDisplay = GameObject.Find("/Grid/TilemapSpecialEffect").GetComponent<SpecialEffectDisplay>();
 
-        //绑定roll点按钮和OnClick函数
-        rollButton = GameObject.Find("/HUD/RollButton").GetComponent<Button> ();
-		rollButton.onClick.AddListener(rollDice);
-        rollNumber = GameObject.Find("/HUD/RollNumber").GetComponent<Text> ();
+        //初始化HUD
+        hud = GameObject.Find("/HUD").GetComponent<HUD> ();
+        hud.setRule(this);
     }
 
     // Update is called once per frame
@@ -85,8 +83,7 @@ public class Rule : MonoBehaviour {
         Debug.Log(step);
 
         //隐藏按钮
-        rollButton.gameObject.SetActive(false);
-        rollNumber.text = step + "步";
+        hud.showRollStep(step);
     }
 
 
@@ -101,8 +98,7 @@ public class Rule : MonoBehaviour {
         status = Status.moved;
 
         //显示roll点按钮，隐藏步数按钮
-        rollButton.gameObject.SetActive(true);
-        rollNumber.text = "";
+        hud.showRollButton();
     }
 
     // 选中格子
