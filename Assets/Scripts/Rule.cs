@@ -43,11 +43,11 @@ public class Rule : MonoBehaviour {
         nowPlayer = 0;
 
         //初始化board
-        board = GameObject.Find("/Board").GetComponent<Board>();
+        board = GameObject.Find("/ScriptObjects/Board").GetComponent<Board>();
         board.init(boardEntity.map, boardEntity.special);
 
         //初始化tokenSet
-        tokenSet = GameObject.Find("/TokenSet").GetComponent<TokenSet>();
+        tokenSet = GameObject.Find("/ScriptObjects/TokenSet").GetComponent<TokenSet>();
         tokenSet.init(boardEntity.tokens);
 
         //初始化选中信息

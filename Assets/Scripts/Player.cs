@@ -11,16 +11,17 @@ public class Player : MonoBehaviour
     // 玩家总数
     int totalPlayer;
     // 当前正在操作的玩家
-    int nowPlayer = 0;
+    int nowPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
         //初始化Rule
-        rule = GameObject.Find("/Rule").GetComponent<Rule>();
+        rule = GameObject.Find("/ScriptObjects/Rule").GetComponent<Rule>();
 
         //初始化玩家人数
         totalPlayer = rule.totalPlayer;
+        nowPlayer = 0;
     }
 
     // Update is called once per frame
