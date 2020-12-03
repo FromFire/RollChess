@@ -87,6 +87,12 @@ public class Board : MonoBehaviour{
 
     // 获取所有从pos出发前进step步可到达的格子
     public List<Vector2Int> getReachableGrids(Vector2Int pos, int step) {
+        //若开始的格子是doubleStep，步数翻倍
+        if(GetEffect(pos) == SingleGrid.Effect.doubleStep) {
+            Debug.Log("doubleStep: " + step);
+            step *= 2;
+        }
+
         List<Vector2Int> ret = new List<Vector2Int>();
 
         //需要的信息：当前格子的坐标、上一步的坐标，已走步数
@@ -124,6 +130,11 @@ public class Board : MonoBehaviour{
         ret = ret.Distinct().ToList();
 
         return ret;
+    }
+
+    //查询某格的特殊格子效果
+    public SingleGrid.Effect GetEffect(Vector2Int pos) {
+        return map.getData(pos.x, pos.y).effect;
     }
 }
 
