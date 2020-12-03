@@ -34,8 +34,8 @@ public class Rule : MonoBehaviour {
     bool isTokenChoosed = false;
     // 当前选中的棋子坐标
     Vector2Int choosedTokenPos;
-    // 当前选中棋子可到达的位置
-    List<Vector2Int> reachablePos;
+    // 当前选中棋子可到达的位置，以及通向它的路线
+    List<(Vector2Int pos, List<Vector2Int> route)> reachablePos;
     // 当前可走步数
     int step;
 
@@ -59,10 +59,10 @@ public class Rule : MonoBehaviour {
         tokenSet.init(boardEntity.tokens);
 
         //初始化选中信息
-        reachablePos = new List<Vector2Int>();
+        reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
 
         //初始化SpecialEffectDisplay
-        specialEffectDisplay = GameObject.Find("/Grid/TilemapSpecialEffect").GetComponent<SpecialEffectDisplay>();
+        specialEffectDisplay = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<SpecialEffectDisplay>();
 
         //初始化HUD
         hud = GameObject.Find("/HUD").GetComponent<HUD> ();
@@ -72,7 +72,25 @@ public class Rule : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        //获取鼠标所在点的点在tilemap上的坐标
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+        Vector2Int pos = specialEffectDisplay.worldToCell(loc);
+        Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
+        //判断鼠标是否在可走的格子上，若不在，取消路径高亮
+        if(pos3 != specialEffectDisplay.highlightRouteEnd) {
+            specialEffectDisplay.CancelRouteHightlight();
+        }
+        if(isTokenChoosed) {
+            for(int i=0; i<reachablePos.Count; i++) {
+                Vector2Int grid = reachablePos[i].pos;
+                List<Vector2Int> route = reachablePos[i].route;
+                if(grid == pos) {
+                    specialEffectDisplay.HighlightRoute(route);
+                }
+            }
+        }
     }
 
     //掷骰子
@@ -88,11 +106,14 @@ public class Rule : MonoBehaviour {
 
 
     //移动棋子
-    public void move(Vector2Int from, Vector2Int to) {
+    public void move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
         //由tokenSet进行操作
         tokenSet.moveToken(from, to);
+
+        //检测危桥
+        board.detectBrokenBridge(route);
 
         //修改状态为moved
         status = Status.moved;
@@ -119,10 +140,12 @@ public class Rule : MonoBehaviour {
 
         //检测是否是走子
         if(isTokenChoosed) {
-            foreach(Vector2Int grid in reachablePos) {
+            for(int i=0; i<reachablePos.Count; i++) {
+                Vector2Int grid = reachablePos[i].pos;
+                List<Vector2Int> route = reachablePos[i].route;
                 if(grid == pos) {
                     //显示走子效果
-                    move(choosedTokenPos, pos);
+                    move(choosedTokenPos, pos, route);
 
                     //取消所有选中
                     ClearChoose();
@@ -148,8 +171,8 @@ public class Rule : MonoBehaviour {
 
     // 选中棋子，并显示它能到达的所有位置
     void AddChoose(Vector2Int pos) {
-        //获取该棋子它所有可达位置（目前只能显示2步）
-        List<Vector2Int> reachableGrids = board.getReachableGrids(pos, step);
+        //获取该棋子它所有可达位置
+        List<(Vector2Int now, List<Vector2Int> pre)> reachableGrids = board.getReachableGrids(pos, step);
 
         //维护选中信息
         isTokenChoosed = true;
@@ -157,7 +180,8 @@ public class Rule : MonoBehaviour {
         this.reachablePos = reachableGrids;
 
         //显示高亮
-        foreach(Vector2Int grid in reachableGrids) {
+        for(int i=0; i<reachablePos.Count; i++) {
+            Vector2Int grid = reachablePos[i].pos;
             specialEffectDisplay.highlightGrid(grid, SpecialEffectDisplay.Color.yellow);
         }
     }

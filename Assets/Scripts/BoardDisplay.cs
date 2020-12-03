@@ -37,6 +37,10 @@ public class BoardDisplay : MonoBehaviour
         }
     }
 
+    public void removeGrid(Vector2Int pos) {
+        tilemapBoard.SetTile(new Vector3Int(pos.x, pos.y, 0), null);
+    }
+
     // Update is called once per frame
     void Update()
     {

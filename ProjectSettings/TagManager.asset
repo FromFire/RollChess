@@ -44,8 +44,11 @@ TagManager:
   - name: Board
     uniqueID: 1610566685
     locked: 0
-  - name: Highlight
+  - name: ReachableHighlight
     uniqueID: 2005920107
+    locked: 0
+  - name: RouteHighlight
+    uniqueID: 2838373783
     locked: 0
   - name: Token
     uniqueID: 667999085

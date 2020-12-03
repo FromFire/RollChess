@@ -86,26 +86,27 @@ public class Board : MonoBehaviour{
     }
 
     // 获取所有从pos出发前进step步可到达的格子
-    public List<Vector2Int> getReachableGrids(Vector2Int pos, int step) {
+    public List<(Vector2Int pos, List<Vector2Int> route)> getReachableGrids(Vector2Int pos, int step) {
         //若开始的格子是doubleStep，步数翻倍
         if(GetEffect(pos) == SingleGrid.Effect.doubleStep) {
-            Debug.Log("doubleStep: " + step);
             step *= 2;
+            Debug.Log("doubleStep: " + step);
         }
 
-        List<Vector2Int> ret = new List<Vector2Int>();
+        //返回列表
+        List<(Vector2Int now, List<Vector2Int> pre)> ret = new List<(Vector2Int now, List<Vector2Int> pre)>();
 
         //需要的信息：当前格子的坐标、上一步的坐标，已走步数
-        Queue<(Vector2Int now, Vector2Int pre, int step)> queue = new Queue<(Vector2Int now, Vector2Int pre, int step)>();
+        Queue<(Vector2Int now, List<Vector2Int> pre, int step)> queue = new Queue<(Vector2Int now, List<Vector2Int> pre, int step)>();
 
         //BFS
-        queue.Enqueue( (pos, pos, 0) );
+        queue.Enqueue( (pos, new List<Vector2Int>{pos}, 0) );
         while(queue.Count != 0) {
             var thisTuple = queue.Dequeue();
 
             //若step足够，不进行操作，直接加入返回列表
             if(thisTuple.step == step) {
-                ret.Add(thisTuple.now);
+                ret.Add( (thisTuple.now, thisTuple.pre) );
                 continue;
             }
 
@@ -113,20 +114,24 @@ public class Board : MonoBehaviour{
             //如果只有一个合法的下一步，说明now在端点上，不考虑它的上一步是否和下一步重合，直接入队
             List<Vector2Int> nextGrids = getNeighbors(thisTuple.now);
             if(nextGrids.Count == 1) {
-                queue.Enqueue( (nextGrids[0], thisTuple.now, thisTuple.step+1) );
+                thisTuple.pre.Add(thisTuple.now);
+                queue.Enqueue( (nextGrids[0], thisTuple.pre, thisTuple.step+1) );
                 continue;
             }
 
             //将所有不和上一步重合的下一步入队
             foreach(Vector2Int next in nextGrids) {
-                if(next != thisTuple.pre) {
-                    queue.Enqueue( (next, thisTuple.now, thisTuple.step+1) );
+                if(next != thisTuple.pre.Last()) {
+                    List<Vector2Int> newPre = new List<Vector2Int> (thisTuple.pre);
+                    newPre.Add(thisTuple.now);
+                    queue.Enqueue( (next, newPre, thisTuple.step+1) );
                 }
             }
 
         }
 
         //返回列表去重
+        Debug.Log("能走到的格子数："+ret.Count);
         ret = ret.Distinct().ToList();
 
         return ret;
@@ -135,6 +140,17 @@ public class Board : MonoBehaviour{
     //查询某格的特殊格子效果
     public SingleGrid.Effect GetEffect(Vector2Int pos) {
         return map.getData(pos.x, pos.y).effect;
+    }
+
+    //检测路上的危桥并移除危桥
+    public void detectBrokenBridge(List<Vector2Int> route) {
+        foreach(Vector2Int grid in route) {
+            if(GetEffect(grid) == SingleGrid.Effect.brokenBridge) {
+                map.getData(grid.x, grid.y).SetEffect(SingleGrid.Effect.none);
+                map.getData(grid.x, grid.y).walkable = false;
+                boardDisplay.removeGrid(grid);
+            }
+        }
     }
 }
 
