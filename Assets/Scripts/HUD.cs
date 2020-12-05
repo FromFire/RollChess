@@ -12,13 +12,19 @@ public class HUD : MonoBehaviour
     //roll出的数值
     Text rollNumber;
 
+    //回合数
+    Text turnCount;
+
     // Start is called before the first frame update
     void Start()
     {
-        //绑定roll点按钮和OnClick函数
+        //初始化roll点相关
         rollButton = GameObject.Find("/HUD/RollButton").GetComponent<Button> ();
 		rollButton.onClick.AddListener(rollDice);
         rollNumber = GameObject.Find("/HUD/RollNumber").GetComponent<Text> ();
+
+        //初始化回合数
+        turnCount = GameObject.Find("/HUD/TurnCount").GetComponent<Text> ();
     }
 
     //绑定Rule
@@ -48,5 +54,10 @@ public class HUD : MonoBehaviour
     public void showRollStep(int step) {
         rollButton.gameObject.SetActive(false);
         rollNumber.text = step + "步";
+    }
+
+    //更新回合数
+    public void updateTurn(int turn) {
+        turnCount.text = "第 " + turn + " 回合";
     }
 }

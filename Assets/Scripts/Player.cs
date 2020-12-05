@@ -8,10 +8,16 @@ public class Player : MonoBehaviour
     // 规则类
     Rule rule;
 
+    //HUD层
+    HUD hud;
+
     // 玩家总数
     int totalPlayer;
     // 当前正在操作的玩家
     int nowPlayer;
+
+    //回合数
+    int turnCount;
 
     // Start is called before the first frame update
     void Start()
@@ -19,9 +25,15 @@ public class Player : MonoBehaviour
         //初始化Rule
         rule = GameObject.Find("/ScriptObjects/Rule").GetComponent<Rule>();
 
+        //初始化HUD
+        hud = GameObject.Find("/HUD").GetComponent<HUD> ();
+
         //初始化玩家人数
         totalPlayer = rule.totalPlayer;
         nowPlayer = 0;
+
+        //初始化回合数
+        turnCount=1;
     }
 
     // Update is called once per frame
@@ -41,12 +53,19 @@ public class Player : MonoBehaviour
             //判定是否移动成功
             //若移动成功，切换控制权到下一个玩家
             if(rule.status == Rule.Status.moved) {
+                //回合数记录
+                int prePlayer = nowPlayer;
                 //下一位玩家
                 nextPlayer();
                 rule.nowPlayer = nowPlayer;
                 Debug.Log("回合结束，下一位玩家："+nowPlayer);
                 //更新rule的状态
                 rule.status = Rule.Status.waiting;
+                //更新回合数显示
+                if(nowPlayer < prePlayer) {
+                    turnCount++;
+                    hud.updateTurn(turnCount);
+                }
             }
         }
     }
