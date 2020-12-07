@@ -17,9 +17,9 @@ public class MapEditor : MonoBehaviour
     }
 
     // Tile types and prefab resources
-    enum TileType { BoardLand, TokenBlue, TokenRed };
+    enum TileType { BoardLand, BoardSpecialDoublestep, BoardSpecialBrokenbridge, TokenBlue, TokenRed };
     const int iTileTypeBoardHead=(int)TileType.BoardLand;
-    const int iTileTypeBoardTail=(int)TileType.BoardLand;
+    const int iTileTypeBoardTail=(int)TileType.BoardSpecialBrokenbridge;
     const int iTileTypeTokenHead=(int)TileType.TokenBlue;
     const int iTileTypeTokenTail=(int)TileType.TokenRed;
     const int nTileType=3;
@@ -42,6 +42,8 @@ public class MapEditor : MonoBehaviour
     }
     string[] pathTiles ={
         "Tiles/floor-lawnGreen",
+        "Tiles/special-sorcery-doubleStep",
+        "Tiles/special-sorcery-brokenBridge",
         "Tiles/token-blueTank",
         "Tiles/token-redTank"
     };
@@ -252,10 +254,30 @@ public class MapEditor : MonoBehaviour
             "   \"map\": [",
         });
         (cells,tileTypes)=getTiles(tilemapBoard);
+        int nLand=0,nSpecial=0;
         for(int i=0;i<cells.Count;i++){
+            if(tileTypes[i]==TileType.BoardLand)
+                nLand++;
+            else
+                nSpecial++;
+        }
+        for(int i=0;i<cells.Count;i++) if(tileTypes[i]==TileType.BoardLand){
+            nLand--;
             x=cells[i].x;
             y=cells[i].y;
-            save+="       {\"x\":"+x+", \"y\":"+y+(i==cells.Count-1?"}\n":"},\n");
+            save+="       {\"x\":"+x+", \"y\":"+y+(nLand==0?"}\n":"},\n");
+        }
+        save+=join(new string []{
+            "   ],",
+            "   \"special\": [",
+        });
+        for(int i=0;i<cells.Count;i++) if(tileTypes[i]!=TileType.BoardLand){
+            nSpecial--;
+            x=cells[i].x;
+            y=cells[i].y;
+            save+="       {\"x\":"+x+", \"y\":"+y+", \"effect\":\""
+                    +(tileTypes[i]==TileType.BoardSpecialBrokenbridge?"brokenBridge":"doubleStep")+"\"}"
+                    +(nSpecial==0?"\n":",\n");
         }
         save+=join(new string []{
             "   ]",
