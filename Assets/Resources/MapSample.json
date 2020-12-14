@@ -157,6 +157,6 @@
         {"x": 3, "y":-2, "effect":"brokenBridge"}
     ],
     "portal":[
-        {"fromX":1, "fromY":1, "toX":2, "toY":2}
+        {"fromX":-1, "fromY":4, "toX":-2, "toY":9}
     ]
 }

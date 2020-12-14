@@ -11,6 +11,9 @@ public class BoardDisplay : MonoBehaviour
     //显示特殊格子贴图
     Tilemap tilemapSpecial;
 
+    //显示传送门的箭头
+    GameObject portalArrows;
+
     //存储各类Tile的集合
     List<Tile> tileList;
 
@@ -72,7 +75,24 @@ public class BoardDisplay : MonoBehaviour
                     tilemapSpecial.SetTile(new Vector3Int(pos.x, pos.y, 0), tileList[(int)TileKeys.special_portal]);
                     break;
             }
-            
+        }
+
+        //显示传送门之间的箭头
+        portalArrows = GameObject.Find("/Grid/PortalArrows");
+        foreach(Vector2Int pos in poses) {
+            if( map.getData(pos.x, pos.y).effect == SingleGrid.Effect.portal) {
+                //获取起止点的local坐标（相对于Grid）
+                Vector2Int from = new Vector2Int(pos.x, pos.y);
+                Vector2Int to = map.getData(pos.x, pos.y).GetPortal();
+                Vector3 from3 = tilemapSpecial.CellToLocal(new Vector3Int(from.x, from.y, 0));
+                Vector3 to3 = tilemapSpecial.CellToLocal(new Vector3Int(to.x, to.y, 0));
+
+                //绘制箭头
+                GameObject obj = (GameObject)Instantiate(GameObject.Find("Grid/PortalArrows/LineSample"));
+                LineRenderer line = obj.GetComponent<LineRenderer>();
+                line.SetPosition(0, from3);
+                line.SetPosition(1, to3);
+            }
         }
     }
 

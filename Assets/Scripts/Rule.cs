@@ -52,7 +52,7 @@ public class Rule : MonoBehaviour {
 
         //初始化board
         board = GameObject.Find("/ScriptObjects/Board").GetComponent<Board>();
-        board.init(boardEntity.map, boardEntity.special);
+        board.init(boardEntity.map, boardEntity.special, boardEntity.portal);
 
         //初始化tokenSet
         tokenSet = GameObject.Find("/ScriptObjects/TokenSet").GetComponent<TokenSet>();
@@ -114,6 +114,12 @@ public class Rule : MonoBehaviour {
 
         //检测危桥
         board.detectBrokenBridge(route);
+
+        //若目的点是传送门，将其传送
+        if(board.GetEffect(to) == SingleGrid.Effect.portal) {
+            Vector2Int target = board.GetPortalTarget(to);
+            tokenSet.moveToken(to, target);
+        }
 
         //修改状态为moved
         status = Status.moved;

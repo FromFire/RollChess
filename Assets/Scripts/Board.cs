@@ -18,7 +18,7 @@ public class Board : MonoBehaviour{
     }
 
     //初始化
-    public void init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity) {
+    public void init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity, List<SinglePortalEntity> portalEntity) {
         //导入地图信息
         map = new BaseBoard<SingleGrid>();
         foreach(SingleMapGridEntity grid in mapEntity) {
@@ -40,7 +40,9 @@ public class Board : MonoBehaviour{
         }
 
         //导入传送门信息
-
+        foreach(SinglePortalEntity portal in portalEntity) {
+            map.getData(portal.fromX, portal.fromY).SetPortal(new Vector2Int(portal.toX, portal.toY));
+        }
         
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
         boardDisplay.display(map);
@@ -145,6 +147,11 @@ public class Board : MonoBehaviour{
         return map.getData(pos.x, pos.y).effect;
     }
 
+    //查询该格子的传送门目的地（仅当该格子是传送门时）
+    public Vector2Int GetPortalTarget(Vector2Int pos) {
+        return map.getData(pos.x, pos.y).GetPortal();
+    }
+
     //检测路上的危桥并移除危桥
     public void detectBrokenBridge(List<Vector2Int> route) {
         foreach(Vector2Int grid in route) {
@@ -184,6 +191,11 @@ public class SingleGrid {
     public void SetPortal(Vector2Int pos) {
         effect = Effect.portal;
         portalTarget = pos;
+    }
+
+    //获取传送门目的地
+    public Vector2Int GetPortal() {
+        return portalTarget;
     }
 
     //设置特殊效果
