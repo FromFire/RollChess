@@ -38,9 +38,12 @@ public class Board : MonoBehaviour{
             }
             map.getData(special.x, special.y).SetEffect(effect);
         }
+
+        //导入传送门信息
+
         
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
-        boardDisplay.display(mapEntity);
+        boardDisplay.display(map);
     }
 
     // Update is called once per frame
@@ -168,10 +171,20 @@ public class SingleGrid {
     public enum Effect {
         none, //无效果
         doubleStep, //倍速：从此格开始时，移动距离加倍
-        brokenBridge //危桥：只能通过一次，之后就会损坏
+        brokenBridge, //危桥：只能通过一次，之后就会损坏
+        portal //传送门：传送到另一个格子
     }
     //此格子的特殊效果
     public Effect effect;
+
+    //仅effect=portal时有效，传送的目的地
+    Vector2Int portalTarget;
+
+    //设置传送门效果
+    public void SetPortal(Vector2Int pos) {
+        effect = Effect.portal;
+        portalTarget = pos;
+    }
 
     //设置特殊效果
     public void SetEffect(Effect effect) {
@@ -212,8 +225,13 @@ public class BaseBoard<T> where T:new(){
     //默认每个象限20*20，全地图39*39
     const int DEFAULT_CAPACITY = 20;
 
+    //关键信息的集合
+    //所有设置过的信息均视为关键信息
+    HashSet<Vector2Int> keyPos;
+
     //初始化，将四个象限初始化为四个默认大小的二维矩阵
     public BaseBoard() {
+        //初始化二维List
         map_pp=new List<List<T>>();
         map_np=new List<List<T>>();
         map_nn=new List<List<T>>();
@@ -229,6 +247,9 @@ public class BaseBoard<T> where T:new(){
                 }
             }
         }
+
+        //初始化keyPos
+        keyPos = new HashSet<Vector2Int>();
     }
 
     //根据x,y寻找所在地图下标，返回0-3
@@ -246,5 +267,14 @@ public class BaseBoard<T> where T:new(){
     public void setData(int x, int y, T data) {
         int index = findIndex(x,y);
         mapList[index][System.Math.Abs(x)][System.Math.Abs(y)] = data;
+        //所有设置过的都视为关键信息
+        keyPos.Add(new Vector2Int(x, y));
     }
+
+    //获取关键信息集合
+    public HashSet<Vector2Int> getKeyInfoSet() {
+        return keyPos;
+    }
+
+
 }

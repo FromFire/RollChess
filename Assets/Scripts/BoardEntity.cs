@@ -8,15 +8,23 @@ using UnityEngine;
 [System.Serializable]
 public class BoardEntity
 {
+    //地图名称
     public string mapName;
 
+    //玩家信息
     public PlayersEntity players;
 
+    //棋子信息
     public List<TokenEntity> tokens;
 
+    //可走格子信息
     public List<SingleMapGridEntity> map;
 
+    //特殊格子信息
     public List<SingleSpecialEntity> special;
+
+    //传送门信息
+    public List<SinglePortalEntity> portal;
 
     public void toConsole() {
         string str = "mapName: " + mapName + "\n" +
@@ -57,4 +65,14 @@ public class SingleSpecialEntity
     public int x;
     public int y;
     public string effect;
+}
+
+// 描述单个传送门的信息
+[System.Serializable]
+public class SinglePortalEntity 
+{
+    public int fromX;
+    public int fromY;
+    public int toX;
+    public int toY;
 }

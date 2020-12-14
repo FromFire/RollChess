@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //切换到下一位玩家
     public void nextPlayer() {
         nowPlayer = (nowPlayer+1) % totalPlayer;
     }

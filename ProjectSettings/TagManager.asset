@@ -44,6 +44,9 @@ TagManager:
   - name: Board
     uniqueID: 1610566685
     locked: 0
+  - name: SpecialGrid
+    uniqueID: 3387655149
+    locked: 0
   - name: ReachableHighlight
     uniqueID: 2005920107
     locked: 0
