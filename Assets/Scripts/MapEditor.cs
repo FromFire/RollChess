@@ -12,54 +12,83 @@ public class MapEditor : MonoBehaviour
 {
     // Utilities
     int mod(int x, int m) { return (x % m + m) % m; }
+    bool inside(int x,int l,int r){return l<=x && x<=r;}
     string join(string [] stringArray){
         return string.Join("\n",stringArray)+"\n";
     }
 
     // Tile types and prefab resources
-    enum TileType { BoardLand, BoardSpecialDoublestep, BoardSpecialBrokenbridge, TokenBlue, TokenRed };
-    const int iTileTypeBoardHead=(int)TileType.BoardLand;
-    const int iTileTypeBoardTail=(int)TileType.BoardSpecialBrokenbridge;
-    const int iTileTypeTokenHead=(int)TileType.TokenBlue;
-    const int iTileTypeTokenTail=(int)TileType.TokenRed;
-    const int nTileType=3;
-    const int nTileTypeBoard=iTileTypeBoardTail-iTileTypeBoardHead+1;
+    enum TileType {
+        Begin, Land_Begin,
+            Land_Lawn_Green,
+        Land_End, Special_Begin,
+            Special_DoubleStep, Special_BrokenBridge,
+        Special_End, Token_Begin,
+            Token_Tank_Blue, Token_Tank_Red,
+        Token_End, End
+    };
+
+    const int iTileTypeHead=(int)TileType.Begin+1;
+    const int iTileTypeTail=(int)TileType.End-1;
+    const int iTileTypeLandHead=(int)TileType.Land_Begin+1;
+    const int iTileTypeLandTail=(int)TileType.Land_End-1;
+    const int iTileTypeSpecialHead=(int)TileType.Special_Begin+1;
+    const int iTileTypeSpecialTail=(int)TileType.Special_End-1;
+    const int iTileTypeTokenHead=(int)TileType.Token_Begin+1;
+    const int iTileTypeTokenTail=(int)TileType.Token_End-1;
+    const int nTileType=iTileTypeTail-iTileTypeHead+1;
+    const int nTileTypeLand=iTileTypeLandTail-iTileTypeLandHead+1;
+    const int nTileTypeSpecial=iTileTypeSpecialTail-iTileTypeSpecialHead+1;
     const int nTileTypeToken=iTileTypeTokenTail-iTileTypeTokenHead+1;
+
     TileType shiftTileType(TileType tileType,int offset=1){
         int iTileType=(int)tileType;
-        if(whichTilemapType(tileType)==TilemapType.Board)
-            iTileType=iTileTypeBoardHead+mod(iTileType-iTileTypeBoardHead+offset,nTileTypeBoard);
+        if(whichTilemapType(tileType)==TilemapType.Land)
+            iTileType=iTileTypeLandHead+mod(iTileType-iTileTypeLandHead+offset,nTileTypeLand);
+        else if(whichTilemapType(tileType)==TilemapType.Special)
+            iTileType=iTileTypeSpecialHead+mod(iTileType-iTileTypeSpecialHead+offset,nTileTypeSpecial);
         else
             iTileType=iTileTypeTokenHead+mod(iTileType-iTileTypeTokenHead+offset,nTileTypeToken);
         return (TileType)iTileType;
     }
-    enum TilemapType { Board, Token };
-    const int nTilemapType=2;
+
+    enum TilemapType { Land, Special, Token };
+    const int nTilemapType=3;
     TilemapType whichTilemapType(TileType tileType)
     {
-        if ((int)tileType <= iTileTypeBoardTail) return TilemapType.Board;
-        else return TilemapType.Token;
+        int iTileType=(int)tileType;
+        if(inside(iTileType,iTileTypeLandHead,iTileTypeLandTail))
+            return TilemapType.Land;
+        else if(inside(iTileType,iTileTypeSpecialHead,iTileTypeSpecialTail))
+            return TilemapType.Special;
+        else
+            return TilemapType.Token;
     }
+
     string[] pathTiles ={
-        "Tiles/floor-lawnGreen",
-        "Tiles/special-sorcery-doubleStep",
-        "Tiles/special-sorcery-brokenBridge",
-        "Tiles/token-blueTank",
-        "Tiles/token-redTank"
+        "","",
+            "Tiles/floor-lawnGreen",
+        "","",
+            "Tiles/special-doubleStep", "Tiles/special-brokenBridge",
+        "","",
+            "Tiles/token-blueTank", "Tiles/token-redTank",
+        "",""
     };
     List<TileBase> prefabTiles = new List<TileBase>();
 
+    Dictionary<string,TileType> TileType_ByName;
     TileType whichTileType(TileBase tile){
-        for(int i=0;i<nTileType;i++) if(tile.name==prefabTiles[i].name) return (TileType)i;
-        return TileType.BoardLand;
+        return TileType_ByName[tile.name];
     }
 
     // Game viewport
     Camera mainCamera;
 
     // Tilemaps
-    Tilemap tilemapBoard = null;
-    Tilemap tilemapBoardPreview = null;
+    Tilemap tilemapLand = null;
+    Tilemap tilemapLandPreview = null;
+    Tilemap tilemapSpecial = null;
+    Tilemap tilemapSpecialPreview = null;
     Tilemap tilemapToken = null;
     Tilemap tilemapTokenPreview = null;
     Tilemap[] tilemaps = null;
@@ -67,11 +96,12 @@ public class MapEditor : MonoBehaviour
 
     // Cells
     Cell nullCell = new Cell(0, 0, -1);
+    TileBase nullTile;
 
     // Selection related and preview related
     Cell lastCell;
-    TilemapType selectedTilemapType = TilemapType.Board;
-    TileType[] selectedTileTypes = { TileType.BoardLand, TileType.TokenBlue };
+    TilemapType selectedTilemapType = TilemapType.Land;
+    TileType[] selectedTileTypes = { TileType.Land_Lawn_Green, TileType.Special_BrokenBridge, TileType.Token_Tank_Blue };
     TileType selectedTileType{
         get{return selectedTileTypes[(int)selectedTilemapType];}
         set{selectedTileTypes[(int)selectedTilemapType]=value;}
@@ -87,33 +117,28 @@ public class MapEditor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (string path in pathTiles)
-            prefabTiles.Add(Resources.Load<TileBase>(path));
+        nullTile=Tile.CreateInstance<Tile>();
+        // nullTile=new Tile();
+        nullTile.name="";
+        TileType_ByName=new Dictionary<string, TileType>();
+        for(int iTileType=0;iTileType<=iTileTypeTail;iTileType++){
+            string path=pathTiles[iTileType];
+            TileBase tile=path.Length>0 ? Resources.Load<TileBase>(path) : nullTile;
+            prefabTiles.Add(tile);
+            if(TileType_ByName.ContainsKey(tile.name)) continue;
+            TileType_ByName.Add(tile.name,(TileType)iTileType);
+        }
 
         mainCamera = Camera.main;
 
-        tilemapBoard = GameObject.Find("/Grid/TilemapBoard").GetComponent<Tilemap>();
-        tilemapBoardPreview = GameObject.Find("/Grid/TilemapBoardPreview").GetComponent<Tilemap>();
+        tilemapLand = GameObject.Find("/Grid/TilemapLand").GetComponent<Tilemap>();
+        tilemapLandPreview = GameObject.Find("/Grid/TilemapLandPreview").GetComponent<Tilemap>();
+        tilemapSpecial = GameObject.Find("/Grid/TilemapSpecial").GetComponent<Tilemap>();
+        tilemapSpecialPreview = GameObject.Find("/Grid/TilemapSpecialPreview").GetComponent<Tilemap>();
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
         tilemapTokenPreview = GameObject.Find("/Grid/TilemapTokenPreview").GetComponent<Tilemap>();
-        tilemaps = new Tilemap[] { tilemapBoard, tilemapToken };
-        tilemapsPreview = new Tilemap[] { tilemapBoardPreview, tilemapTokenPreview };
-
-        // foreach(Tilemap tilemap in tilemaps){
-        //     Cell l=tilemap.cellBounds.min;
-        //     Cell r=tilemap.cellBounds.max;
-        //     Debug.Log("tilemap: "+tilemap.name);
-        //     Debug.Log("x: ["+l.x+","+r.x+"]");
-        //     Debug.Log("y: ["+l.y+","+r.y+"]");
-        //     Debug.Log("z: ["+l.z+","+r.z+"]");
-        //     for(int x=l.x;x<r.x;x++) for(int y=l.y;y<r.y;y++) for(int z=l.z;z<r.z;z++){
-        //         TileBase tile=tilemap.GetTile(new Cell(x,y,z));
-        //         if(tile!=null){
-        //             Debug.Log("x=" + x + ",y=" + y + ",z=" + z);
-        //             Debug.Log(tile.name);
-        //         }
-        //     }
-        // }
+        tilemaps = new Tilemap[] { tilemapLand, tilemapSpecial, tilemapToken };
+        tilemapsPreview = new Tilemap[] { tilemapLandPreview, tilemapSpecialPreview, tilemapTokenPreview };
 
         lastCell = nullCell;
     }
@@ -175,7 +200,8 @@ public class MapEditor : MonoBehaviour
     void eraseTilePreview(Cell cell)
     {
         eraseTile(tilemapTokenPreview, cell);
-        eraseTile(tilemapBoardPreview, cell);
+        eraseTile(tilemapSpecialPreview, cell);
+        eraseTile(tilemapLandPreview, cell);
     }
     bool eraseTile(Cell cell)
     {
@@ -211,7 +237,7 @@ public class MapEditor : MonoBehaviour
 
     Cell getPointedCell()
     {
-        return tilemapBoard.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+        return tilemapLand.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
     }
 
     (List<Cell> cells,List<TileType> tileTypes) getTiles(Tilemap tilemap){
@@ -253,15 +279,15 @@ public class MapEditor : MonoBehaviour
             "   ],",
             "   \"map\": [",
         });
-        (cells,tileTypes)=getTiles(tilemapBoard);
+        (cells,tileTypes)=getTiles(tilemapLand);
         int nLand=0,nSpecial=0;
         for(int i=0;i<cells.Count;i++){
-            if(tileTypes[i]==TileType.BoardLand)
+            if(tileTypes[i]==TileType.Land_Lawn_Green)
                 nLand++;
             else
                 nSpecial++;
         }
-        for(int i=0;i<cells.Count;i++) if(tileTypes[i]==TileType.BoardLand){
+        for(int i=0;i<cells.Count;i++) if(tileTypes[i]==TileType.Land_Lawn_Green){
             nLand--;
             x=cells[i].x;
             y=cells[i].y;
@@ -271,12 +297,12 @@ public class MapEditor : MonoBehaviour
             "   ],",
             "   \"special\": [",
         });
-        for(int i=0;i<cells.Count;i++) if(tileTypes[i]!=TileType.BoardLand){
+        for(int i=0;i<cells.Count;i++) if(tileTypes[i]!=TileType.Land_Lawn_Green){
             nSpecial--;
             x=cells[i].x;
             y=cells[i].y;
             save+="       {\"x\":"+x+", \"y\":"+y+", \"effect\":\""
-                    +(tileTypes[i]==TileType.BoardSpecialBrokenbridge?"brokenBridge":"doubleStep")+"\"}"
+                    +(tileTypes[i]==TileType.Special_BrokenBridge?"brokenBridge":"doubleStep")+"\"}"
                     +(nSpecial==0?"\n":",\n");
         }
         save+=join(new string []{
