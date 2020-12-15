@@ -167,6 +167,9 @@ public class MapEditor : MonoBehaviour
             from=from;
             to=to;
         }
+        public void Destroy(){
+            GameObject.Destroy(mObject);
+        }
     }
     List<Line> lines;
     Line newLine;
@@ -225,6 +228,7 @@ public class MapEditor : MonoBehaviour
             if(buildingPortal){
                 if(cell!=newLine.from){
                     setTile(cell);
+                    eraseTile(cell);
                     newLine.to=cell;
                     newLine.SetTilemap(tilemapPortal);
                     lines.Add(newLine);
@@ -261,6 +265,12 @@ public class MapEditor : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             eraseTile(cell);
+            if(selectedTileType==TileType.Special_Portal){
+                for(int i=lines.Count-1;i>=0;i--) if(lines[i].from==cell){
+                    lines[i].Destroy();
+                    lines.RemoveAt(i);
+                }
+            }
         }
 
         // Shift painter
@@ -443,7 +453,7 @@ public class MapEditor : MonoBehaviour
             newLine.to=new Cell(portal.toX,portal.toY,0);
             lines.Add(newLine);
             setTile(tilemapSpecial,newLine.from,TileType.Special_Portal);
-            setTile(tilemapSpecial,newLine.to,TileType.Special_Portal);
+            // setTile(tilemapSpecial,newLine.to,TileType.Special_Portal);
         }
         foreach(SingleSpecialEntity special in boardEntity.special){
             setTile(
