@@ -77,6 +77,11 @@ public class Rule : MonoBehaviour {
         Vector2Int pos = specialEffectDisplay.worldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
+        //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
+        if(!board.isInBoard(pos)) {
+            return;
+        }
+
         //判断鼠标是否在可走的格子上，若不在，取消路径高亮
         if(pos3 != specialEffectDisplay.highlightRouteEnd) {
             specialEffectDisplay.CancelRouteHightlight();
@@ -159,7 +164,11 @@ public class Rule : MonoBehaviour {
 
     public void chooseGrid(Vector3 loc) {
         //获取点击的点在tilemap上的坐标
+        //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
         Vector2Int pos = specialEffectDisplay.worldToCell(loc);
+        if(!board.isInBoard(pos)) {
+            return;
+        }
         Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
 
         //检测是否是走子

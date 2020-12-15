@@ -22,7 +22,7 @@ public class Board : MonoBehaviour{
         //导入地图信息
         map = new BaseBoard<SingleGrid>();
         foreach(SingleMapGridEntity grid in mapEntity) {
-            map.setData(grid.x, grid.y, new SingleGrid(true));
+            map.setData(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
         }
 
         //导入特殊格子信息
@@ -36,12 +36,12 @@ public class Board : MonoBehaviour{
                     effect = SingleGrid.Effect.brokenBridge;
                     break;
             }
-            map.getData(special.x, special.y).SetEffect(effect);
+            map.getData(new Vector2Int(special.x, special.y)).SetEffect(effect);
         }
 
         //导入传送门信息
         foreach(SinglePortalEntity portal in portalEntity) {
-            map.getData(portal.fromX, portal.fromY).SetPortal(new Vector2Int(portal.toX, portal.toY));
+            map.getData(new Vector2Int(portal.fromX, portal.fromY)).SetPortal(new Vector2Int(portal.toX, portal.toY));
         }
         
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
@@ -55,7 +55,7 @@ public class Board : MonoBehaviour{
 
     // 返回该坐标的格子是否可通过
     public bool isWalkable(Vector2Int pos) {
-        return map.getData(pos.x, pos.y).walkable;
+        return map.getData(pos).walkable;
     }
 
     //获取所有与该格子相邻的可走格子
@@ -144,23 +144,28 @@ public class Board : MonoBehaviour{
 
     //查询某格的特殊格子效果
     public SingleGrid.Effect GetEffect(Vector2Int pos) {
-        return map.getData(pos.x, pos.y).effect;
+        return map.getData(pos).effect;
     }
 
     //查询该格子的传送门目的地（仅当该格子是传送门时）
     public Vector2Int GetPortalTarget(Vector2Int pos) {
-        return map.getData(pos.x, pos.y).GetPortal();
+        return map.getData(pos).GetPortal();
     }
 
     //检测路上的危桥并移除危桥
     public void detectBrokenBridge(List<Vector2Int> route) {
         foreach(Vector2Int grid in route) {
             if(GetEffect(grid) == SingleGrid.Effect.brokenBridge) {
-                map.getData(grid.x, grid.y).SetEffect(SingleGrid.Effect.none);
-                map.getData(grid.x, grid.y).walkable = false;
+                map.getData(grid).SetEffect(SingleGrid.Effect.none);
+                map.getData(grid).walkable = false;
                 boardDisplay.removeGrid(grid);
             }
         }
+    }
+
+    //检测某坐标是否在地图合法范围内
+    public bool isInBoard(Vector2Int pos) {
+        return map.isValid(pos);
     }
 }
 
@@ -236,6 +241,8 @@ public class BaseBoard<T> where T:new(){
 
     //默认每个象限20*20，全地图39*39
     const int DEFAULT_CAPACITY = 20;
+    //实际容量
+    int capacity;
 
     //关键信息的集合
     //所有设置过的信息均视为关键信息
@@ -249,6 +256,9 @@ public class BaseBoard<T> where T:new(){
         map_nn=new List<List<T>>();
         map_pn=new List<List<T>>();
         mapList = new List<List<List<T>>> {map_nn, map_np, map_pn, map_pp};
+
+        //初始化容量
+        capacity = DEFAULT_CAPACITY;
 
         //使用new List<T>会运行崩溃，因为List初始化不能指定容量
         for(int i=0; i<4; i++) {
@@ -265,28 +275,36 @@ public class BaseBoard<T> where T:new(){
     }
 
     //根据x,y寻找所在地图下标，返回0-3
-    int findIndex(int x, int y) {
-        return 0 + (x>=0? 2:0) + (y>=0? 1:0);
+    int findIndex(Vector2Int pos) {
+        return 0 + (pos.x>=0? 2:0) + (pos.y>=0? 1:0);
+    }
+
+    //检查某下标是否合法
+    public bool isValid(Vector2Int pos) {
+        int index = findIndex(pos);
+        if(pos.x >= capacity || pos.y >= capacity) {
+            return false;
+        }
+        return true;
     }
 
     //获取T
-    public T getData(int x, int y) {
-        int index = findIndex(x,y);
-        return mapList[index][System.Math.Abs(x)][System.Math.Abs(y)];
+    public T getData(Vector2Int pos) {
+        int index = findIndex(pos);
+        Debug.Assert(isValid(pos));
+        return mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)];
     }
 
     //设置T
-    public void setData(int x, int y, T data) {
-        int index = findIndex(x,y);
-        mapList[index][System.Math.Abs(x)][System.Math.Abs(y)] = data;
+    public void setData(Vector2Int pos, T data) {
+        int index = findIndex(pos);
+        mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = data;
         //所有设置过的都视为关键信息
-        keyPos.Add(new Vector2Int(x, y));
+        keyPos.Add(pos);
     }
 
     //获取关键信息集合
     public HashSet<Vector2Int> getKeyInfoSet() {
         return keyPos;
     }
-
-
 }

@@ -49,7 +49,7 @@ public class BoardDisplay : MonoBehaviour
         HashSet<Vector2Int> poses = new HashSet<Vector2Int>();
         foreach(Vector2Int pos in keyInfo) {
             //去除不可走的坐标
-            if(map.getData(pos.x, pos.y).walkable == true) {
+            if(map.getData(pos).walkable == true) {
                 poses.Add(pos);
             }
         }
@@ -63,7 +63,7 @@ public class BoardDisplay : MonoBehaviour
         //显示TilemapSpecial层，特殊格子效果
         tilemapSpecial = GameObject.Find("/Grid/TilemapSpecial").GetComponent<Tilemap>();
         foreach(Vector2Int pos in poses) {
-            SingleGrid.Effect effect = map.getData(pos.x, pos.y).effect;
+            SingleGrid.Effect effect = map.getData(pos).effect;
             switch(effect) {
                 case SingleGrid.Effect.doubleStep:
                     tilemapSpecial.SetTile(new Vector3Int(pos.x, pos.y, 0), tileList[(int)TileKeys.special_doubleStep]);
@@ -80,10 +80,10 @@ public class BoardDisplay : MonoBehaviour
         //显示传送门之间的箭头
         portalArrows = GameObject.Find("/Grid/PortalArrows");
         foreach(Vector2Int pos in poses) {
-            if( map.getData(pos.x, pos.y).effect == SingleGrid.Effect.portal) {
+            if( map.getData(pos).effect == SingleGrid.Effect.portal) {
                 //获取起止点的local坐标（相对于Grid）
                 Vector2Int from = new Vector2Int(pos.x, pos.y);
-                Vector2Int to = map.getData(pos.x, pos.y).GetPortal();
+                Vector2Int to = map.getData(pos).GetPortal();
                 Vector3 from3 = tilemapSpecial.CellToLocal(new Vector3Int(from.x, from.y, 0));
                 Vector3 to3 = tilemapSpecial.CellToLocal(new Vector3Int(to.x, to.y, 0));
 
