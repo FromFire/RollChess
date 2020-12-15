@@ -73,8 +73,7 @@ public class Rule : MonoBehaviour {
     void Update()
     {
         //获取鼠标所在点的点在tilemap上的坐标
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+        Vector3 loc = Input.mousePosition;
         Vector2Int pos = specialEffectDisplay.worldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
