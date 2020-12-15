@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
+
 // Type definitions
 using Cell = UnityEngine.Vector3Int;
 
@@ -77,10 +78,11 @@ public class MapEditor : MonoBehaviour
     List<TileBase> prefabTiles = new List<TileBase>();
 
     Dictionary<string,TileType> TileType_ByName;
-    Dictionary<TileType,string> Name_ByTileType=new Dictionary<TileType, string>{
+    Dictionary<TileType,string> SpecialName_ByTileType=new Dictionary<TileType, string>{
         {TileType.Special_BrokenBridge,"brokenBridge"},
         {TileType.Special_DoubleStep,"doubleStep"},
     };
+    Dictionary<string,TileType> TileType_BySpecialName=new Dictionary<string, TileType>();
     TileType whichTileType(TileBase tile){
         return TileType_ByName[tile.name];
     }
@@ -184,6 +186,8 @@ public class MapEditor : MonoBehaviour
             if(TileType_ByName.ContainsKey(tile.name)) continue;
             TileType_ByName.Add(tile.name,(TileType)iTileType);
         }
+        foreach(KeyValuePair<TileType,string> pair in SpecialName_ByTileType)
+            TileType_BySpecialName.Add(pair.Value,pair.Key);
 
         mainCamera = Camera.main;
 
@@ -275,6 +279,9 @@ public class MapEditor : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.S)){// && (Input.GetKeyDown(KeyCode.LeftControl)||Input.GetKeyDown(KeyCode.RightControl))){
             // `[ [left|right]Ctrl + ] S`: save current map
             saveMap();
+        }
+        if (Input.GetKeyUp(KeyCode.L)){
+            loadMap();
         }
     }
 
@@ -398,7 +405,7 @@ public class MapEditor : MonoBehaviour
             x=cells[i].x;
             y=cells[i].y;
             save+="       {\"x\":"+x+", \"y\":"+y+", \"effect\":\""
-                    +Name_ByTileType[tileTypes[i]]+"\"}"
+                    +SpecialName_ByTileType[tileTypes[i]]+"\"}"
                     +(i==cells.Count-1?"\n":",\n");
         }
         save+=join(new string []{
@@ -420,5 +427,35 @@ public class MapEditor : MonoBehaviour
         string filename="savedMap.json";
         System.IO.File.WriteAllText(filename, save, Encoding.UTF8);
         Debug.Log("Saved as "+filename);
+    }
+
+    void loadMap(){
+        string filename="MapSample";
+        string json = "";
+        TextAsset text = Resources.Load<TextAsset>(filename);
+        json = text.text;
+        BoardEntity boardEntity = JsonUtility.FromJson<BoardEntity>(json);
+        foreach(SingleMapGridEntity cell in boardEntity.map)
+            setTile(tilemapLand,new Cell(cell.x,cell.y,0),TileType.Land_Lawn_Green);
+        foreach(SinglePortalEntity portal in boardEntity.portal){
+            newLine=new Line(tilemapPortal);
+            newLine.from=new Cell(portal.fromX,portal.fromY,0);
+            newLine.to=new Cell(portal.toX,portal.toY,0);
+            lines.Add(newLine);
+            setTile(tilemapSpecial,newLine.from,TileType.Special_Portal);
+            setTile(tilemapSpecial,newLine.to,TileType.Special_Portal);
+        }
+        foreach(SingleSpecialEntity special in boardEntity.special){
+            setTile(
+                tilemapSpecial,new Cell(special.x,special.y,0),
+                TileType_BySpecialName[special.effect]
+            );
+        }
+        foreach(TokenEntity token in boardEntity.tokens){
+            setTile(
+                tilemapToken,new Cell(token.x,token.y,0),
+                token.player==1?TileType.Token_Tank_Blue:TileType.Token_Tank_Red
+            );
+        }
     }
 }
