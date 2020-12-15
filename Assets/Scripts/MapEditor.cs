@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 
+
 // Type definitions
 using Cell = UnityEngine.Vector3Int;
 
@@ -22,7 +23,7 @@ public class MapEditor : MonoBehaviour
         Begin, Land_Begin,
             Land_Lawn_Green,
         Land_End, Special_Begin,
-            Special_DoubleStep, Special_BrokenBridge,
+            Special_Portal, Special_DoubleStep, Special_BrokenBridge,
         Special_End, Token_Begin,
             Token_Tank_Blue, Token_Tank_Red,
         Token_End, End
@@ -69,7 +70,7 @@ public class MapEditor : MonoBehaviour
         "","",
             "Tiles/floor-lawnGreen",
         "","",
-            "Tiles/special-doubleStep", "Tiles/special-brokenBridge",
+            "Tiles/special-portal", "Tiles/special-doubleStep", "Tiles/special-brokenBridge",
         "","",
             "Tiles/token-blueTank", "Tiles/token-redTank",
         "",""
@@ -77,6 +78,11 @@ public class MapEditor : MonoBehaviour
     List<TileBase> prefabTiles = new List<TileBase>();
 
     Dictionary<string,TileType> TileType_ByName;
+    Dictionary<TileType,string> SpecialName_ByTileType=new Dictionary<TileType, string>{
+        {TileType.Special_BrokenBridge,"brokenBridge"},
+        {TileType.Special_DoubleStep,"doubleStep"},
+    };
+    Dictionary<string,TileType> TileType_BySpecialName=new Dictionary<string, TileType>();
     TileType whichTileType(TileBase tile){
         return TileType_ByName[tile.name];
     }
@@ -89,6 +95,8 @@ public class MapEditor : MonoBehaviour
     Tilemap tilemapLandPreview = null;
     Tilemap tilemapSpecial = null;
     Tilemap tilemapSpecialPreview = null;
+    Tilemap tilemapPortal = null;
+    Tilemap tilemapPortalPreview = null;
     Tilemap tilemapToken = null;
     Tilemap tilemapTokenPreview = null;
     Tilemap[] tilemaps = null;
@@ -100,18 +108,71 @@ public class MapEditor : MonoBehaviour
 
     // Selection related and preview related
     Cell lastCell;
+    Cell lastPaintedCell;
     TilemapType selectedTilemapType = TilemapType.Land;
-    TileType[] selectedTileTypes = { TileType.Land_Lawn_Green, TileType.Special_BrokenBridge, TileType.Token_Tank_Blue };
+    TileType[] selectedTileTypes = { 
+        TileType.Land_Lawn_Green,
+        TileType.Special_BrokenBridge,
+        TileType.Token_Tank_Blue
+    };
     TileType selectedTileType{
         get{return selectedTileTypes[(int)selectedTilemapType];}
         set{selectedTileTypes[(int)selectedTilemapType]=value;}
     }
+    TileType lastPaintedTileType;
     Tilemap selectedTilemap{
         get{return tilemaps[(int)selectedTilemapType];}
     }
+    Tilemap lastPaintedTilemap;
     Tilemap selectedTilemapPreview{
         get{return tilemapsPreview[(int)selectedTilemapType];}
     }
+
+    // Portal related
+    bool buildingPortal=false;
+    class Line{
+        LineRenderer mRenderer;
+        GameObject mObject;
+        public static GameObject parent;
+        Tilemap mTilemap;
+        Cell mFrom;
+        Cell mTo;
+        public Cell from{
+            get{return mFrom;}
+            set{mFrom=value;SetPosition(0,value);}
+        }
+        public Cell to{
+            get{return mTo;}
+            set{mTo=value;SetPosition(1,value);}
+        }
+        public Line(Tilemap tilemap){
+            // mObject=parent.gameObject("line");
+            mObject=new GameObject("line");
+            // mObject=(GameObject)Instantiate(GameObject.Find("Grid/TilemapPortal/SamplePortal"));
+            mObject.AddComponent<LineRenderer>();
+            mRenderer=mObject.GetComponent<LineRenderer>();
+            mRenderer.startWidth=(float)0.1;
+            mRenderer.endWidth=(float)0.1;
+            mRenderer.material=new Material(Shader.Find("Sprites/Default"));
+            mRenderer.startColor=Color.cyan;
+            mRenderer.endColor=Color.white;
+            mRenderer.sortingLayerID=SortingLayer.NameToID("PortalArrows");
+            mTilemap=tilemap;
+        }
+        public void SetPosition(int idx,Cell cell){
+            mRenderer.SetPosition(idx,mTilemap.CellToLocal(cell));
+        }
+        public void SetTilemap(Tilemap tilemap){
+            mTilemap=tilemap;
+            from=from;
+            to=to;
+        }
+        public void Destroy(){
+            GameObject.Destroy(mObject);
+        }
+    }
+    List<Line> lines;
+    Line newLine;
 
 
     // Start is called before the first frame update
@@ -128,6 +189,8 @@ public class MapEditor : MonoBehaviour
             if(TileType_ByName.ContainsKey(tile.name)) continue;
             TileType_ByName.Add(tile.name,(TileType)iTileType);
         }
+        foreach(KeyValuePair<TileType,string> pair in SpecialName_ByTileType)
+            TileType_BySpecialName.Add(pair.Value,pair.Key);
 
         mainCamera = Camera.main;
 
@@ -135,12 +198,19 @@ public class MapEditor : MonoBehaviour
         tilemapLandPreview = GameObject.Find("/Grid/TilemapLandPreview").GetComponent<Tilemap>();
         tilemapSpecial = GameObject.Find("/Grid/TilemapSpecial").GetComponent<Tilemap>();
         tilemapSpecialPreview = GameObject.Find("/Grid/TilemapSpecialPreview").GetComponent<Tilemap>();
+        tilemapPortal = GameObject.Find("/Grid/TilemapPortal").GetComponent<Tilemap>();
+        tilemapPortalPreview = GameObject.Find("/Grid/TilemapPortalPreview").GetComponent<Tilemap>();
+        Line.parent=GameObject.Find("/Grid/TilemapPortal");
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
         tilemapTokenPreview = GameObject.Find("/Grid/TilemapTokenPreview").GetComponent<Tilemap>();
         tilemaps = new Tilemap[] { tilemapLand, tilemapSpecial, tilemapToken };
         tilemapsPreview = new Tilemap[] { tilemapLandPreview, tilemapSpecialPreview, tilemapTokenPreview };
 
         lastCell = nullCell;
+        lastPaintedCell = nullCell;
+        lastPaintedTileType = TileType.End;
+
+        lines=new List<Line>();
     }
 
     // Update is called once per frame
@@ -155,11 +225,52 @@ public class MapEditor : MonoBehaviour
         // Paint
         if (Input.GetMouseButton(0))
         {
-            setTile(cell);
+            if(buildingPortal){
+                if(cell!=newLine.from){
+                    setTile(cell);
+                    eraseTile(cell);
+                    newLine.to=cell;
+                    newLine.SetTilemap(tilemapPortal);
+                    lines.Add(newLine);
+                    buildingPortal=false;
+                }
+            }
+            else if(lastPaintedCell!=cell
+                || lastPaintedTileType!=selectedTileType
+                || lastPaintedTilemap!=selectedTilemap){
+                setTile(cell);
+                if(selectedTileType==TileType.Special_Portal){
+                    newLine=new Line(tilemapPortalPreview);
+                    newLine.from=newLine.to=cell;
+                    buildingPortal=true;
+                }
+            }
         }
+
+        // if (Input.GetMouseButtonDown(0)){
+        //     newLine=new Line(tilemapSpecialPreview);
+        //     newLine.from=cell;
+        //     newLine.to=cell;
+        //     buildingPortal=true;
+        // }
+        if(buildingPortal){
+            newLine.to=cell;
+        }
+        // if (Input.GetMouseButtonUp(0)){
+        //     newLine.SetTilemap(tilemapSpecial);
+        //     lines.Add(newLine);
+        //     buildingPortal=false;
+        // }
+
         if (Input.GetMouseButton(1))
         {
             eraseTile(cell);
+            if(selectedTileType==TileType.Special_Portal){
+                for(int i=lines.Count-1;i>=0;i--) if(lines[i].from==cell){
+                    lines[i].Destroy();
+                    lines.RemoveAt(i);
+                }
+            }
         }
 
         // Shift painter
@@ -178,6 +289,9 @@ public class MapEditor : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.S)){// && (Input.GetKeyDown(KeyCode.LeftControl)||Input.GetKeyDown(KeyCode.RightControl))){
             // `[ [left|right]Ctrl + ] S`: save current map
             saveMap();
+        }
+        if (Input.GetKeyUp(KeyCode.L)){
+            loadMap();
         }
     }
 
@@ -230,9 +344,12 @@ public class MapEditor : MonoBehaviour
     {
         setTile(selectedTilemap, cell, tileType);
     }
-    void setTile(Tilemap tilemap, Cell cell, TileType tiletype)
+    void setTile(Tilemap tilemap, Cell cell, TileType tileType)
     {
-        tilemap.SetTile(cell, prefabTiles[(int)tiletype]);
+        tilemap.SetTile(cell, prefabTiles[(int)tileType]);
+        lastPaintedCell=cell;
+        lastPaintedTileType=tileType;
+        lastPaintedTilemap=tilemap;
     }
 
     Cell getPointedCell()
@@ -280,30 +397,38 @@ public class MapEditor : MonoBehaviour
             "   \"map\": [",
         });
         (cells,tileTypes)=getTiles(tilemapLand);
-        int nLand=0,nSpecial=0;
-        for(int i=0;i<cells.Count;i++){
-            if(tileTypes[i]==TileType.Land_Lawn_Green)
-                nLand++;
-            else
-                nSpecial++;
-        }
-        for(int i=0;i<cells.Count;i++) if(tileTypes[i]==TileType.Land_Lawn_Green){
-            nLand--;
+        for(int i=0;i<cells.Count;i++) {
             x=cells[i].x;
             y=cells[i].y;
-            save+="       {\"x\":"+x+", \"y\":"+y+(nLand==0?"}\n":"},\n");
+            save+="       {\"x\":"+x+", \"y\":"+y+(i==cells.Count-1?"}\n":"},\n");
         }
         save+=join(new string []{
             "   ],",
             "   \"special\": [",
         });
-        for(int i=0;i<cells.Count;i++) if(tileTypes[i]!=TileType.Land_Lawn_Green){
-            nSpecial--;
+        (cells,tileTypes)=getTiles(tilemapSpecial);
+        for(int i=cells.Count-1;i>=0;i--) if(tileTypes[i]==TileType.Special_Portal){
+            cells.RemoveAt(i);
+            tileTypes.RemoveAt(i);
+        }
+        for(int i=0;i<cells.Count;i++) {
             x=cells[i].x;
             y=cells[i].y;
             save+="       {\"x\":"+x+", \"y\":"+y+", \"effect\":\""
-                    +(tileTypes[i]==TileType.Special_BrokenBridge?"brokenBridge":"doubleStep")+"\"}"
-                    +(nSpecial==0?"\n":",\n");
+                    +SpecialName_ByTileType[tileTypes[i]]+"\"}"
+                    +(i==cells.Count-1?"\n":",\n");
+        }
+        save+=join(new string []{
+            "   ],",
+            "   \"portal\": [",
+        });
+        for(int i=0;i<lines.Count;i++){
+            Line line=lines[i];
+            save+="       {\"fromX\":"+line.from.x+", "
+                +"\"fromY\": "+line.from.y+", "
+                +"\"toX\": "+line.to.x+", "
+                +"\"toY\": "+line.to.y+"}"
+                +(i==lines.Count-1?"\n":",\n");
         }
         save+=join(new string []{
             "   ]",
@@ -312,5 +437,35 @@ public class MapEditor : MonoBehaviour
         string filename="savedMap.json";
         System.IO.File.WriteAllText(filename, save, Encoding.UTF8);
         Debug.Log("Saved as "+filename);
+    }
+
+    void loadMap(){
+        string filename="MapSample";
+        string json = "";
+        TextAsset text = Resources.Load<TextAsset>(filename);
+        json = text.text;
+        BoardEntity boardEntity = JsonUtility.FromJson<BoardEntity>(json);
+        foreach(SingleMapGridEntity cell in boardEntity.map)
+            setTile(tilemapLand,new Cell(cell.x,cell.y,0),TileType.Land_Lawn_Green);
+        foreach(SinglePortalEntity portal in boardEntity.portal){
+            newLine=new Line(tilemapPortal);
+            newLine.from=new Cell(portal.fromX,portal.fromY,0);
+            newLine.to=new Cell(portal.toX,portal.toY,0);
+            lines.Add(newLine);
+            setTile(tilemapSpecial,newLine.from,TileType.Special_Portal);
+            // setTile(tilemapSpecial,newLine.to,TileType.Special_Portal);
+        }
+        foreach(SingleSpecialEntity special in boardEntity.special){
+            setTile(
+                tilemapSpecial,new Cell(special.x,special.y,0),
+                TileType_BySpecialName[special.effect]
+            );
+        }
+        foreach(TokenEntity token in boardEntity.tokens){
+            setTile(
+                tilemapToken,new Cell(token.x,token.y,0),
+                token.player==1?TileType.Token_Tank_Blue:TileType.Token_Tank_Red
+            );
+        }
     }
 }
