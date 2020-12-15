@@ -52,6 +52,17 @@ public class TokenSet : MonoBehaviour {
         }
     }
 
+    //查询某位玩家的棋子数量
+    public int GetTokenNumber(int player) {
+        int ret=0;
+        foreach(Token token in tokenList) {
+            if(player == token.player) {
+                ret++;
+            }
+        }
+        return ret;
+    }
+
     // 查找棋子
     // player未指定或为-1时，忽略player
     public List<Token> find(Vector2Int pos, int player=-1) {

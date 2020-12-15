@@ -12,6 +12,9 @@ public class HUD : MonoBehaviour
     //roll出的数值
     Text rollNumber;
 
+    //获胜界面
+    Image gameReview;
+
     //回合数
     Text turnCount;
 
@@ -25,6 +28,10 @@ public class HUD : MonoBehaviour
 
         //初始化回合数
         turnCount = GameObject.Find("/HUD/TurnCount").GetComponent<Text> ();
+
+        //初始化获胜界面
+        gameReview = GameObject.Find("/HUD/GameReview").GetComponent<Image> ();
+        gameReview.gameObject.SetActive(false);
     }
 
     //绑定Rule
@@ -59,5 +66,12 @@ public class HUD : MonoBehaviour
     //更新回合数
     public void updateTurn(int turn) {
         turnCount.text = "第 " + turn + " 回合";
+    }
+
+    //弹出获胜消息
+    public void showGameReview(int winner) {
+        gameReview.gameObject.SetActive(true);
+        Text winnerInfo = GameObject.Find("/HUD/GameReview/WinnerInfo").GetComponent<Text> ();
+        winnerInfo.text = "玩家 " + winner + " 获胜了！";
     }
 }

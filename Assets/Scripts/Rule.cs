@@ -93,6 +93,25 @@ public class Rule : MonoBehaviour {
         }
     }
 
+    //查询是否有获胜的玩家，若没有，返回-1
+    //若只有一个玩家棋子数不为0，则该玩家获胜
+    public int FindWinner() {
+        int winnerCandidate = -1; //可能赢（棋子数）的玩家序号
+        for(int i=0; i<totalPlayer; i++) {
+            if(tokenSet.GetTokenNumber(i) != 0) {
+                //若已查询的所有玩家棋子数均为0，此玩家可能会赢
+                if(winnerCandidate == -1) {
+                    winnerCandidate = i;
+                } 
+                //若在此人之前有玩家棋子数不为0，则无人获胜
+                else {
+                    return -1;
+                }
+            }
+        }
+        return winnerCandidate;
+    }
+
     //掷骰子
     //是RollButton的OnClick函数
     public void rollDice() {

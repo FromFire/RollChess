@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     //回合数
     int turnCount;
 
+    //是否游戏结束
+    bool isGameOver = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //游戏已结束，Update失效
+        if(isGameOver) {
+            return;
+        }
+
         //鼠标左键点击，检测点击到的格子
         if (Input.GetMouseButtonDown(0))
         {
@@ -61,6 +69,13 @@ public class Player : MonoBehaviour
                 Debug.Log("回合结束，下一位玩家："+nowPlayer);
                 //更新rule的状态
                 rule.status = Rule.Status.waiting;
+                //胜负判定
+                int winner = rule.FindWinner();
+                if(winner != -1) {
+                    GameOver(winner);
+                    isGameOver = true;
+                    return;
+                }
                 //更新回合数显示
                 if(nowPlayer < prePlayer) {
                     turnCount++;
@@ -73,5 +88,10 @@ public class Player : MonoBehaviour
     //切换到下一位玩家
     public void nextPlayer() {
         nowPlayer = (nowPlayer+1) % totalPlayer;
+    }
+
+    //有玩家获胜，结束游戏
+    public void GameOver(int winner) {
+        hud.showGameReview(winner);
     }
 }
