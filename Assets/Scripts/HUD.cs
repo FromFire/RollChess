@@ -18,6 +18,9 @@ public class HUD : MonoBehaviour
     //回合数
     Text turnCount;
 
+    //正在行动提示
+    Text actionPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,9 @@ public class HUD : MonoBehaviour
 
         //初始化回合数
         turnCount = GameObject.Find("/HUD/GameInfoPanel/TurnCount").GetComponent<Text> ();
+
+        //初始化正在行动提示
+        actionPlayer = GameObject.Find("/HUD/GameInfoPanel/ActionPlayer").GetComponent<Text> ();
 
         //初始化获胜界面
         gameReview = GameObject.Find("/HUD/GameReview").GetComponent<Image> ();
@@ -66,6 +72,21 @@ public class HUD : MonoBehaviour
     //更新回合数
     public void updateTurn(int turn) {
         turnCount.text = "第 " + turn + " 回合";
+    }
+
+    //更新正在行动提示
+    public void updateActionPlayer(int player) {
+        string str = "";
+        switch(player) {
+            case 0:
+                str += "<color=#DD0000FF>红棋</color>";
+                break;
+            case 1:
+                str += "<color=#0000DDFF>蓝棋</color>";
+                break;
+        }
+        str += "行动中";
+        actionPlayer.text = str;
     }
 
     //弹出获胜消息

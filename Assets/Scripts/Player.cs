@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
                 //下一位玩家
                 nextPlayer();
                 rule.nowPlayer = nowPlayer;
+                hud.updateActionPlayer(nowPlayer);
                 Debug.Log("回合结束，下一位玩家："+nowPlayer);
                 //更新rule的状态
                 rule.status = Rule.Status.waiting;
