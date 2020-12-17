@@ -12,7 +12,7 @@ public class BoardEntity
     public string mapName;
 
     //玩家信息
-    public PlayersEntity players;
+    public PlayersEntity player;
 
     //棋子信息
     public List<TokenEntity> tokens;
@@ -28,7 +28,7 @@ public class BoardEntity
 
     public void toConsole() {
         string str = "mapName: " + mapName + "\n" +
-            "players - number: " + players.number + "\n" +
+            "players - number: " + player.number + "\n" +
             "tokens - size" + tokens.Count + "\n";
         Debug.Log(str);
     }

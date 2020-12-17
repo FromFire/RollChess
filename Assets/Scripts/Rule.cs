@@ -47,7 +47,7 @@ public class Rule : MonoBehaviour {
         BoardEntity boardEntity = loadMapFromJson(filename);
 
         //初始化玩家信息
-        totalPlayer = boardEntity.players.number;
+        totalPlayer = boardEntity.player.number;
         nowPlayer = 0;
 
         //初始化board

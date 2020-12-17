@@ -27,7 +27,7 @@ public class HUD : MonoBehaviour
         rollNumber = GameObject.Find("/HUD/RollNumber").GetComponent<Text> ();
 
         //初始化回合数
-        turnCount = GameObject.Find("/HUD/TurnCount").GetComponent<Text> ();
+        turnCount = GameObject.Find("/HUD/GameInfoPanel/TurnCount").GetComponent<Text> ();
 
         //初始化获胜界面
         gameReview = GameObject.Find("/HUD/GameReview").GetComponent<Image> ();
