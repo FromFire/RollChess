@@ -26,7 +26,7 @@ public class BoardEntity
     //传送门信息
     public List<SinglePortalEntity> portal;
 
-    public void toConsole() {
+    public void ToConsole() {
         string str = "mapName: " + mapName + "\n" +
             "players - number: " + player.number + "\n" +
             "tokens - size" + tokens.Count + "\n";

@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
             //点击高亮格子，再次点击其他格子或空白部分取消高亮
             //若该格子上有棋子，则选中棋子，显示它可以到达的位置
-            rule.chooseGrid(loc);
+            rule.ChooseGrid(loc);
 
             //判定是否移动成功
             //若移动成功，切换控制权到下一个玩家
@@ -64,9 +64,9 @@ public class Player : MonoBehaviour
                 //回合数记录
                 int prePlayer = nowPlayer;
                 //下一位玩家
-                nextPlayer();
+                NextPlayer();
                 rule.nowPlayer = nowPlayer;
-                hud.updateActionPlayer(nowPlayer);
+                hud.UpdateActionPlayer(nowPlayer);
                 Debug.Log("回合结束，下一位玩家："+nowPlayer);
                 //更新rule的状态
                 rule.status = Rule.Status.waiting;
@@ -80,19 +80,19 @@ public class Player : MonoBehaviour
                 //更新回合数显示
                 if(nowPlayer < prePlayer) {
                     turnCount++;
-                    hud.updateTurn(turnCount);
+                    hud.UpdateTurn(turnCount);
                 }
             }
         }
     }
 
     //切换到下一位玩家
-    public void nextPlayer() {
+    public void NextPlayer() {
         nowPlayer = (nowPlayer+1) % totalPlayer;
     }
 
     //有玩家获胜，结束游戏
     public void GameOver(int winner) {
-        hud.showGameReview(winner);
+        hud.ShowGameReview(winner);
     }
 }

@@ -44,7 +44,7 @@ public class Rule : MonoBehaviour {
     {
         //读取地图json文件
         string filename = "MapSample";
-        BoardEntity boardEntity = loadMapFromJson(filename);
+        BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息
         totalPlayer = boardEntity.player.number;
@@ -52,11 +52,11 @@ public class Rule : MonoBehaviour {
 
         //初始化board
         board = GameObject.Find("/ScriptObjects/Board").GetComponent<Board>();
-        board.init(boardEntity.map, boardEntity.special, boardEntity.portal);
+        board.Init(boardEntity.map, boardEntity.special, boardEntity.portal);
 
         //初始化tokenSet
         tokenSet = GameObject.Find("/ScriptObjects/TokenSet").GetComponent<TokenSet>();
-        tokenSet.init(boardEntity.tokens);
+        tokenSet.Init(boardEntity.tokens);
 
         //初始化选中信息
         reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
@@ -66,7 +66,7 @@ public class Rule : MonoBehaviour {
 
         //初始化HUD
         hud = GameObject.Find("/HUD").GetComponent<HUD> ();
-        hud.setRule(this);
+        hud.SetRule(this);
     }
 
     // Update is called once per frame
@@ -74,11 +74,11 @@ public class Rule : MonoBehaviour {
     {
         //获取鼠标所在点的点在tilemap上的坐标
         Vector3 loc = Input.mousePosition;
-        Vector2Int pos = specialEffectDisplay.worldToCell(loc);
+        Vector2Int pos = specialEffectDisplay.WorldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
         //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
-        if(!board.isInBoard(pos)) {
+        if(!board.IsInBoard(pos)) {
             return;
         }
 
@@ -118,37 +118,37 @@ public class Rule : MonoBehaviour {
 
     //掷骰子
     //是RollButton的OnClick函数
-    public void rollDice() {
+    public void RollDice() {
         //生成随机数
         step = new System.Random().Next(6)+1;
         Debug.Log(step);
 
         //隐藏按钮
-        hud.showRollStep(step);
+        hud.ShowRollStep(step);
     }
 
 
     //移动棋子
-    public void move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
+    public void Move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
         //由tokenSet进行操作
-        tokenSet.moveToken(from, to);
+        tokenSet.MoveToken(from, to);
 
         //检测危桥
-        board.detectBrokenBridge(route);
+        board.DetectBrokenBridge(route);
 
         //若目的点是传送门，将其传送
         if(board.GetEffect(to) == SingleGrid.Effect.portal) {
             Vector2Int target = board.GetPortalTarget(to);
-            tokenSet.moveToken(to, target);
+            tokenSet.MoveToken(to, target);
         }
 
         //修改状态为moved
         status = Status.moved;
 
         //显示roll点按钮，隐藏步数按钮
-        hud.showRollButton();
+        hud.ShowRollButton();
     }
 
     // 选中格子
@@ -162,11 +162,11 @@ public class Rule : MonoBehaviour {
     // 3. 判定该格是否有己方棋子
     //      是：预览可走位置（高亮它可以到达的所有格子）
 
-    public void chooseGrid(Vector3 loc) {
+    public void ChooseGrid(Vector3 loc) {
         //获取点击的点在tilemap上的坐标
         //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
-        Vector2Int pos = specialEffectDisplay.worldToCell(loc);
-        if(!board.isInBoard(pos)) {
+        Vector2Int pos = specialEffectDisplay.WorldToCell(loc);
+        if(!board.IsInBoard(pos)) {
             return;
         }
         Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
@@ -178,7 +178,7 @@ public class Rule : MonoBehaviour {
                 List<Vector2Int> route = reachablePos[i].route;
                 if(grid == pos) {
                     //显示走子效果
-                    move(choosedTokenPos, pos, route);
+                    Move(choosedTokenPos, pos, route);
 
                     //取消所有选中
                     ClearChoose();
@@ -191,12 +191,12 @@ public class Rule : MonoBehaviour {
         ClearChoose();
 
         //显示选中效果
-        if(board.isWalkable(pos)) {
-            specialEffectDisplay.highlightGrid(pos, SpecialEffectDisplay.Color.blue);
+        if(board.IsWalkable(pos)) {
+            specialEffectDisplay.HighlightGrid(pos, SpecialEffectDisplay.Color.blue);
         }
 
         //检测格子上是否有己方棋子，有则选中它
-        List<Token> tokens = tokenSet.find(pos);
+        List<Token> tokens = tokenSet.Find(pos);
         if(tokens.Count != 0 && tokens[0].player == nowPlayer) {
             AddChoose(pos);
         }
@@ -205,7 +205,7 @@ public class Rule : MonoBehaviour {
     // 选中棋子，并显示它能到达的所有位置
     void AddChoose(Vector2Int pos) {
         //获取该棋子它所有可达位置
-        List<(Vector2Int now, List<Vector2Int> pre)> reachableGrids = board.getReachableGrids(pos, step);
+        List<(Vector2Int now, List<Vector2Int> pre)> reachableGrids = board.GetReachableGrids(pos, step);
 
         //维护选中信息
         isTokenChoosed = true;
@@ -215,7 +215,7 @@ public class Rule : MonoBehaviour {
         //显示高亮
         for(int i=0; i<reachablePos.Count; i++) {
             Vector2Int grid = reachablePos[i].pos;
-            specialEffectDisplay.highlightGrid(grid, SpecialEffectDisplay.Color.yellow);
+            specialEffectDisplay.HighlightGrid(grid, SpecialEffectDisplay.Color.yellow);
         }
     }
 
@@ -226,11 +226,11 @@ public class Rule : MonoBehaviour {
         reachablePos.Clear();
 
         //取消所有高光
-        specialEffectDisplay.cancelHighlight();
+        specialEffectDisplay.CancelHighlight();
     }
 
     //从json文件中读取地图
-    public BoardEntity loadMapFromJson(string filename) {
+    public BoardEntity LoadMapFromJson(string filename) {
         Debug.Log("加载地图：" + filename);
 
         //读取json字符串

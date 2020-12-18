@@ -58,13 +58,13 @@ public class SpecialEffectDisplay : MonoBehaviour
     }
 
     // 输入坐标，输出格子的坐标
-    public Vector2Int worldToCell(Vector3 loc) {
+    public Vector2Int WorldToCell(Vector3 loc) {
         Vector3Int vector = tilemapReachableHighlight.WorldToCell(loc);
         return new Vector2Int(vector.x, vector.y);
     }
 
     // 高亮格子
-    public void highlightGrid(Vector2Int pos, Color color) {
+    public void HighlightGrid(Vector2Int pos, Color color) {
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
         highlightGridPosition.Add(pos3);
 
@@ -82,7 +82,7 @@ public class SpecialEffectDisplay : MonoBehaviour
     }
 
     //取消所有高亮
-    public void cancelHighlight() {
+    public void CancelHighlight() {
         for(int i=0; i<highlightGridPosition.ToArray().Length; i++) {
             tilemapReachableHighlight.SetTile(highlightGridPosition[i], null);
         }

@@ -34,7 +34,7 @@ public class TokensDisplay : MonoBehaviour
 
 
     //初始化显示
-    public void display(List<TokenEntity> entity) {
+    public void Display(List<TokenEntity> entity) {
     
         //显示TileMapToken层，棋子
         tilemapToken = GameObject.Find("/Grid/TilemapToken").GetComponent<Tilemap>();
@@ -51,7 +51,7 @@ public class TokensDisplay : MonoBehaviour
 
     //在pos处显示number个player方的棋子
     //认定player为TileList的下标
-    public void showToken(Vector2Int pos, int number, int player) {
+    public void ShowToken(Vector2Int pos, int number, int player) {
         //转换格式
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
         //根据player获取棋子外观

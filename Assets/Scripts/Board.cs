@@ -18,11 +18,11 @@ public class Board : MonoBehaviour{
     }
 
     //初始化
-    public void init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity, List<SinglePortalEntity> portalEntity) {
+    public void Init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity, List<SinglePortalEntity> portalEntity) {
         //导入地图信息
         map = new BaseBoard<SingleGrid>();
         foreach(SingleMapGridEntity grid in mapEntity) {
-            map.setData(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
+            map.SetData(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
         }
 
         //导入特殊格子信息
@@ -36,16 +36,16 @@ public class Board : MonoBehaviour{
                     effect = SingleGrid.Effect.brokenBridge;
                     break;
             }
-            map.getData(new Vector2Int(special.x, special.y)).SetEffect(effect);
+            map.GetData(new Vector2Int(special.x, special.y)).SetEffect(effect);
         }
 
         //导入传送门信息
         foreach(SinglePortalEntity portal in portalEntity) {
-            map.getData(new Vector2Int(portal.fromX, portal.fromY)).SetPortal(new Vector2Int(portal.toX, portal.toY));
+            map.GetData(new Vector2Int(portal.fromX, portal.fromY)).SetPortal(new Vector2Int(portal.toX, portal.toY));
         }
         
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
-        boardDisplay.display(map);
+        boardDisplay.Display(map);
     }
 
     // Update is called once per frame
@@ -54,12 +54,12 @@ public class Board : MonoBehaviour{
     }
 
     // 返回该坐标的格子是否可通过
-    public bool isWalkable(Vector2Int pos) {
-        return map.getData(pos).walkable;
+    public bool IsWalkable(Vector2Int pos) {
+        return map.GetData(pos).walkable;
     }
 
     //获取所有与该格子相邻的可走格子
-    public List<Vector2Int> getNeighbors(Vector2Int pos) {
+    public List<Vector2Int> GetNeighbors(Vector2Int pos) {
         List<Vector2Int> ret = new List<Vector2Int>();
 
         //无论奇偶，上下左右都可达
@@ -82,7 +82,7 @@ public class Board : MonoBehaviour{
 
         //筛选出可到达的格子
         foreach(Vector2Int offset in offsets) {
-            if(isWalkable(pos+offset)) {
+            if(IsWalkable(pos+offset)) {
                 ret.Add(pos+offset);
             }
         }
@@ -91,7 +91,7 @@ public class Board : MonoBehaviour{
     }
 
     // 获取所有从pos出发前进step步可到达的格子
-    public List<(Vector2Int pos, List<Vector2Int> route)> getReachableGrids(Vector2Int pos, int step) {
+    public List<(Vector2Int pos, List<Vector2Int> route)> GetReachableGrids(Vector2Int pos, int step) {
         //若开始的格子是doubleStep，步数翻倍
         if(GetEffect(pos) == SingleGrid.Effect.doubleStep) {
             step *= 2;
@@ -117,7 +117,7 @@ public class Board : MonoBehaviour{
 
             //得到所有合法的下一步
             //如果只有一个合法的下一步，说明now在端点上，不考虑它的上一步是否和下一步重合，直接入队
-            List<Vector2Int> nextGrids = getNeighbors(thisTuple.now);
+            List<Vector2Int> nextGrids = GetNeighbors(thisTuple.now);
             if(nextGrids.Count == 1) {
                 thisTuple.pre.Add(thisTuple.now);
                 queue.Enqueue( (nextGrids[0], thisTuple.pre, thisTuple.step+1) );
@@ -144,28 +144,28 @@ public class Board : MonoBehaviour{
 
     //查询某格的特殊格子效果
     public SingleGrid.Effect GetEffect(Vector2Int pos) {
-        return map.getData(pos).effect;
+        return map.GetData(pos).effect;
     }
 
     //查询该格子的传送门目的地（仅当该格子是传送门时）
     public Vector2Int GetPortalTarget(Vector2Int pos) {
-        return map.getData(pos).GetPortal();
+        return map.GetData(pos).GetPortal();
     }
 
     //检测路上的危桥并移除危桥
-    public void detectBrokenBridge(List<Vector2Int> route) {
+    public void DetectBrokenBridge(List<Vector2Int> route) {
         foreach(Vector2Int grid in route) {
             if(GetEffect(grid) == SingleGrid.Effect.brokenBridge) {
-                map.getData(grid).SetEffect(SingleGrid.Effect.none);
-                map.getData(grid).walkable = false;
-                boardDisplay.removeGrid(grid);
+                map.GetData(grid).SetEffect(SingleGrid.Effect.none);
+                map.GetData(grid).walkable = false;
+                boardDisplay.RemoveGrid(grid);
             }
         }
     }
 
     //检测某坐标是否在地图合法范围内
-    public bool isInBoard(Vector2Int pos) {
-        return map.isValid(pos);
+    public bool IsInBoard(Vector2Int pos) {
+        return map.IsValid(pos);
     }
 }
 
@@ -275,13 +275,13 @@ public class BaseBoard<T> where T:new(){
     }
 
     //根据x,y寻找所在地图下标，返回0-3
-    int findIndex(Vector2Int pos) {
+    int FindIndex(Vector2Int pos) {
         return 0 + (pos.x>=0? 2:0) + (pos.y>=0? 1:0);
     }
 
     //检查某下标是否合法
-    public bool isValid(Vector2Int pos) {
-        int index = findIndex(pos);
+    public bool IsValid(Vector2Int pos) {
+        int index = FindIndex(pos);
         if(pos.x >= capacity || pos.y >= capacity) {
             return false;
         }
@@ -289,22 +289,22 @@ public class BaseBoard<T> where T:new(){
     }
 
     //获取T
-    public T getData(Vector2Int pos) {
-        int index = findIndex(pos);
-        Debug.Assert(isValid(pos));
+    public T GetData(Vector2Int pos) {
+        int index = FindIndex(pos);
+        Debug.Assert(IsValid(pos));
         return mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)];
     }
 
     //设置T
-    public void setData(Vector2Int pos, T data) {
-        int index = findIndex(pos);
+    public void SetData(Vector2Int pos, T data) {
+        int index = FindIndex(pos);
         mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = data;
         //所有设置过的都视为关键信息
         keyPos.Add(pos);
     }
 
     //获取关键信息集合
-    public HashSet<Vector2Int> getKeyInfoSet() {
+    public HashSet<Vector2Int> GetKeyInfoSet() {
         return keyPos;
     }
 }
