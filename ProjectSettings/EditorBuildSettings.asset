@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ChessPlay.unity
     guid: 9f4c3194b1410fb45bc52cecd0105123
+  - enabled: 1
+    path: Assets/Scenes/MapEdit.unity
+    guid: 548c5655b32440847bf6f00340fafdbd
   m_configObjects: {}
