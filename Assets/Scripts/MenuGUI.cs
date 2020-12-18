@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuGUI : MonoBehaviour
 {
+    //所有模块都位于此路径中
     string path = "Canvas/ScrollView/Viewport/Content";
 
+    //作为根目录的ScrollView
     ScrollRect scrollRect;
 
     //切换到选关页面按钮
@@ -40,6 +42,8 @@ public class MenuGUI : MonoBehaviour
         //初始化打开关卡编辑器按钮
         startMapEditButton = GameObject.Find(path+"/MainMenu/StartMapEditButton").GetComponent<Button> ();
 		startMapEditButton.onClick.AddListener(StartMapEdit);
+
+        //初始化
     }
 
     // Update is called once per frame
