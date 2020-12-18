@@ -84,6 +84,7 @@ public class MapEditor : MonoBehaviour
     };
     Dictionary<string,TileType> TileType_BySpecialName=new Dictionary<string, TileType>();
     TileType whichTileType(TileBase tile){
+        if(tile is null) return TileType.End;
         return TileType_ByName[tile.name];
     }
 
@@ -227,8 +228,12 @@ public class MapEditor : MonoBehaviour
         {
             if(buildingPortal){
                 if(cell!=newLine.from){
-                    setTile(cell);
-                    eraseTile(cell);
+                    if(whichTileType(selectedTilemap.GetTile(cell))!=TileType.Special_Portal){
+                        setTile(cell);
+                        eraseTile(cell);
+                    }
+                    else
+                        setTile(cell);
                     newLine.to=cell;
                     newLine.SetTilemap(tilemapPortal);
                     lines.Add(newLine);
@@ -246,24 +251,12 @@ public class MapEditor : MonoBehaviour
                 }
             }
         }
-
-        // if (Input.GetMouseButtonDown(0)){
-        //     newLine=new Line(tilemapSpecialPreview);
-        //     newLine.from=cell;
-        //     newLine.to=cell;
-        //     buildingPortal=true;
-        // }
+        
         if(buildingPortal){
             newLine.to=cell;
         }
-        // if (Input.GetMouseButtonUp(0)){
-        //     newLine.SetTilemap(tilemapSpecial);
-        //     lines.Add(newLine);
-        //     buildingPortal=false;
-        // }
 
-        if (Input.GetMouseButton(1))
-        {
+        if (Input.GetMouseButton(1)) {
             eraseTile(cell);
             if(selectedTileType==TileType.Special_Portal){
                 for(int i=lines.Count-1;i>=0;i--) if(lines[i].from==cell){
@@ -274,12 +267,15 @@ public class MapEditor : MonoBehaviour
         }
 
         // Shift painter
-        if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            shiftSelectedTilemapType();
+        if (Input.GetKeyUp(KeyCode.Tab)) {
+            shiftSelectedTilemapType(
+                (Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift))
+                ? -1 : 1
+            );
             updatePreview(cell);
         }
-        int offset=(int)Input.mouseScrollDelta[1];
+        // int offset=(int)Input.mouseScrollDelta[1];
+        int offset=(Input.GetKeyUp(KeyCode.Space) ? 1 : 0);
         if(offset!=0){
             shiftSelectedTileType(offset);
             updatePreview(cell);
