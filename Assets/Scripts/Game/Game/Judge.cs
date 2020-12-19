@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//玩家类，事件触发器
-public class Player : MonoBehaviour
+//裁判类：管理对局信息，包括回合计数、胜负判断、记录操作
+public class Judge : MonoBehaviour
 {
     // 规则类
     Rule rule;

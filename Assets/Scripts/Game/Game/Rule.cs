@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Rule : MonoBehaviour {
 
     //显示高光tilemap层
-    SpecialEffectDisplay specialEffectDisplay;
+    HighlightDisplay highlightDisplay;
 
     //HUD层
     HUD hud;
@@ -62,7 +62,7 @@ public class Rule : MonoBehaviour {
         reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
 
         //初始化SpecialEffectDisplay
-        specialEffectDisplay = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<SpecialEffectDisplay>();
+        highlightDisplay = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<HighlightDisplay>();
 
         //初始化HUD
         hud = GameObject.Find("/HUD").GetComponent<HUD> ();
@@ -73,25 +73,31 @@ public class Rule : MonoBehaviour {
     void Update()
     {
         //获取鼠标所在点的点在tilemap上的坐标
-        Vector3 loc = Input.mousePosition;
-        Vector2Int pos = specialEffectDisplay.WorldToCell(loc);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+        // Vector3 loc = Input.mousePosition;
+        Vector2Int pos = highlightDisplay.WorldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
+        
+        // Debug.Log("Rule.Update()[Pre];");
 
-        //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
+        // 若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
         if(!board.IsInBoard(pos)) {
             return;
         }
+        
+        // Debug.Log("Rule.Update()[Post];");
 
-        //判断鼠标是否在可走的格子上，若不在，取消路径高亮
-        if(pos3 != specialEffectDisplay.highlightRouteEnd) {
-            specialEffectDisplay.CancelRouteHightlight();
+        // 判断鼠标是否在可走的格子上，若不在，取消路径高亮
+        if(pos3 != highlightDisplay.highlightRouteEnd) {
+            highlightDisplay.CancelRouteHightlight();
         }
         if(isTokenChoosed) {
             for(int i=0; i<reachablePos.Count; i++) {
                 Vector2Int grid = reachablePos[i].pos;
                 List<Vector2Int> route = reachablePos[i].route;
                 if(grid == pos) {
-                    specialEffectDisplay.HighlightRoute(route);
+                    highlightDisplay.HighlightRoute(route);
                 }
             }
         }
@@ -126,6 +132,8 @@ public class Rule : MonoBehaviour {
         //隐藏按钮
         hud.ShowRollStep(step);
     }
+    
+    // TODO: 回调RollDice给HUD
 
 
     //移动棋子
@@ -165,7 +173,7 @@ public class Rule : MonoBehaviour {
     public void ChooseGrid(Vector3 loc) {
         //获取点击的点在tilemap上的坐标
         //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
-        Vector2Int pos = specialEffectDisplay.WorldToCell(loc);
+        Vector2Int pos = highlightDisplay.WorldToCell(loc);  // TODO: 用TilemapDisplay来干这件事
         if(!board.IsInBoard(pos)) {
             return;
         }
@@ -192,7 +200,7 @@ public class Rule : MonoBehaviour {
 
         //显示选中效果
         if(board.IsWalkable(pos)) {
-            specialEffectDisplay.HighlightGrid(pos, SpecialEffectDisplay.Color.blue);
+            highlightDisplay.HighlightGrid(pos, HighlightDisplay.Color.blue);
         }
 
         //检测格子上是否有己方棋子，有则选中它
@@ -201,6 +209,8 @@ public class Rule : MonoBehaviour {
             AddChoose(pos);
         }
     }
+    
+    // TODO: 统一命名 ChooseGrid{ ChooseTokenSource(AddChoose), ChooseTokenTarget(Move) }
 
     // 选中棋子，并显示它能到达的所有位置
     void AddChoose(Vector2Int pos) {
@@ -215,7 +225,7 @@ public class Rule : MonoBehaviour {
         //显示高亮
         for(int i=0; i<reachablePos.Count; i++) {
             Vector2Int grid = reachablePos[i].pos;
-            specialEffectDisplay.HighlightGrid(grid, SpecialEffectDisplay.Color.yellow);
+            highlightDisplay.HighlightGrid(grid, HighlightDisplay.Color.yellow);
         }
     }
 
@@ -226,10 +236,11 @@ public class Rule : MonoBehaviour {
         reachablePos.Clear();
 
         //取消所有高光
-        specialEffectDisplay.CancelHighlight();
+        highlightDisplay.CancelHighlight();
     }
 
     //从json文件中读取地图
+    // TODO: 提取到Utility里边
     public BoardEntity LoadMapFromJson(string filename) {
         Debug.Log("加载地图：" + filename);
 

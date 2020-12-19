@@ -67,7 +67,7 @@ public class MenuGUI : MonoBehaviour
 
     //开始关卡编辑器，是startMapEditButton的点击响应函数
     public void StartMapEdit() {
-        SceneManager.LoadScene("MapEdit");
+        SceneManager.LoadScene("MapEditor");
     }
 
     //ScrollView滑动到指定位置

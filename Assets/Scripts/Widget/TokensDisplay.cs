@@ -64,8 +64,8 @@ public class TokensDisplay : MonoBehaviour
             tilemapToken.SetTile(pos3, tile);
         }
     }
-
-    // 显示堆叠
+    
+    // TODO: 删除，放置
 
     // Update is called once per frame
     void Update()

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 
 // 特效显示
-public class SpecialEffectDisplay : MonoBehaviour
+public class HighlightDisplay : MonoBehaviour
 {
     //高亮自身格子和可到达格子
     Tilemap tilemapReachableHighlight;
