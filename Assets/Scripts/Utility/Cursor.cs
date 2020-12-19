@@ -20,7 +20,7 @@ public class Cursor : MonoBehaviour
     }
 
     // 获取当前鼠标指向的块
-    Vector2Int getPointedCell()
+    public Vector2Int GetPointedCell()
     {
         Vector3Int cell=tilemap.WorldToCell(mainCamera.ScreenToWorldPoint(Input.mousePosition));
         return new Vector2Int(cell.x,cell.y);
