@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 负责页面的滚动处理，目前只能横向滚动
+/// </summary>
 public class Scroller : MonoBehaviour
 {
     //滑动主体

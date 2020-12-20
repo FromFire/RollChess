@@ -9,6 +9,9 @@ public class MenuGUI : MonoBehaviour
     //负责页面左右滚动的控制
     public Scroller scroller;
 
+    //选择玩家
+    public ChoosePlayer choosePlayer;
+
     //切换到选关页面按钮
     public Button chooseLevelButton;
     //返回主菜单按钮
@@ -16,9 +19,6 @@ public class MenuGUI : MonoBehaviour
     
     //打开关卡编辑器按钮
     public Button startMapEditButton;
-
-    //选择玩家
-    public ChoosePlayer choosePlayer;
 
     // Start is called before the first frame update
     void Start()
