@@ -6,19 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class MenuGUI : MonoBehaviour
 {
-    //所有模块都位于此路径中
-    string path = "Canvas/ScrollView/Viewport/Content";
-
     //作为根目录的ScrollView
-    ScrollRect scrollRect;
+    public ScrollRect scrollRect;
 
     //切换到选关页面按钮
-    Button chooseLevelButton;
+    public Button chooseLevelButton;
     //返回主菜单按钮
-    Button returnMainMenuButton;
+    public Button returnMainMenuButton;
     
     //打开关卡编辑器按钮
-    Button startMapEditButton;
+    public Button startMapEditButton;
 
     //是否需要滑动页面
     bool needSlide = false;
@@ -27,23 +24,38 @@ public class MenuGUI : MonoBehaviour
     //滑动所需帧数
     int slideRestFrames;
 
+    // 四个玩家选择栏
+    public Button player1, player2, player3, player4;
+    Button[] playerButtons;
+    // 选择栏的三个图标
+    Sprite[] playerSprites;
+    // 玩家操控方式选项
+    enum PlayerChoices{Player, Comuputer, Banned};
+    // 当前的玩家操纵方式
+    PlayerChoices[] nowPlayerChoices;
+
     // Start is called before the first frame update
     void Start()
     {
-        //初始化scrollView
-        scrollRect = GameObject.Find("Canvas/ScrollView").GetComponent<ScrollRect> ();
-
         //初始化界面切换按钮
-        chooseLevelButton = GameObject.Find(path+"/MainMenu/ChooseLevelButton").GetComponent<Button> ();
 		chooseLevelButton.onClick.AddListener(ToChooseLevel);
-        returnMainMenuButton = GameObject.Find(path+"/LevelChoose/ReturnMainMenuButton").GetComponent<Button> ();
         returnMainMenuButton.onClick.AddListener(ToMainMenu);
 
         //初始化打开关卡编辑器按钮
-        startMapEditButton = GameObject.Find(path+"/MainMenu/StartMapEditButton").GetComponent<Button> ();
 		startMapEditButton.onClick.AddListener(StartMapEdit);
 
-        //初始化
+        //初始化玩家选择相关
+        playerButtons = new Button[4] {player1, player2, player3, player4};
+        for(int i=0; i<playerButtons.Length; i++) {
+            int arg = i;
+            playerButtons[i].onClick.AddListener(()=> {changePlayer(arg);} );
+        }
+        playerSprites = new Sprite[3] {
+            Resources.Load<Sprite>("Sprites/Player"),
+            Resources.Load<Sprite>("Sprites/Computer"),
+            Resources.Load<Sprite>("Sprites/Banned"),
+        };
+        nowPlayerChoices = new PlayerChoices[4]{PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Player};
     }
 
     // Update is called once per frame
@@ -53,6 +65,19 @@ public class MenuGUI : MonoBehaviour
         if(needSlide) {
             SlidePerFrame();
         }
+    }
+
+    // 切换第index位玩家的操作方式并显示
+    public void changePlayer(int index) {
+        Image playerImage = playerButtons[index].gameObject.transform.GetChild(0).GetComponent<Image>();
+        PlayerChoices nextChoice = nextPlayerChoice(nowPlayerChoices[index]);
+        playerImage.sprite = playerSprites[(int)nextChoice];
+        nowPlayerChoices[index] = nextChoice;
+    }
+
+    // 获取下一个玩家操作选项
+    PlayerChoices nextPlayerChoice(PlayerChoices choice) {
+        return (PlayerChoices)(((int)choice + 1) % 3);
     }
 
     //滑动到选关界面，是chooseLevelButton的点击响应函数
