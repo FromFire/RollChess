@@ -719,6 +719,7 @@ GameObject:
   - component: {fileID: 562416644}
   - component: {fileID: 562416646}
   - component: {fileID: 562416645}
+  - component: {fileID: 562416647}
   m_Layer: 0
   m_Name: ChoosePlayer
   m_TagString: Untagged
@@ -787,6 +788,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562416643}
   m_CullTransparentMesh: 0
+--- !u!114 &562416647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562416643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5f8a5e82aecd347914b3a0a0a9c36e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerButtons:
+  - {fileID: 831898301}
+  - {fileID: 201110866}
+  - {fileID: 1968934545}
+  - {fileID: 885745009}
 --- !u!1 &584166237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,6 +2194,7 @@ GameObject:
   - component: {fileID: 1710522871}
   - component: {fileID: 1710522870}
   - component: {fileID: 1710522874}
+  - component: {fileID: 1710522875}
   m_Layer: 0
   m_Name: ScrollView
   m_TagString: Untagged
@@ -2282,14 +2301,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa2c1a49964fe6648a87b2349a064808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollRect: {fileID: 1710522870}
+  scroller: {fileID: 1710522875}
   chooseLevelButton: {fileID: 1186583155}
   returnMainMenuButton: {fileID: 1272807058}
   startMapEditButton: {fileID: 1267147446}
-  player1: {fileID: 831898301}
-  player2: {fileID: 201110866}
-  player3: {fileID: 1968934545}
-  player4: {fileID: 885745009}
+  choosePlayer: {fileID: 562416647}
+--- !u!114 &1710522875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710522869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd9be9a380e5b2418116791c5d5a377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollRect: {fileID: 1710522870}
 --- !u!1 &1829555251
 GameObject:
   m_ObjectHideFlags: 0
