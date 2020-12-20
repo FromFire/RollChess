@@ -13,14 +13,6 @@ namespace Widget {
         //显示传送门的箭头
         GameObject portalArrows;
 
-        //Tile在tileList中存储的顺序
-        enum TileKeys {
-            floorLawnGreen, //绿色地板
-            special_brokenBridge, //危桥
-            special_doubleStep, //步数翻倍
-            special_portal //传送门
-        };
-
         //显示自身
         public void Display(BaseBoard<SingleGrid> map) {
             //获取有效数据列表

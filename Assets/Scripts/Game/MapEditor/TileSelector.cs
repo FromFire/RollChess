@@ -30,7 +30,7 @@ namespace Game.MapEditor {
         }
 
         public void ShiftSelectedTileType(int offset = 1) {
-            MyTypes.Shift(selectedTileType, offset);
+            selectedTileType = MyTypes.Shift(selectedTileType, offset);
         }
 
         public TilemapType GetSelectedTilemapType() {
@@ -38,7 +38,7 @@ namespace Game.MapEditor {
         }
 
         public void ShiftSelectedTilemapType(int offset = 1) {
-            MyTypes.Shift(selectedTilemapType, offset);
+            selectedTilemapType = MyTypes.Shift(selectedTilemapType, offset);
         }
     }
 }
