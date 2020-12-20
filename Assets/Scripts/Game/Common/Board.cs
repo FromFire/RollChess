@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Widget;
 
 // 地图类
 // 加载地图、管理地图状态

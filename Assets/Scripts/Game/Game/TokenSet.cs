@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Widget;
 
 //管理所有棋子的类
 public class TokenSet : MonoBehaviour {
