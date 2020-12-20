@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
 
 namespace Structure {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -27,8 +28,8 @@ namespace Structure {
         Token,
         End
     };
-
-    public static class Types {
+    
+    public static class MyTypes {
         private const int TileTypeHead = (int) TileType.Begin + 1;
         private const int TileTypeLandHead = (int) TileType.Land_Begin + 1;
         private const int TileTypeLandTail = (int) TileType.Land_End - 1;
@@ -101,6 +102,7 @@ namespace Structure {
                     iTileType = TileTypeTokenHead + Mod(iTileType - TileTypeTokenHead + offset, NTileTypeToken);
                     break;
             }
+
             return (TileType) iTileType;
         }
 
@@ -124,12 +126,35 @@ namespace Structure {
 
     public static class Constants {
         public static Dictionary<TileType, string> resourcePathOfTileType = new Dictionary<TileType, string>() {
-            {TileType.Land_Lawn_Green,"Tiles/floor-lawnGreen"},
-            {TileType.Special_Portal,"Tiles/special-portal"},
-            {TileType.Special_DoubleStep,"Tiles/special-doubleStep"},
-            {TileType.Special_BrokenBridge,"Tiles/special-brokenBridge"},
-            {TileType.Token_Tank_Blue,"Tiles/token-blueTank"},
-            {TileType.Token_Tank_Red,"Tiles/token-redTank"},
+            {TileType.Land_Lawn_Green, "Tiles/floor-lawnGreen"},
+            {TileType.Special_Portal, "Tiles/special-portal"},
+            {TileType.Special_DoubleStep, "Tiles/special-doubleStep"},
+            {TileType.Special_BrokenBridge, "Tiles/special-brokenBridge"},
+            {TileType.Token_Tank_Blue, "Tiles/token-blueTank"},
+            {TileType.Token_Tank_Red, "Tiles/token-redTank"},
         };
+
+        public static Dictionary<TilemapType, List<TileType>> tileTypesOfTilemapType =
+            new Dictionary<TilemapType, List<TileType>>() {
+                {
+                    TilemapType.Land,
+                    new List<TileType>() {
+                        TileType.Land_Lawn_Green
+                    }
+                }, {
+                    TilemapType.Special,
+                    new List<TileType>() {
+                        TileType.Special_Portal,
+                        TileType.Special_BrokenBridge,
+                        TileType.Special_DoubleStep
+                    }
+                }, {
+                    TilemapType.Token,
+                    new List<TileType>() {
+                        TileType.Token_Tank_Blue,
+                        TileType.Token_Tank_Red
+                    }
+                }
+            };
     }
 }
