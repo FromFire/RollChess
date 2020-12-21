@@ -92,7 +92,10 @@ public class MenuGUI : MonoBehaviour
         }
 
         //符合要求，进入游戏
-        GameObject.DontDestroyOnLoad(message.gameObject);
+        if(GameObject.Find("MessageToGame") == null) {
+            //避免此对象被多次创建
+            GameObject.DontDestroyOnLoad(message.gameObject);
+        }
         message.SetMessage<string>("mapFilename", mapName);
         message.SetMessage<List<PlayerChoices>>("playerChoice", player);
         SceneManager.LoadScene("Game");

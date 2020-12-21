@@ -5,44 +5,30 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    Rule rule;
+    public Rule rule;
 
     //roll点按钮
-    Button rollButton;
+    public Button rollButton;
     //roll出的数值
-    Text rollNumber;
+    public Text rollNumber;
 
     //获胜界面
-    Image gameReview;
+    public Image gameReview;
 
     //回合数
-    Text turnCount;
+    public Text turnCount;
 
     //正在行动提示
-    Text actionPlayer;
+    public Text actionPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
         //初始化roll点相关
-        rollButton = GameObject.Find("/HUD/RollButton").GetComponent<Button> ();
 		rollButton.onClick.AddListener(RollDice);
-        rollNumber = GameObject.Find("/HUD/RollNumber").GetComponent<Text> ();
-
-        //初始化回合数
-        turnCount = GameObject.Find("/HUD/GameInfoPanel/TurnCount").GetComponent<Text> ();
-
-        //初始化正在行动提示
-        actionPlayer = GameObject.Find("/HUD/GameInfoPanel/ActionPlayer").GetComponent<Text> ();
 
         //初始化获胜界面
-        gameReview = GameObject.Find("/HUD/GameReview").GetComponent<Image> ();
         gameReview.gameObject.SetActive(false);
-    }
-
-    //绑定Rule
-    public void SetRule(Rule rule) {
-        this.rule = rule;
     }
 
     // Update is called once per frame

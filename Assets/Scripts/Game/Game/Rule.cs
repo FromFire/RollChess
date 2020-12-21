@@ -11,7 +11,7 @@ public class Rule : MonoBehaviour {
     HighlightDisplay highlightDisplay;
 
     //HUD层
-    HUD hud;
+    public HUD hud;
 
     // 存储棋盘信息
     Board board;
@@ -42,12 +42,14 @@ public class Rule : MonoBehaviour {
     // 初始化全局
     void Start()
     {
-        //读取地图json文件
-        Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
+        //读取Entrance传来的Message
         string filename = "Maps/Second";
-        if(message != null) {
+        if(GameObject.Find("MessageToGame") != null) {
+            Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
             filename = "Maps/" + message.GetMessage<string> ("mapFilename");
         }
+        
+        //读取地图json文件
         BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息
@@ -67,10 +69,6 @@ public class Rule : MonoBehaviour {
 
         //初始化SpecialEffectDisplay
         highlightDisplay = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<HighlightDisplay>();
-
-        //初始化HUD
-        hud = GameObject.Find("/HUD").GetComponent<HUD> ();
-        hud.SetRule(this);
     }
 
     // Update is called once per frame
