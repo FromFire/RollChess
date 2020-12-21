@@ -43,7 +43,7 @@ public class Rule : MonoBehaviour {
     void Start()
     {
         //读取地图json文件
-        string filename = "MapSample";
+        string filename = "Maps/Second";
         BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息
