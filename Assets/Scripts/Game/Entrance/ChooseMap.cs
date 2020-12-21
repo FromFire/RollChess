@@ -13,10 +13,14 @@ public class ChooseMap : MonoBehaviour
     //grid管理
     public MenuGridScroller menuGridScroller;
 
-    //
+    //地图预览
     public Image mapPreview;
 
+    //地图名称预览
     public Text mapName;
+
+    //地图文件名
+    string mapFilename;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +34,8 @@ public class ChooseMap : MonoBehaviour
     }
 
     /// <summary>
-    /// 返回所有合法的地图名称
-    /// 合法：地图文件在Resources/Maps中，预览图片在Resource/Thumbnails中，缺一不可
+    /// <para> 返回所有合法的地图名称 </para>
+    /// <para> 合法：地图文件在Resources/Maps中，预览图片在Resource/Thumbnails中，缺一不可 </para>
     /// </summary>
     public List<string> GetValidMapNames() {
         // 读取Maps和Thumbnails中重合的文件名
@@ -41,7 +45,7 @@ public class ChooseMap : MonoBehaviour
     }
 
     /// <summary>
-    /// 读取path目录下所有文件的文件名，后缀为extension
+    /// <para> 读取path目录下所有文件的文件名，后缀为extension </para>
     /// </summary>
     List<string> GetFilenames(string path, string extension) {
         List<string> ret = new List<string>();
@@ -59,12 +63,13 @@ public class ChooseMap : MonoBehaviour
     }
 
     /// <summary>
-    /// 预览地图，是grid中每项的点击响应函数
+    /// <para> 预览地图，是grid中每项的点击响应函数 </para>
     /// </summary>
     public void PreviewMap(string filename) {
+        mapFilename = filename.Split('/').Last();
+        mapName.text = mapFilename;
         Sprite image = Resources.Load<Sprite>(filename);
         mapPreview.sprite = image;
-        mapName.text = filename;
     }
 
     // Update is called once per frame

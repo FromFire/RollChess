@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using PlayerChoices = Structure.PlayerChoices;
 
 public class ChoosePlayer : MonoBehaviour
 {
@@ -11,9 +12,6 @@ public class ChoosePlayer : MonoBehaviour
 
     // 选择栏的三个图标
     Sprite[] playerSprites;
-
-    // 玩家操控方式选项
-    enum PlayerChoices{Player, Comuputer, Banned};
 
     // 当前的玩家操纵方式
     PlayerChoices[] nowPlayerChoices;
@@ -42,6 +40,13 @@ public class ChoosePlayer : MonoBehaviour
         PlayerChoices nextChoice = nextPlayerChoice(nowPlayerChoices[index]);
         playerImage.sprite = playerSprites[(int)nextChoice];
         nowPlayerChoices[index] = nextChoice;
+    }
+
+    /// <summary>
+    ///   <para> 获取所有角色的操控方式 </para>
+    /// </summary>
+    public List<PlayerChoices> GetPlayers() {
+        return new List<PlayerChoices> (nowPlayerChoices);
     }
 
     // 获取下一个玩家操作选项

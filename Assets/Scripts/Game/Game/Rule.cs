@@ -43,7 +43,11 @@ public class Rule : MonoBehaviour {
     void Start()
     {
         //读取地图json文件
+        Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
         string filename = "Maps/Second";
+        if(message != null) {
+            filename = "Maps/" + message.GetMessage<string> ("mapFilename");
+        }
         BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息

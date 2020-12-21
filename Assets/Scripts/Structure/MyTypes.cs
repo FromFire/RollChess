@@ -28,6 +28,15 @@ namespace Structure {
         Token,
         End
     };
+
+    /// <summary>
+    ///   <para> 角色的操控方式 </para>
+    /// </summary>
+    public enum PlayerChoices{
+        Player,     // 玩家控制
+        Comuputer,  // AI控制
+        Banned      // 此角色不参与游戏
+    };
     
     public static class MyTypes {
         private const int TileTypeHead = (int) TileType.Begin + 1;
