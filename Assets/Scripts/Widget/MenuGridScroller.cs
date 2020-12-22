@@ -9,6 +9,8 @@ public class MenuGridScroller : MonoBehaviour
     // 网格
     public GridLayoutGroup grid;
 
+    public GameObject prefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +26,9 @@ public class MenuGridScroller : MonoBehaviour
     // 添加新项
     public void AddButton(Sprite image, UnityAction listener) {
         // 创建新的子节点
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/Button");
         GameObject prefabInstance = Instantiate(prefab);
         prefabInstance.transform.SetParent(grid.transform);
+        prefabInstance.transform.localScale=new Vector3Int(1,1,1);
 
         // 设置参数
         prefabInstance.GetComponent<Image>().sprite = image;

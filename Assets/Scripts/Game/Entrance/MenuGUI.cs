@@ -34,6 +34,9 @@ public class MenuGUI : MonoBehaviour
     // 传递给Game的消息
     public Message message;
 
+    // 容纳整个页面的容器
+    public RectTransform content;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +49,19 @@ public class MenuGUI : MonoBehaviour
 
         //初始化打开游戏按钮
         startGameButton.onClick.AddListener(StartGame);
+
+        //尺寸自适应
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    // 调整控件尺寸，是指自适应屏幕
+    void adjustSize() {
+        
     }
 
     //启动游戏，是startGameButton的点击响应函数
