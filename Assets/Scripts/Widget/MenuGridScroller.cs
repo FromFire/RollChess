@@ -30,8 +30,11 @@ public class MenuGridScroller : MonoBehaviour
         prefabInstance.transform.SetParent(grid.transform);
         prefabInstance.transform.localScale=new Vector3Int(1,1,1);
 
-        // 设置参数
-        prefabInstance.GetComponent<Image>().sprite = image;
+        // 设置点击函数
         prefabInstance.GetComponent<Button>().onClick.AddListener(listener);
+
+        // 设置图像
+        GameObject imageObject = prefabInstance.transform.GetChild(0).gameObject;
+        imageObject.GetComponent<Image>().sprite = image;
     }
 }
