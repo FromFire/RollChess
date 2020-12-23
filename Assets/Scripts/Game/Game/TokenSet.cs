@@ -76,6 +76,18 @@ public class TokenSet : MonoBehaviour {
         return ret;
     }
 
+    // 移除player的全部棋子
+    public void removePlayer(int player) {
+        for(int i=tokenList.Count-1; i>=0; i--) {
+            if(player == tokenList[i].player) {
+                Vector2Int pos = tokenList[i].GetXY();
+                Debug.Log("remove token: (" + pos.x + "." + pos.y + ") player:" + tokenList[i].player);
+                tokensDisplay.ShowToken(pos, 0, player);
+                tokenList.RemoveAt(i);
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

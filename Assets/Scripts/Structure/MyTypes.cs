@@ -215,5 +215,10 @@ namespace Structure {
             {3, TileType.Token_Alien_Green},
             {4, TileType.Token_Alien_Neutral},
         };
+
+        /// <summary>
+        ///   <para>玩家数量是4</para>
+        /// </summary>
+        public static int PLAYERNUMBER = 4;
     }
 }

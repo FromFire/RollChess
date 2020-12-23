@@ -8,6 +8,8 @@ using PlayerChoices = Structure.PlayerChoices;
 
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
+    //棋子数量默认是4
+    int PLAYERNUMBER = Structure.Constants.PLAYERNUMBER;
 
     //显示高光tilemap层
     public HighlightDisplay highlightDisplay;
@@ -26,8 +28,8 @@ public class Rule : MonoBehaviour {
     public enum Status{waiting, moved};
     public Status status = Status.waiting;
 
-    // 玩家总数
-    public int totalPlayer;
+    // 玩家操控状态
+    public List<PlayerChoices> playerChoices;
     // 目前正在行动的玩家，他只能移动己方的棋子
     public int nowPlayer;
 
@@ -44,21 +46,25 @@ public class Rule : MonoBehaviour {
     // 初始化全局
     void Start()
     {
-        //读取Entrance传来的Message
+        //无Entrance情况下的默认值，用于调试Game场景
         string filename = "Maps/Untitled";
+        //playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Player, PlayerChoices.Banned};
+        // 默认2玩家，一定不会出错
+        playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
+
+        //读取Entrance传来的Message
         if(GameObject.Find("MessageToGame") != null) {
             Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
             // 获取地图
             filename = "Maps/" + message.GetMessage<string> ("mapFilename");
             // 获取玩家数量
-            message.GetMessage<List<PlayerChoices>> ("mapFilename");
-        }
+            playerChoices = message.GetMessage<List<PlayerChoices>> ("playerChoice");
+        } 
         
         //读取地图json文件
         BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息
-        totalPlayer = boardEntity.player.min;
         nowPlayer = 0;
 
         //初始化board
@@ -66,6 +72,11 @@ public class Rule : MonoBehaviour {
 
         //初始化tokenSet
         tokenSet.Init(boardEntity.tokens);
+        for(int i=0; i<playerChoices.Count; i++) {
+            if(playerChoices[i] == PlayerChoices.Banned) {
+                tokenSet.removePlayer(i);
+            }
+        }
 
         //初始化选中信息
         reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
@@ -104,7 +115,7 @@ public class Rule : MonoBehaviour {
     //若只有一个玩家棋子数不为0，则该玩家获胜
     public int FindWinner() {
         int winnerCandidate = -1; //可能赢（棋子数）的玩家序号
-        for(int i=0; i<totalPlayer; i++) {
+        for(int i=0; i<PLAYERNUMBER; i++) {
             if(tokenSet.GetTokenNumber(i) != 0) {
                 //若已查询的所有玩家棋子数均为0，此玩家可能会赢
                 if(winnerCandidate == -1) {
@@ -157,9 +168,6 @@ public class Rule : MonoBehaviour {
     }
 
     // 选中格子
-    //
-    
-
     public void ChooseGrid(Vector3 loc) {
         // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
         //      是：移动棋子，return

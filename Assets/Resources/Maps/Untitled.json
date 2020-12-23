@@ -1,7 +1,7 @@
 ﻿{
 	"mapName": "四玩家",
 	"player": {
-		"min": 4,
+		"min": 2,
 		"max": 4
 	},
 	"tokens": [{

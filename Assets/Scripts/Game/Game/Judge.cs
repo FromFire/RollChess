@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using PlayerChoices = Structure.PlayerChoices;
+
 //裁判类：管理对局信息，包括回合计数、胜负判断、记录操作
 public class Judge : MonoBehaviour
 {
     // 规则类
-    Rule rule;
+    public Rule rule;
 
     //HUD层
-    HUD hud;
+    public HUD hud;
 
     // 玩家总数
     int totalPlayer;
@@ -22,18 +24,18 @@ public class Judge : MonoBehaviour
     //是否游戏结束
     bool isGameOver = false;
 
+    // 玩家操控状态
+    public List<PlayerChoices> playerChoices;
+
     // Start is called before the first frame update
     void Start()
     {
-        //初始化Rule
-        rule = GameObject.Find("/ScriptObjects/Rule").GetComponent<Rule>();
-
-        //初始化HUD
-        hud = GameObject.Find("/HUD").GetComponent<HUD> ();
-
         //初始化玩家人数
-        totalPlayer = rule.totalPlayer;
+        totalPlayer = Structure.Constants.PLAYERNUMBER;
         nowPlayer = 0;
+
+        //初始化玩家操控状态
+        playerChoices = rule.playerChoices;
 
         //初始化回合数
         turnCount=1;
@@ -86,9 +88,11 @@ public class Judge : MonoBehaviour
         }
     }
 
-    //切换到下一位玩家
+    //切换到下一位玩家，跳过状态为Banned的角色
     public void NextPlayer() {
-        nowPlayer = (nowPlayer+1) % totalPlayer;
+        do {
+            nowPlayer = (nowPlayer+1) % totalPlayer;
+        } while(playerChoices[nowPlayer] == PlayerChoices.Banned);
     }
 
     //有玩家获胜，结束游戏
