@@ -13,7 +13,7 @@ namespace Game.MapEditor {
         private List<TileType> selectedTileTypes = new List<TileType>() {
             TileType.Land_Lawn_Green,
             TileType.Special_Portal,
-            TileType.Token_Tank_Red
+            TileType.Token_Alien_Red
         };
 
         private TileType selectedTileType {

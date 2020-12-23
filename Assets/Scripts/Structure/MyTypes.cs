@@ -15,8 +15,14 @@ namespace Structure {
         Special_BrokenBridge,
         Special_End,
         Token_Begin,
-        Token_Tank_Blue,
-        Token_Tank_Red,
+
+        // Token_Tank_Blue,
+        // Token_Tank_Red,
+        Token_Alien_Blue,
+        Token_Alien_Red,
+        Token_Alien_Green,
+        Token_Alien_Yellow,
+        Token_Alien_Neutral,
         Token_End,
         End
     };
@@ -139,8 +145,13 @@ namespace Structure {
             {TileType.Special_Portal, "Tiles/special-portal"},
             {TileType.Special_DoubleStep, "Tiles/special-doubleStep"},
             {TileType.Special_BrokenBridge, "Tiles/special-brokenBridge"},
-            {TileType.Token_Tank_Blue, "Tiles/token-blueTank"},
-            {TileType.Token_Tank_Red, "Tiles/token-redTank"},
+            // {TileType.Token_Tank_Blue, "Tiles/token-blueTank"},
+            // {TileType.Token_Tank_Red, "Tiles/token-redTank"},
+            {TileType.Token_Alien_Blue, "Tiles/token-blueAlien"},
+            {TileType.Token_Alien_Red, "Tiles/token-redAlien"},
+            {TileType.Token_Alien_Green, "Tiles/token-greenAlien"},
+            {TileType.Token_Alien_Yellow, "Tiles/token-yellowAlien"},
+            {TileType.Token_Alien_Neutral, "Tiles/token-neutralAlien"},
         };
 
         public static Dictionary<TilemapType, List<TileType>> tileTypesOfTilemapType =
@@ -160,8 +171,11 @@ namespace Structure {
                 }, {
                     TilemapType.Token,
                     new List<TileType>() {
-                        TileType.Token_Tank_Blue,
-                        TileType.Token_Tank_Red
+                        TileType.Token_Alien_Red,
+                        TileType.Token_Alien_Blue,
+                        TileType.Token_Alien_Yellow,
+                        TileType.Token_Alien_Green,
+                        TileType.Token_Alien_Neutral,
                     }
                 }
             };
@@ -179,8 +193,19 @@ namespace Structure {
         };
 
         public static Dictionary<TileType, int> playerIdOfTileType = new Dictionary<TileType, int>() {
-            {TileType.Token_Tank_Red, 0},
-            {TileType.Token_Tank_Blue, 1}
+            {TileType.Token_Alien_Red, 0},
+            {TileType.Token_Alien_Blue, 1},
+            {TileType.Token_Alien_Yellow, 2},
+            {TileType.Token_Alien_Green, 3},
+            {TileType.Token_Alien_Neutral, 4},
+        };
+
+        public static Dictionary<int, TileType> tileTypeOfPlayerId = new Dictionary<int, TileType>() {
+            {0, TileType.Token_Alien_Red},
+            {1, TileType.Token_Alien_Blue},
+            {2, TileType.Token_Alien_Yellow},
+            {3, TileType.Token_Alien_Green},
+            {4, TileType.Token_Alien_Neutral},
         };
     }
 }

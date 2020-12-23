@@ -247,7 +247,7 @@ namespace Game.MapEditor {
             foreach (TokenEntity token in boardEntity.tokens) {
                 objectSelector.token.SetTile(
                     new Vector2Int(token.x, token.y),
-                    token.player == 1 ? TileType.Token_Tank_Blue : TileType.Token_Tank_Red
+                    Constants.tileTypeOfPlayerId[token.player]
                 );
             }
 

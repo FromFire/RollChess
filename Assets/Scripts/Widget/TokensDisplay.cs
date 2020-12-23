@@ -9,7 +9,7 @@ namespace Widget {
 
         //player的值对应tokenList的下标
         public List<TileType> tokenList = new List<TileType>() {
-            TileType.Token_Tank_Red, TileType.Token_Tank_Blue //棋子
+            TileType.Token_Alien_Red, TileType.Token_Alien_Red //棋子
         };
 
         //初始化显示
