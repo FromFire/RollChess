@@ -154,8 +154,14 @@ namespace Game.MapEditor {
         void EraseTile() {
             // 如果即将被清除的块是某个传送站的起点，那么破坏掉它所对应的传送通道
             if (selectedTilemapManager.GetTile(selectedCell) == TileType.Special_Portal) {
-                portals[selectedCell].Destroy();
-                portals.Remove(selectedCell);
+                if (portals.ContainsKey(selectedCell)) { // 已画好的传送通道
+                    portals[selectedCell].Destroy();
+                    portals.Remove(selectedCell);
+                }
+                else { // 正在画的传送通道
+                    newPortal.Destroy();
+                    editorState = EditorState.Normal;
+                }
             }
 
             // 清除目标块
