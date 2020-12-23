@@ -9,6 +9,7 @@ public class MenuGridScroller : MonoBehaviour
     // 网格
     public GridLayoutGroup grid;
 
+    // 每一项的模板
     public GameObject prefab;
 
     // Start is called before the first frame update

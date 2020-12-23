@@ -7,9 +7,6 @@ using System.Linq;
 
 public class ChooseMap : MonoBehaviour
 {
-    //滑动主体
-    public ScrollRect scrollRect;
-
     //grid管理
     public MenuGridScroller menuGridScroller;
 
@@ -22,13 +19,18 @@ public class ChooseMap : MonoBehaviour
     //地图文件名
     string mapFilename;
 
+    // 玩家当前选择的地图
+    BoardEntity currentMap;
+
+    // 主菜单
+    public MenuGUI menuGUI;
+
     // Start is called before the first frame update
     void Start()
     {
         List<string> filenames = GetValidMapNames();
         Debug.Log(filenames.Count);
         foreach(string filename in filenames) {
-            Debug.Log(filename);
             menuGridScroller.AddButton(Resources.Load<Sprite>("Thumbnails/"+filename), () => {PreviewMap("Thumbnails/"+filename);});
         }
     }
@@ -66,10 +68,21 @@ public class ChooseMap : MonoBehaviour
     /// <para> 预览地图，是grid中每项的点击响应函数 </para>
     /// </summary>
     public void PreviewMap(string filename) {
-        mapFilename = filename.Split('/').Last();
-        mapName.text = mapFilename;
+        // 预览地图
         Sprite image = Resources.Load<Sprite>(filename);
         mapPreview.sprite = image;
+        // 通知MenuGUI
+        mapFilename = filename.Split('/').Last();
+        menuGUI.SetCurrentMap(mapFilename);
+    }
+
+    // 设置地图，
+    // 显示地图名称
+    public BoardEntity CurrentMap {
+        set {
+            currentMap = value;
+            mapName.text = currentMap.mapName;
+        }
     }
 
     // Update is called once per frame

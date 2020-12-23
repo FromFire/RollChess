@@ -28,14 +28,11 @@ public class MenuGUI : MonoBehaviour
     //开始游戏按钮
     public Button startGameButton;
 
-    //警告
-    public WarningManager warningManager;
-
     // 传递给Game的消息
     public Message message;
 
-    // 容纳整个页面的容器
-    public RectTransform content;
+    // 玩家当前选择的地图
+    public BoardEntity currentMap;
 
     // Start is called before the first frame update
     void Start()
@@ -49,19 +46,12 @@ public class MenuGUI : MonoBehaviour
 
         //初始化打开游戏按钮
         startGameButton.onClick.AddListener(StartGame);
-
-        //尺寸自适应
     }
 
     // Update is called once per frame
     void Update()
     {
 
-    }
-
-    // 调整控件尺寸，是指自适应屏幕
-    void adjustSize() {
-        
     }
 
     //启动游戏，是startGameButton的点击响应函数
@@ -81,9 +71,9 @@ public class MenuGUI : MonoBehaviour
                 haveHuman = true;
             }
         }
-        // 错误：若players人数低于2
-        if(totalPlayers < 2) {
-            WarningManager.errors.Add(new WarningModel("角色数量最少为2！"));
+        // 错误：若players人数低于最小人数限制
+        if(totalPlayers < choosePlayer.MinPlayer) {
+            WarningManager.errors.Add(new WarningModel("角色数量最少为" + choosePlayer.MinPlayer + "人！"));
             return;
         }
         // 错误：若玩家数为0
@@ -124,5 +114,17 @@ public class MenuGUI : MonoBehaviour
     //开始关卡编辑器，是startMapEditButton的点击响应函数
     public void StartMapEdit() {
         SceneManager.LoadScene("MapEditor");
+    }
+
+    // 设置当前地图
+    public void SetCurrentMap(string filename) {
+        Debug.Log("预览："+filename);
+        //读取地图
+        TextAsset text = Resources.Load<TextAsset>("Maps/"+filename);
+        string json = text.text;
+        currentMap = BoardEntity.FromJson(json);
+        //通知map和player
+        chooseMap.CurrentMap = currentMap;
+        choosePlayer.CurrentMap = currentMap;
     }
 }
