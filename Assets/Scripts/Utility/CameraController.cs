@@ -31,7 +31,6 @@ public class CameraController : MonoBehaviour {
 
         //鼠标左键按住不放，拖拽视角
         if (Input.GetMouseButton(dragKey)) {
-            Debug.Log("Pressed");
             Vector3 mousePosNow = Input.mousePosition;
             //摄像头平移
             if (isMousePressedLastTime) {

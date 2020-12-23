@@ -48,7 +48,6 @@ public class Rule : MonoBehaviour {
     {
         //无Entrance情况下的默认值，用于调试Game场景
         string filename = "Maps/Untitled";
-        //playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Player, PlayerChoices.Banned};
         // 默认2玩家，一定不会出错
         playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
 
@@ -59,7 +58,9 @@ public class Rule : MonoBehaviour {
             filename = "Maps/" + message.GetMessage<string> ("mapFilename");
             // 获取玩家数量
             playerChoices = message.GetMessage<List<PlayerChoices>> ("playerChoice");
-        } 
+            // 销毁Message，避免它被重复创建
+            GameObject.Destroy(message.gameObject);
+        }
         
         //读取地图json文件
         BoardEntity boardEntity = LoadMapFromJson(filename);
@@ -148,17 +149,18 @@ public class Rule : MonoBehaviour {
     public void Move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
+        //若目的点是传送门，将其传送
+        //传送门须放在走子前面，否则会有BUG：B站在传送站处，A踩到传送站，传送前会吃掉B
+        if(board.GetEffect(to) == SingleGrid.Effect.Portal) {
+            Vector2Int target = board.GetPortalTarget(to);
+            tokenSet.MoveToken(to, target);
+        }
+
         //由tokenSet进行操作
         tokenSet.MoveToken(from, to);
 
         //检测危桥
         board.DetectBrokenBridge(route);
-
-        //若目的点是传送门，将其传送
-        if(board.GetEffect(to) == SingleGrid.Effect.Portal) {
-            Vector2Int target = board.GetPortalTarget(to);
-            tokenSet.MoveToken(to, target);
-        }
 
         //修改状态为moved
         status = Status.moved;

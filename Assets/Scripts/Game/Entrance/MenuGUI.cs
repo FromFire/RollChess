@@ -33,6 +33,8 @@ public class MenuGUI : MonoBehaviour
 
     // 玩家当前选择的地图
     public BoardEntity currentMap;
+    // 玩家当前选择的地图的文件名
+    string mapFilename;
 
     // Start is called before the first frame update
     void Start()
@@ -94,11 +96,8 @@ public class MenuGUI : MonoBehaviour
         }
 
         //符合要求，进入游戏
-        if(GameObject.Find("MessageToGame") == null) {
-            //避免此对象被多次创建
-            GameObject.DontDestroyOnLoad(message.gameObject);
-        }
-        message.SetMessage<string>("mapFilename", mapName);
+        GameObject.DontDestroyOnLoad(message.gameObject);
+        message.SetMessage<string>("mapFilename", mapFilename);
         message.SetMessage<List<PlayerChoices>>("playerChoice", player);
         SceneManager.LoadScene("Game");
     }
@@ -112,6 +111,7 @@ public class MenuGUI : MonoBehaviour
         TextAsset text = Resources.Load<TextAsset>("Maps/"+filename);
         string json = text.text;
         currentMap = BoardEntity.FromJson(json);
+        mapFilename = filename;
         //通知map和player
         chooseMap.CurrentMap = currentMap;
         choosePlayer.CurrentMap = currentMap;
