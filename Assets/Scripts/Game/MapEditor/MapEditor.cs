@@ -66,6 +66,12 @@ namespace Game.MapEditor {
 
         // 地图数据
         private BoardEntity boardEntity;
+        
+        // 弹窗
+        public Popup popup;
+        
+        // 弹窗时间间隔
+        public float popupDelay = 0.6f;
 
         private void Start() {
             boardEntity = new BoardEntity();
@@ -115,6 +121,9 @@ namespace Game.MapEditor {
 
             // 更新预览
             UpdatePreview();
+            
+            // 显示浮窗
+            UpdatePopup();
         }
 
         // 将手上选择的块放到选定的坐标上
@@ -181,6 +190,18 @@ namespace Game.MapEditor {
             // 预览正在构建的传送通道
             if (editorState == EditorState.Portal) {
                 newPortal.to = selectedCell;
+            }
+        }
+        
+        // 更新浮窗
+        void UpdatePopup() {
+            if (cursor.GetStayDuration() > popupDelay) {
+                popup.SetText(selectedCell+"\n"+selectedTileType+"\n"+selectedTilemapManager);
+                popup.Show();
+                popup.SetPosition(cursor.GetMousePosition());
+            }
+            else {
+                popup.Hide();
             }
         }
 
