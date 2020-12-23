@@ -33,13 +33,13 @@ namespace Widget {
             foreach (Vector2Int pos in poses) {
                 SingleGrid.Effect effect = map.GetData(pos).effect;
                 switch (effect) {
-                    case SingleGrid.Effect.doubleStep:
+                    case SingleGrid.Effect.DoubleStep:
                         tilemapManagerSpecial.SetTile(pos, TileType.Special_DoubleStep);
                         break;
-                    case SingleGrid.Effect.brokenBridge:
+                    case SingleGrid.Effect.BrokenBridge:
                         tilemapManagerSpecial.SetTile(pos, TileType.Special_BrokenBridge);
                         break;
-                    case SingleGrid.Effect.portal:
+                    case SingleGrid.Effect.Portal:
                         tilemapManagerSpecial.SetTile(pos, TileType.Special_Portal);
                         break;
                 }
@@ -48,7 +48,7 @@ namespace Widget {
             //显示传送门之间的箭头
             portalArrows = GameObject.Find("/Grid/PortalArrows");
             foreach (Vector2Int pos in poses) {
-                if (map.GetData(pos).effect == SingleGrid.Effect.portal) {
+                if (map.GetData(pos).effect == SingleGrid.Effect.Portal) {
                     //获取起止点的local坐标（相对于Grid）
                     Vector2Int from = new Vector2Int(pos.x, pos.y);
                     Vector2Int to = map.GetData(pos).GetPortal();

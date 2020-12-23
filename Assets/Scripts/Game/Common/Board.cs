@@ -28,13 +28,13 @@ public class Board : MonoBehaviour{
 
         //导入特殊格子信息
         foreach(SingleSpecialEntity special in specialEntity) {
-            SingleGrid.Effect effect = SingleGrid.Effect.none;
+            SingleGrid.Effect effect = SingleGrid.Effect.None;
             switch(special.effect) {
                 case "doubleStep":
-                    effect = SingleGrid.Effect.doubleStep;
+                    effect = SingleGrid.Effect.DoubleStep;
                     break;
                 case "brokenBridge":
-                    effect = SingleGrid.Effect.brokenBridge;
+                    effect = SingleGrid.Effect.BrokenBridge;
                     break;
             }
             map.GetData(new Vector2Int(special.x, special.y)).SetEffect(effect);
@@ -94,7 +94,7 @@ public class Board : MonoBehaviour{
     // 获取所有从pos出发前进step步可到达的格子
     public List<(Vector2Int pos, List<Vector2Int> route)> GetReachableGrids(Vector2Int pos, int step) {
         //若开始的格子是doubleStep，步数翻倍
-        if(GetEffect(pos) == SingleGrid.Effect.doubleStep) {
+        if(GetEffect(pos) == SingleGrid.Effect.DoubleStep) {
             step *= 2;
             Debug.Log("doubleStep: " + step);
         }
@@ -156,8 +156,8 @@ public class Board : MonoBehaviour{
     //检测路上的危桥并移除危桥
     public void DetectBrokenBridge(List<Vector2Int> route) {
         foreach(Vector2Int grid in route) {
-            if(GetEffect(grid) == SingleGrid.Effect.brokenBridge) {
-                map.GetData(grid).SetEffect(SingleGrid.Effect.none);
+            if(GetEffect(grid) == SingleGrid.Effect.BrokenBridge) {
+                map.GetData(grid).SetEffect(SingleGrid.Effect.None);
                 map.GetData(grid).walkable = false;
                 boardDisplay.RemoveGrid(grid);
             }

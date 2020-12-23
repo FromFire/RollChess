@@ -9,10 +9,10 @@ public class SingleGrid {
 
     //表示特殊格子的效果
     public enum Effect {
-        none, //无效果
-        doubleStep, //倍速：从此格开始时，移动距离加倍
-        brokenBridge, //危桥：只能通过一次，之后就会损坏
-        portal //传送门：传送到另一个格子
+        None, //无效果
+        DoubleStep, //倍速：从此格开始时，移动距离加倍
+        BrokenBridge, //危桥：只能通过一次，之后就会损坏
+        Portal //传送门：传送到另一个格子
     }
     //此格子的特殊效果
     public Effect effect;
@@ -22,7 +22,7 @@ public class SingleGrid {
 
     //设置传送门效果
     public void SetPortal(Vector2Int pos) {
-        effect = Effect.portal;
+        effect = Effect.Portal;
         portalTarget = pos;
     }
 
@@ -39,13 +39,13 @@ public class SingleGrid {
     //构造函数
     public SingleGrid(bool walkable) {
         this.walkable = walkable;
-        effect = Effect.none;
+        effect = Effect.None;
     }
 
     //默认构造函数，用于BaseBoard初始化，否则运行会崩溃
     public SingleGrid() {
         this.walkable = false;
-        effect = Effect.none;
+        effect = Effect.None;
     }
 }
 
@@ -127,6 +127,13 @@ public class BaseBoard<T> where T:new(){
         mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = data;
         //所有设置过的都视为关键信息
         validPositionList.Add(pos);
+    }
+    
+    //删除T
+    public void RemoveData(Vector2Int pos) {
+        int index = FindIndex(pos);
+        mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = new T();
+        validPositionList.Remove(pos);
     }
 
     //获取关键信息集合

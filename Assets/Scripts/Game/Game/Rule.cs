@@ -149,7 +149,7 @@ public class Rule : MonoBehaviour {
         board.DetectBrokenBridge(route);
 
         //若目的点是传送门，将其传送
-        if(board.GetEffect(to) == SingleGrid.Effect.portal) {
+        if(board.GetEffect(to) == SingleGrid.Effect.Portal) {
             Vector2Int target = board.GetPortalTarget(to);
             tokenSet.MoveToken(to, target);
         }

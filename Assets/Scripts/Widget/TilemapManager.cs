@@ -1,4 +1,5 @@
-﻿using Structure;
+﻿using System.Collections.Generic;
+using Structure;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,8 +11,10 @@ namespace Widget {
         public Tilemap tilemap;
         public TilemapType type;
         public TilePalette palette;
+        public readonly HashSet<Vector2Int> cells=new HashSet<Vector2Int>();
 
         public void SetTile(Vector2Int cell, TileType tileType) {
+            if (!cells.Contains(cell)) cells.Add(cell);
             tilemap.SetTile((Vector3Int) cell, palette.tileOfTileType[tileType]);
         }
 
@@ -24,6 +27,7 @@ namespace Widget {
         public bool EraseTile(Vector2Int cell) {
             if (tilemap.GetTile((Vector3Int) cell) is null) return false;
             tilemap.SetTile((Vector3Int) cell, null);
+            cells.Remove(cell);
             return true;
         }
     }

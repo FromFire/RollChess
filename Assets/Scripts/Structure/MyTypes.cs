@@ -32,12 +32,12 @@ namespace Structure {
     /// <summary>
     ///   <para> 角色的操控方式 </para>
     /// </summary>
-    public enum PlayerChoices{
-        Player,     // 玩家控制
-        Comuputer,  // AI控制
-        Banned      // 此角色不参与游戏
+    public enum PlayerChoices {
+        Player, // 玩家控制
+        Comuputer, // AI控制
+        Banned // 此角色不参与游戏
     };
-    
+
     public static class MyTypes {
         private const int TileTypeHead = (int) TileType.Begin + 1;
         private const int TileTypeLandHead = (int) TileType.Land_Begin + 1;
@@ -165,5 +165,22 @@ namespace Structure {
                     }
                 }
             };
+
+        public static Dictionary<string, TileType> tileTypeOfSpecialName = new Dictionary<string, TileType>() {
+            {"portal", TileType.Special_Portal},
+            {"brokenBridge", TileType.Special_BrokenBridge},
+            {"doubleStep", TileType.Special_DoubleStep},
+        };
+
+        public static Dictionary<TileType, string> specialNameOfTileType = new Dictionary<TileType, string>() {
+            {TileType.Special_Portal, "portal"},
+            {TileType.Special_BrokenBridge, "brokenBridge"},
+            {TileType.Special_DoubleStep, "doubleStep"},
+        };
+
+        public static Dictionary<TileType, int> playerIdOfTileType = new Dictionary<TileType, int>() {
+            {TileType.Token_Tank_Red, 0},
+            {TileType.Token_Tank_Blue, 1}
+        };
     }
 }

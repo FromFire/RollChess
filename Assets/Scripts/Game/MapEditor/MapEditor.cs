@@ -178,23 +178,79 @@ namespace Game.MapEditor {
             }
         }
 
-        // TODO: 保存地图
+        // 保存地图
         void SaveMap() {
             Debug.Log("Saving...");
+
+            boardEntity.map = new List<SingleMapGridEntity>();
+            foreach (Vector2Int cell in objectSelector.land.cells)
+                boardEntity.map.Add(new SingleMapGridEntity(cell.x, cell.y));
+
+            boardEntity.special = new List<SingleSpecialEntity>();
+            foreach (Vector2Int cell in objectSelector.special.cells) {
+                TileType type = objectSelector.special.GetTile(cell);
+                if (type == TileType.Special_Portal) continue;
+                boardEntity.special.Add(new SingleSpecialEntity(
+                    cell.x, cell.y, Constants.specialNameOfTileType[type]
+                ));
+            }
+
+            boardEntity.portal = new List<SinglePortalEntity>();
+            foreach (Portal portal in portals.Values) {
+                boardEntity.portal.Add(new SinglePortalEntity(
+                    portal.from.x, portal.from.y,
+                    portal.to.x, portal.to.y
+                ));
+            }
+
+            boardEntity.tokens = new List<TokenEntity>();
+            HashSet<int> players = new HashSet<int>();
+            foreach (Vector2Int cell in objectSelector.token.cells) {
+                int playerId = Constants.playerIdOfTileType[objectSelector.token.GetTile(cell)];
+                players.Add(playerId);
+                boardEntity.tokens.Add(new TokenEntity(cell.x, cell.y, playerId));
+            }
+
+            boardEntity.player = new PlayersEntity(Math.Min(2, players.Count), players.Count);
             string serialized = boardEntity.ToJson();
             string filename = boardEntity.mapName + ".json";
             System.IO.File.WriteAllText(filename, serialized, Encoding.UTF8);
             Debug.Log("Saved as " + filename);
         }
 
-        // TODO: 加载地图
+        // 加载地图
         void LoadMap() {
             Debug.Log("Loading...");
-            string filename = "MapSample";
+            string filename = "MapToLoad";
             string serialized;
             TextAsset text = Resources.Load<TextAsset>(filename);
             serialized = text.text;
             boardEntity = BoardEntity.FromJson(serialized);
+            foreach (SingleMapGridEntity grid in boardEntity.map)
+                objectSelector.land.SetTile(new Vector2Int(grid.x, grid.y), TileType.Land_Lawn_Green);
+            foreach (SinglePortalEntity portal in boardEntity.portal) {
+                newPortal = portalPainter.Draw(
+                    new Vector2Int(portal.fromX, portal.fromY),
+                    new Vector2Int(portal.toX, portal.toY)
+                );
+                portals.Add(newPortal.from, newPortal);
+                objectSelector.special.SetTile(newPortal.from, TileType.Special_Portal);
+            }
+
+            foreach (SingleSpecialEntity special in boardEntity.special) {
+                objectSelector.special.SetTile(
+                    new Vector2Int(special.x, special.y),
+                    Constants.tileTypeOfSpecialName[special.effect]
+                );
+            }
+
+            foreach (TokenEntity token in boardEntity.tokens) {
+                objectSelector.token.SetTile(
+                    new Vector2Int(token.x, token.y),
+                    token.player == 1 ? TileType.Token_Tank_Blue : TileType.Token_Tank_Red
+                );
+            }
+
             Debug.Log(boardEntity.mapName + " is loaded");
         }
     }
