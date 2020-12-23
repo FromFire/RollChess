@@ -1,7 +1,8 @@
 ﻿{
    "mapName":"savedMap",
    "player": {
-       "number":2
+       "min":2,
+       "max":2
    },
    "tokens": [
        {"x":-8, "y":-2, "player":1},

@@ -53,7 +53,7 @@ public class Rule : MonoBehaviour {
         BoardEntity boardEntity = LoadMapFromJson(filename);
 
         //初始化玩家信息
-        totalPlayer = boardEntity.player.number;
+        totalPlayer = boardEntity.player.min;
         nowPlayer = 0;
 
         //初始化board
@@ -247,13 +247,10 @@ public class Rule : MonoBehaviour {
         Debug.Log("加载地图：" + filename);
 
         //读取json字符串
-        string json = "";
         TextAsset text = Resources.Load<TextAsset>(filename);
-        json = text.text;
-        Debug.Assert(!string.IsNullOrEmpty(json));
-
+        string json = text.text;
         //将json字符串转换为BoardEntity类
-        BoardEntity boardEntity = JsonUtility.FromJson<BoardEntity>(json);
+        BoardEntity boardEntity = BoardEntity.FromJson(json);
         //boardEntity.toConsole();
         return boardEntity;
     }

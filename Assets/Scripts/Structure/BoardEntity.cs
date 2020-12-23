@@ -28,17 +28,33 @@ public class BoardEntity
 
     public void ToConsole() {
         string str = "mapName: " + mapName + "\n" +
-            "players - number: " + player.number + "\n" +
+            "players - number: " + player.min + "\n" +
             "tokens - size" + tokens.Count + "\n";
         Debug.Log(str);
     }
+
+    /// <summary>
+    ///   <para> 转换为json格式文本 </para>
+    /// </summary>
+    public string ToJson() {
+        return JsonUtility.ToJson(this);
+    }
+
+    /// <summary>
+    ///   <para> 从json格式转换 </para>
+    /// </summary>
+    static public BoardEntity FromJson(string json) {
+        return JsonUtility.FromJson<BoardEntity>(json);
+    }
+    
 }
 
 // 描述所有玩家的信息
 [System.Serializable]
 public class PlayersEntity
 {
-    public int number;
+    public int min;
+    public int max;
 }
 
 // 描述单个棋子的信息
