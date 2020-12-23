@@ -9,7 +9,7 @@ namespace Game.MapEditor {
     ///   <para>Tile切换装置。</para>
     /// </summary>
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class TileSelector : MonoBehaviour {
+    public class TypeSelector : MonoBehaviour {
         private List<TileType> selectedTileTypes = new List<TileType>() {
             TileType.Land_Lawn_Green,
             TileType.Special_Portal,

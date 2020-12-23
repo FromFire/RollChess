@@ -2,6 +2,7 @@
 using System.Text;
 using Structure;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Widget; // Type definitions
 using Cell = UnityEngine.Vector2Int;
@@ -36,7 +37,7 @@ namespace Game.MapEditor {
         Tile nullTile;
 
         // Selection related and preview related
-        public TileSelector tileSelector;
+        [FormerlySerializedAs("tileSelector")] public TypeSelector typeSelector;
         private Dictionary<TileType, Tile> tileOfTileType = new Dictionary<TileType, Tile>();
         private Dictionary<Tile, TileType> tileTypeOfTile = new Dictionary<Tile, TileType>();
 
@@ -45,10 +46,10 @@ namespace Game.MapEditor {
         private Dictionary<TilemapType, TilemapManager> tilemapManagerPreviewOfTilemapType = null;
 
         TilemapManager selectedTilemapManager =>
-            tilemapManagerOfTilemapType[tileSelector.GetSelectedTilemapType()];
+            tilemapManagerOfTilemapType[typeSelector.GetSelectedTilemapType()];
 
         TilemapManager selectedTilemapManagerPreview =>
-            tilemapManagerPreviewOfTilemapType[tileSelector.GetSelectedTilemapType()];
+            tilemapManagerPreviewOfTilemapType[typeSelector.GetSelectedTilemapType()];
 
         Cell lastCell;
         Cell lastPaintedCell;
@@ -122,10 +123,10 @@ namespace Game.MapEditor {
                     }
                 }
                 else if (lastPaintedCell != cell
-                         || lastPaintedTileType != tileSelector.GetSelectedTileType()
+                         || lastPaintedTileType != typeSelector.GetSelectedTileType()
                          || lastPaintedTilemapManager != selectedTilemapManager) {
                     setTile(cell);
-                    if (tileSelector.GetSelectedTileType() == TileType.Special_Portal) {
+                    if (typeSelector.GetSelectedTileType() == TileType.Special_Portal) {
                         newPortal = portalPainter.Draw(cell, cell);
                         buildingPortal = true;
                     }
@@ -138,7 +139,7 @@ namespace Game.MapEditor {
 
             if (Input.GetMouseButton(1)) {
                 eraseTile(cell);
-                if (tileSelector.GetSelectedTileType() == TileType.Special_Portal) {
+                if (typeSelector.GetSelectedTileType() == TileType.Special_Portal) {
                     for (int i = portals.Count - 1; i >= 0; i--)
                         if (portals[i].from == cell) {
                             portals[i].Destroy();
@@ -149,7 +150,7 @@ namespace Game.MapEditor {
 
             // Shift painter
             if (Input.GetKeyUp(KeyCode.Tab)) {
-                tileSelector.ShiftSelectedTilemapType(
+                typeSelector.ShiftSelectedTilemapType(
                     (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                         ? -1
                         : 1
@@ -160,7 +161,7 @@ namespace Game.MapEditor {
             // int offset=(int)Input.mouseScrollDelta[1];
             int offset = (Input.GetKeyUp(KeyCode.Space) ? 1 : 0);
             if (offset != 0) {
-                tileSelector.ShiftSelectedTileType(offset);
+                typeSelector.ShiftSelectedTileType(offset);
                 updatePreview(cell);
             }
 
@@ -193,11 +194,11 @@ namespace Game.MapEditor {
         }
 
         void setTilePreview(Cell cell) {
-            setTile(selectedTilemapManagerPreview, cell, tileSelector.GetSelectedTileType());
+            setTile(selectedTilemapManagerPreview, cell, typeSelector.GetSelectedTileType());
         }
 
         void setTile(Cell cell) {
-            setTile(selectedTilemapManager, cell, tileSelector.GetSelectedTileType());
+            setTile(selectedTilemapManager, cell, typeSelector.GetSelectedTileType());
         }
 
         void setTile(TilemapManager tilemapManager, Cell cell, TileType tileType) {
