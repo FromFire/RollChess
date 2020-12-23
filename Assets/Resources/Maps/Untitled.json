@@ -1,1 +1,0 @@
-﻿{"mapName":"Untitled","player":{"min":2,"max":2},"tokens":[{"x":-1,"y":-2,"player":0},{"x":-2,"y":0,"player":4}],"map":[{"x":-1,"y":-2},{"x":1,"y":-4},{"x":2,"y":0},{"x":-2,"y":0},{"x":-5,"y":-3}],"special":[],"portal":[{"fromX":-2,"fromY":0,"toX":1,"toY":-4}]}

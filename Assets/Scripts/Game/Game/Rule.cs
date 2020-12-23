@@ -47,7 +47,7 @@ public class Rule : MonoBehaviour {
     void Start()
     {
         //无Entrance情况下的默认值，用于调试Game场景
-        string filename = "Maps/Untitled";
+        string filename = "Maps/FourPlayers";
         // 默认2玩家，一定不会出错
         playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
 

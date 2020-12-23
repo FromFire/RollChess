@@ -57,6 +57,7 @@ namespace Widget {
 
                     //绘制箭头
                     GameObject obj = (GameObject) Instantiate(GameObject.Find("Grid/PortalArrows/LineSample"));
+                    obj.transform.parent = portalArrows.transform;
                     LineRenderer line = obj.GetComponent<LineRenderer>();
                     line.SetPosition(0, from3);
                     line.SetPosition(1, to3);
