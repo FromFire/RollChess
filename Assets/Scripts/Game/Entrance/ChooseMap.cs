@@ -76,8 +76,9 @@ public class ChooseMap : MonoBehaviour
         menuGUI.SetCurrentMap(mapFilename);
     }
 
-    // 设置地图，
-    // 显示地图名称
+    /// <summary>
+    /// <para> 设置地图，显示地图名称 </para>
+    /// </summary>
     public BoardEntity CurrentMap {
         set {
             currentMap = value;

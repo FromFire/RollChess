@@ -54,7 +54,9 @@ public class MenuGUI : MonoBehaviour
 
     }
 
-    //启动游戏，是startGameButton的点击响应函数
+    /// <summary>
+    /// <para> 启动游戏，是startGameButton的点击响应函数 </para>
+    /// </summary>
     public void StartGame() {
         // 获取players
         List<PlayerChoices> player = choosePlayer.GetPlayers();
@@ -101,22 +103,9 @@ public class MenuGUI : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    //滑动到选关界面，是chooseLevelButton的点击响应函数
-    public void ToChooseLevel() {
-        scroller.SlideTo(1f);
-    }
-
-    //滑动到主菜单，是returnMainMenuButton的点击响应函数
-    public void ToMainMenu() {
-        scroller.SlideTo(0f);
-    }
-
-    //开始关卡编辑器，是startMapEditButton的点击响应函数
-    public void StartMapEdit() {
-        SceneManager.LoadScene("MapEditor");
-    }
-
-    // 设置当前地图
+    /// <summary>
+    /// <para> 设置当前地图 </para>
+    /// </summary>
     public void SetCurrentMap(string filename) {
         Debug.Log("预览："+filename);
         //读取地图
@@ -126,5 +115,26 @@ public class MenuGUI : MonoBehaviour
         //通知map和player
         chooseMap.CurrentMap = currentMap;
         choosePlayer.CurrentMap = currentMap;
+    }
+
+    /// <summary>
+    /// <para> 滑动到选关界面，是chooseLevelButton的点击响应函数 </para>
+    /// </summary>
+    void ToChooseLevel() {
+        scroller.SlideTo(1f);
+    }
+
+    /// <summary>
+    /// <para> 滑动到主菜单，是returnMainMenuButton的点击响应函数 </para>
+    /// </summary>
+    void ToMainMenu() {
+        scroller.SlideTo(0f);
+    }
+
+    /// <summary>
+    /// <para> 开始关卡编辑器，是startMapEditButton的点击响应函数 </para>
+    /// </summary>
+    void StartMapEdit() {
+        SceneManager.LoadScene("MapEditor");
     }
 }
