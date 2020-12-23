@@ -240,7 +240,7 @@ namespace Game.MapEditor {
 
             boardEntity.player = new PlayersEntity(Math.Min(2, players.Count), players.Count);
             string serialized = boardEntity.ToJson();
-            string filename = boardEntity.mapName + ".json";
+            string filename = "Assets/Resources/Maps/" + boardEntity.mapName + ".json";
             System.IO.File.WriteAllText(filename, serialized, Encoding.UTF8);
             Debug.Log("Saved as " + filename);
         }
@@ -248,7 +248,7 @@ namespace Game.MapEditor {
         // 加载地图
         void LoadMap() {
             Debug.Log("Loading...");
-            string filename = "MapToLoad";
+            string filename = "Untitled";
             string serialized;
             TextAsset text = Resources.Load<TextAsset>(filename);
             serialized = text.text;
