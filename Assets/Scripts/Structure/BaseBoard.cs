@@ -15,25 +15,24 @@ public class SingleGrid {
         Portal //传送门：传送到另一个格子
     }
     //此格子的特殊效果
-    public Effect effect;
+    Effect effect;
 
     //仅effect=portal时有效，传送的目的地
     Vector2Int portalTarget;
-
-    //设置传送门效果
-    public void SetPortal(Vector2Int pos) {
-        effect = Effect.Portal;
-        portalTarget = pos;
+    
+    // 格子特殊效果的读写函数
+    public Effect SpecialEffect {
+        set { effect = value; }
+        get { return effect; }
     }
 
-    //获取传送门目的地
-    public Vector2Int GetPortal() {
-        return portalTarget;
-    }
-
-    //设置特殊效果
-    public void SetEffect(Effect effect) {
-        this.effect = effect;
+    // 传送门读写函数
+    public Vector2Int PortalTarget {
+        set {
+            effect = Effect.Portal;
+            portalTarget = value;
+        }
+        get { return portalTarget; }
     }
 
     //构造函数
@@ -54,15 +53,14 @@ public class SingleGrid {
 
 // 实现地图基本功能，主要是支持两个维度坐标可在正负两方向无限延伸
 public class BaseBoard<T> where T:new(){
-    //数据容器，四象限分别存储，0存储且仅存储在正象限上
-    //P: positive正, N: negative负, 前x轴后y轴
-    List<List<T>> map_pp;
-    List<List<T>> map_pn;
-    List<List<T>> map_np;
-    List<List<T>> map_nn;
 
-    //存储四象限，用于批量操作
-    //顺序是nn,np,pn,pp，即二进制递增
+    /// <summary>
+    ///   <para> 数据容器 </para>
+    ///   <para> 第一维：容量=4。四象限分别存储，顺序是负负，负正，正负，正正，即二进制递增。
+    ///          四象限分别存储，0存储且仅存储在正象限上。 </para>
+    ///   <para> 第二维：容量=capacity。x轴。 </para>
+    ///   <para> 第三维：容量=capacity。y轴。 </para>
+    /// </summary>
     List<List<List<T>>> mapList;
 
     //默认每个象限20*20，全地图39*39
@@ -70,18 +68,13 @@ public class BaseBoard<T> where T:new(){
     //实际容量
     int capacity;
 
-    //关键信息的集合
-    //所有设置过的信息均视为关键信息
+    // 可能不为空的坐标集合（可能不为空：此坐标被设置过）
     HashSet<Vector2Int> validPositionList;
 
     //初始化，将四个象限初始化为四个默认大小的二维矩阵
     public BaseBoard() {
-        //初始化二维List
-        map_pp=new List<List<T>>();
-        map_np=new List<List<T>>();
-        map_nn=new List<List<T>>();
-        map_pn=new List<List<T>>();
-        mapList = new List<List<List<T>>> {map_nn, map_np, map_pn, map_pp};
+        //初始化数据容器
+        mapList = new List<List<List<T>>> {new List<List<T>>(), new List<List<T>>(), new List<List<T>>(), new List<List<T>>()};
 
         //初始化容量
         capacity = DEFAULT_CAPACITY;
@@ -123,9 +116,14 @@ public class BaseBoard<T> where T:new(){
 
     //设置T
     public void SetData(Vector2Int pos, T data) {
+        // 若pos不在地图范围内，则扩充地图直到地图包含pos的位置
+        while(!IsValid(pos)) {
+            ExpandSpace();
+        }
+        // 设置信息
         int index = FindIndex(pos);
         mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = data;
-        //所有设置过的都视为关键信息
+        // 所有设置过的都视为关键信息
         validPositionList.Add(pos);
     }
     
@@ -136,8 +134,30 @@ public class BaseBoard<T> where T:new(){
         validPositionList.Remove(pos);
     }
 
-    //获取关键信息集合
+    //获取所有可能非空的坐标
     public HashSet<Vector2Int> ToList() {
         return validPositionList;
+    }
+
+    //将地图长宽都*2，即面积*4
+    void ExpandSpace() {
+        int expandedCapacity = 2 * capacity;
+        for(int map=0; map<4; map++) {
+            // 扩充y，[a][a]扩充为[a][2a]
+            for(int i=0; i<capacity; i++) {
+                for(int j=capacity; j<expandedCapacity; j++) {
+                    mapList[map][i].Add(new T());
+                }
+            }
+
+            // 扩充x，[a][2a]扩充为[2a][2a]
+            for(int i=capacity; i<expandedCapacity; i++) {
+                mapList[map].Add(new List<T>());
+                for(int j=0; j<expandedCapacity; j++) {
+                    mapList[map][i].Add(new T());
+                }
+            }
+        }
+        capacity *= 2;
     }
 }

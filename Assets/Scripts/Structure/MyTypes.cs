@@ -16,16 +16,24 @@ namespace Structure {
         Special_End,
         Token_Begin,
 
-        // Token_Tank_Blue,
-        // Token_Tank_Red,
-        Token_Alien_Blue,
         Token_Alien_Red,
-        Token_Alien_Green,
+        Token_Alien_Blue,
         Token_Alien_Yellow,
+        Token_Alien_Green,
         Token_Alien_Neutral,
         Token_End,
         End
     };
+
+    /// <summary>
+    ///   <para> 角色对应颜色 </para>
+    /// </summary>
+    public enum PlayerColor {
+        Red,
+        Blue,
+        Yellow,
+        Green
+    }
 
     public enum TilemapType {
         Begin,

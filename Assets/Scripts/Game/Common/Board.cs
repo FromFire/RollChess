@@ -37,12 +37,12 @@ public class Board : MonoBehaviour{
                     effect = SingleGrid.Effect.BrokenBridge;
                     break;
             }
-            map.GetData(new Vector2Int(special.x, special.y)).SetEffect(effect);
+            map.GetData(new Vector2Int(special.x, special.y)).SpecialEffect = effect;
         }
 
         //导入传送门信息
         foreach(SinglePortalEntity portal in portalEntity) {
-            map.GetData(new Vector2Int(portal.fromX, portal.fromY)).SetPortal(new Vector2Int(portal.toX, portal.toY));
+            map.GetData(new Vector2Int(portal.fromX, portal.fromY)).PortalTarget = new Vector2Int(portal.toX, portal.toY);
         }
         
         boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
@@ -145,19 +145,19 @@ public class Board : MonoBehaviour{
 
     //查询某格的特殊格子效果
     public SingleGrid.Effect GetEffect(Vector2Int pos) {
-        return map.GetData(pos).effect;
+        return map.GetData(pos).SpecialEffect;
     }
 
     //查询该格子的传送门目的地（仅当该格子是传送门时）
     public Vector2Int GetPortalTarget(Vector2Int pos) {
-        return map.GetData(pos).GetPortal();
+        return map.GetData(pos).PortalTarget;
     }
 
     //检测路上的危桥并移除危桥
     public void DetectBrokenBridge(List<Vector2Int> route) {
         foreach(Vector2Int grid in route) {
             if(GetEffect(grid) == SingleGrid.Effect.BrokenBridge) {
-                map.GetData(grid).SetEffect(SingleGrid.Effect.None);
+                map.GetData(grid).SpecialEffect = SingleGrid.Effect.None;
                 map.GetData(grid).walkable = false;
                 boardDisplay.RemoveGrid(grid);
             }

@@ -31,7 +31,7 @@ namespace Widget {
 
             //显示TilemapSpecial层，特殊格子效果
             foreach (Vector2Int pos in poses) {
-                SingleGrid.Effect effect = map.GetData(pos).effect;
+                SingleGrid.Effect effect = map.GetData(pos).SpecialEffect;
                 switch (effect) {
                     case SingleGrid.Effect.DoubleStep:
                         tilemapManagerSpecial.SetTile(pos, TileType.Special_DoubleStep);
@@ -48,10 +48,10 @@ namespace Widget {
             //显示传送门之间的箭头
             portalArrows = GameObject.Find("/Grid/PortalArrows");
             foreach (Vector2Int pos in poses) {
-                if (map.GetData(pos).effect == SingleGrid.Effect.Portal) {
+                if (map.GetData(pos).SpecialEffect == SingleGrid.Effect.Portal) {
                     //获取起止点的local坐标（相对于Grid）
                     Vector2Int from = new Vector2Int(pos.x, pos.y);
-                    Vector2Int to = map.GetData(pos).GetPortal();
+                    Vector2Int to = map.GetData(pos).PortalTarget;
                     Vector3 from3 = tilemapManagerSpecial.tilemap.CellToLocal(new Vector3Int(from.x, from.y, 0));
                     Vector3 to3 = tilemapManagerSpecial.tilemap.CellToLocal(new Vector3Int(to.x, to.y, 0));
 

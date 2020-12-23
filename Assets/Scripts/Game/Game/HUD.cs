@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using PlayerColor = Structure.PlayerColor;
+
 public class HUD : MonoBehaviour
 {
     public Rule rule;
@@ -63,12 +65,18 @@ public class HUD : MonoBehaviour
     //更新正在行动提示
     public void UpdateActionPlayer(int player) {
         string str = "";
-        switch(player) {
-            case 0:
+        switch((PlayerColor)player) {
+            case PlayerColor.Red:
                 str += "<color=#DD0000FF>红棋</color>";
                 break;
-            case 1:
+            case PlayerColor.Blue:
                 str += "<color=#0000DDFF>蓝棋</color>";
+                break;
+            case PlayerColor.Yellow:
+                str += "<color=#FFDD00FF>黄棋</color>";
+                break;
+            case PlayerColor.Green:
+                str += "<color=#00DD00FF>绿棋</color>";
                 break;
         }
         str += "行动中";

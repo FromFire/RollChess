@@ -4,19 +4,21 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
+using PlayerChoices = Structure.PlayerChoices;
+
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
 
     //显示高光tilemap层
-    HighlightDisplay highlightDisplay;
+    public HighlightDisplay highlightDisplay;
 
     //HUD层
     public HUD hud;
 
     // 存储棋盘信息
-    Board board;
+    public Board board;
     // 存储棋子信息
-    TokenSet tokenSet;
+    public TokenSet tokenSet;
 
     // 当前状态
     // waiting: 等待玩家操作
@@ -43,10 +45,13 @@ public class Rule : MonoBehaviour {
     void Start()
     {
         //读取Entrance传来的Message
-        string filename = "Maps/Second";
+        string filename = "Maps/Untitled";
         if(GameObject.Find("MessageToGame") != null) {
             Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
+            // 获取地图
             filename = "Maps/" + message.GetMessage<string> ("mapFilename");
+            // 获取玩家数量
+            message.GetMessage<List<PlayerChoices>> ("mapFilename");
         }
         
         //读取地图json文件
@@ -57,18 +62,13 @@ public class Rule : MonoBehaviour {
         nowPlayer = 0;
 
         //初始化board
-        board = GameObject.Find("/ScriptObjects/Board").GetComponent<Board>();
         board.Init(boardEntity.map, boardEntity.special, boardEntity.portal);
 
         //初始化tokenSet
-        tokenSet = GameObject.Find("/ScriptObjects/TokenSet").GetComponent<TokenSet>();
         tokenSet.Init(boardEntity.tokens);
 
         //初始化选中信息
         reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
-
-        //初始化SpecialEffectDisplay
-        highlightDisplay = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<HighlightDisplay>();
     }
 
     // Update is called once per frame
@@ -77,18 +77,13 @@ public class Rule : MonoBehaviour {
         //获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        // Vector3 loc = Input.mousePosition;
         Vector2Int pos = highlightDisplay.WorldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
-        
-        // Debug.Log("Rule.Update()[Pre];");
 
         // 若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
         if(!board.IsInBoard(pos)) {
             return;
         }
-        
-        // Debug.Log("Rule.Update()[Post];");
 
         // 判断鼠标是否在可走的格子上，若不在，取消路径高亮
         if(pos3 != highlightDisplay.highlightRouteEnd) {
@@ -163,16 +158,18 @@ public class Rule : MonoBehaviour {
 
     // 选中格子
     //
-    // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
-    //      是：移动棋子，return
-    //      否：清空棋子选中状态
-    // 2. 判定是否可走的格子
-    //      是：选中该格子（将其高亮，取消先前的高亮）
-    //      否：取消选中（取消先前的高亮）
-    // 3. 判定该格是否有己方棋子
-    //      是：预览可走位置（高亮它可以到达的所有格子）
+    
 
     public void ChooseGrid(Vector3 loc) {
+        // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
+        //      是：移动棋子，return
+        //      否：清空棋子选中状态
+        // 2. 判定是否可走的格子
+        //      是：选中该格子（将其高亮，取消先前的高亮）
+        //      否：取消选中（取消先前的高亮）
+        // 3. 判定该格是否有己方棋子
+        //      是：预览可走位置（高亮它可以到达的所有格子）
+
         //获取点击的点在tilemap上的坐标
         //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
         Vector2Int pos = highlightDisplay.WorldToCell(loc);  // TODO: 用TilemapDisplay来干这件事

@@ -1967,7 +1967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapManager: {fileID: 1158444679}
-  tokenList: 0b0000000a000000
+  tokenList: 0a0000000b0000000c0000000d000000
 --- !u!114 &1158444679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2515,7 +2515,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5adf89bd034874ea878849b78ac4ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightDisplay: {fileID: 2044830711}
   hud: {fileID: 1897090357}
+  board: {fileID: 324761818}
+  tokenSet: {fileID: 605714459}
   status: 0
   totalPlayer: 0
   nowPlayer: 0
