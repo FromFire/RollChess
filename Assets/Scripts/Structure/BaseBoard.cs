@@ -100,8 +100,7 @@ public class BaseBoard<T> where T:new(){
 
     //检查某下标是否合法
     public bool IsValid(Vector2Int pos) {
-        int index = FindIndex(pos);
-        if(pos.x >= capacity || pos.y >= capacity) {
+        if(System.Math.Abs(pos.x) >= capacity || System.Math.Abs(pos.y) >= capacity) {
             return false;
         }
         return true;
