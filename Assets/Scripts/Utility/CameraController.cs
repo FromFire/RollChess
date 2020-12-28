@@ -13,12 +13,26 @@ public class CameraController : MonoBehaviour {
     bool isMousePressedLastTime = false;
     public int dragKey = 0;
 
+    //禁用鼠标滚轮放大缩小
+    public bool banZoom;
+
 
     // Start is called before the first frame update
     void Start() { }
 
     // Update is called once per frame
     void Update() {
+        //鼠标滚轮放大缩小
+        if(!banZoom) {
+            Zoom();
+        }
+
+        //鼠标拖动地图
+        Drag();
+    }
+
+    // 鼠标滚轮放大缩小
+    void Zoom() {
         //鼠标滚轮缩小（最远为10）
         if (Input.GetAxis("Mouse ScrollWheel") < 0 && camera.orthographicSize <= 10) {
             camera.orthographicSize += 1;
@@ -28,7 +42,10 @@ public class CameraController : MonoBehaviour {
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && camera.orthographicSize > 1) {
             camera.orthographicSize -= 1;
         }
+    }
 
+    // 鼠标拖动地图
+    void Drag() {
         //鼠标左键按住不放，拖拽视角
         if (Input.GetMouseButton(dragKey)) {
             Vector3 mousePosNow = Input.mousePosition;

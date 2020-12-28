@@ -38,9 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Board
     uniqueID: 1610566685
     locked: 0
@@ -61,4 +58,7 @@ TagManager:
     locked: 0
   - name: HexGrid
     uniqueID: 2179485411
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
