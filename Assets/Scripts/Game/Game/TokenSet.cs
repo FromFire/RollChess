@@ -6,7 +6,7 @@ using Widget;
 //管理所有棋子的类
 public class TokenSet : MonoBehaviour {
 
-    TokensDisplay tokensDisplay;
+    public TokensDisplay tokensDisplay;
 
     List<Token> tokenList;
 
@@ -17,7 +17,6 @@ public class TokenSet : MonoBehaviour {
             tokenList.Add(new Token(token.x, token.y, token.player));
         }
 
-        tokensDisplay = GameObject.Find("/Grid/TilemapToken").GetComponent<TokensDisplay>();
         tokensDisplay.Display(entity);
     }
 

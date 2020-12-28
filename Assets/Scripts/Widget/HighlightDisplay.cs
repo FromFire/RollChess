@@ -8,9 +8,9 @@ using System.Linq;
 public class HighlightDisplay : MonoBehaviour
 {
     //高亮自身格子和可到达格子
-    Tilemap tilemapReachableHighlight;
+    public Tilemap tilemapReachableHighlight;
     //高亮路径
-    Tilemap tilemapRouteHighlight;
+    public Tilemap tilemapRouteHighlight;
 
 
     //存储各类Tile的集合
@@ -27,15 +27,12 @@ public class HighlightDisplay : MonoBehaviour
     //正在高亮的路径（Route层）
     List<Vector3Int> highlightRoute;
     //正在高亮的路径的终点
+    [HideInInspector]
     public Vector3Int highlightRouteEnd;
 
     // Start is called before the first frame update
     void Start()
     {
-        //初始化tilemap
-        tilemapReachableHighlight = GameObject.Find("/Grid/TilemapReachableHighlight").GetComponent<Tilemap>();
-        tilemapRouteHighlight = GameObject.Find("/Grid/TilemapRouteHighlight").GetComponent<Tilemap>();
-
         //初始化空的高亮列表
         highlightGridPosition = new List<Vector3Int>();
         highlightRoute = new List<Vector3Int>();
@@ -44,9 +41,7 @@ public class HighlightDisplay : MonoBehaviour
         //初始化tileList
         //tile顺序按照enum tileKeys中规定的来
         List<string> tileNames = new List<string> {
-            // "Tiles/floor-steelBlue",    //floorSteelBlue
             "Tiles/highlight-blue",
-            // "Tiles/floor-yellow"        //floorYellow
             "Tiles/highlight-red"
         };
 

@@ -8,7 +8,7 @@ using Widget;
 // 加载地图、管理地图状态
 public class Board : MonoBehaviour{
     //棋盘的显示
-    BoardDisplay boardDisplay;
+    public BoardDisplay boardDisplay;
 
     //存储每一个格子
     BaseBoard<SingleGrid> map;
@@ -45,7 +45,6 @@ public class Board : MonoBehaviour{
             map.GetData(new Vector2Int(portal.fromX, portal.fromY)).PortalTarget = new Vector2Int(portal.toX, portal.toY);
         }
         
-        boardDisplay = GameObject.Find("/Grid/TilemapBoard").GetComponent<BoardDisplay>();
         boardDisplay.Display(map);
     }
 

@@ -11,7 +11,9 @@ namespace Widget {
         public TilemapManager tilemapManagerSpecial;
 
         //显示传送门的箭头
-        GameObject portalArrows;
+        public GameObject portalArrows;
+
+        public GameObject arrowSample;
 
         //显示自身
         public void Display(BaseBoard<SingleGrid> map) {
@@ -46,7 +48,6 @@ namespace Widget {
             }
 
             //显示传送门之间的箭头
-            portalArrows = GameObject.Find("/Grid/PortalArrows");
             foreach (Vector2Int pos in poses) {
                 if (map.GetData(pos).SpecialEffect == SingleGrid.Effect.Portal) {
                     //获取起止点的local坐标（相对于Grid）
@@ -56,7 +57,7 @@ namespace Widget {
                     Vector3 to3 = tilemapManagerSpecial.tilemap.CellToLocal(new Vector3Int(to.x, to.y, 0));
 
                     //绘制箭头
-                    GameObject obj = (GameObject) Instantiate(GameObject.Find("Grid/PortalArrows/LineSample"));
+                    GameObject obj = arrowSample;
                     obj.transform.parent = portalArrows.transform;
                     LineRenderer line = obj.GetComponent<LineRenderer>();
                     line.SetPosition(0, from3);

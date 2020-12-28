@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 53899737}
   - component: {fileID: 53899736}
   - component: {fileID: 53899735}
+  - component: {fileID: 53899739}
   m_Layer: 0
   m_Name: TilemapBoard
   m_TagString: Untagged
@@ -227,7 +228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &53899735
 TilemapRenderer:
@@ -353,6 +354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapManagerBoard: {fileID: 53899738}
   tilemapManagerSpecial: {fileID: 383354259}
+  portalArrows: {fileID: 1612175133}
+  arrowSample: {fileID: 106934706}
 --- !u!114 &53899738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,6 +371,20 @@ MonoBehaviour:
   tilemap: {fileID: 53899736}
   type: 1
   palette: {fileID: 1784450442}
+--- !u!114 &53899739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53899733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20123ea338257e459390559fe114cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 53899736}
+  tile: {fileID: 11400000, guid: a975d059cad370b498522beb00a2d41f, type: 2}
 --- !u!1 &106934706
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +453,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 64885159
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 1}
@@ -681,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b3c4f92154f694e883b001db81c38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardDisplay: {fileID: 53899737}
 --- !u!4 &324761819
 Transform:
   m_ObjectHideFlags: 0
@@ -726,7 +744,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &383354257
 TilemapRenderer:
@@ -857,7 +875,7 @@ Transform:
   m_Children:
   - {fileID: 709830948}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &459069017
 GameObject:
@@ -1282,9 +1300,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80cec2361b9dd84e92f4875a2ef7d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 592560948}
+  mcamera: {fileID: 592560948}
   dragKey: 0
-  banZoom: 0
+  allowZoom: 1
+  allowMoveUp: 1
+  allowMoveDown: 1
+  allowMoveLeft: 1
+  allowMoveRight: 1
 --- !u!1 &605714458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,6 +1336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c206847321054d4d8dfdc70147d4624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tokensDisplay: {fileID: 1158444678}
 --- !u!4 &605714460
 Transform:
   m_ObjectHideFlags: 0
@@ -1360,7 +1383,7 @@ Transform:
   - {fileID: 324761819}
   - {fileID: 605714460}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703418164
 GameObject:
@@ -1961,7 +1984,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1158444676
 TilemapRenderer:
@@ -2000,14 +2023,14 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 667999085
-  m_SortingLayer: -2
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1158444677
@@ -2113,7 +2136,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 96}
+  m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1172206949
@@ -2260,7 +2283,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1537085194
 GameObject:
@@ -2443,7 +2466,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1687688966
 TilemapRenderer:
@@ -2482,7 +2505,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2115481885
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -2809,7 +2832,7 @@ RectTransform:
   - {fileID: 703418165}
   - {fileID: 949286879}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2914,7 +2937,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1962812515
 TilemapRenderer:
@@ -3037,19 +3060,19 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995969748}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1962812514}
-  - {fileID: 2044830708}
   - {fileID: 53899734}
-  - {fileID: 1158444675}
   - {fileID: 383354256}
-  - {fileID: 1612175134}
+  - {fileID: 2044830708}
+  - {fileID: 1962812514}
   - {fileID: 1687688965}
+  - {fileID: 1612175134}
+  - {fileID: 1158444675}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2021946124
 GameObject:
@@ -3160,7 +3183,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995969750}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &2044830709
 TilemapRenderer:
@@ -3259,4 +3282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd564d369a2fa144b88b5c5bac89dc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemapReachableHighlight: {fileID: 2044830710}
+  tilemapRouteHighlight: {fileID: 1962812516}
   highlightRouteEnd: {x: 0, y: 0, z: 0}

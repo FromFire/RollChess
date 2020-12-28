@@ -50,14 +50,14 @@ TagManager:
   - name: RouteHighlight
     uniqueID: 2838373783
     locked: 0
+  - name: HexGrid
+    uniqueID: 2179485411
+    locked: 0
   - name: PortalArrows
     uniqueID: 64885159
     locked: 0
   - name: Token
     uniqueID: 667999085
-    locked: 0
-  - name: HexGrid
-    uniqueID: 2179485411
     locked: 0
   - name: Default
     uniqueID: 0
