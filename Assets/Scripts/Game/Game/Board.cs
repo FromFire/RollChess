@@ -23,7 +23,7 @@ public class Board : MonoBehaviour{
         //导入地图信息
         map = new BaseBoard<SingleGrid>();
         foreach(SingleMapGridEntity grid in mapEntity) {
-            map.SetData(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
+            map.Add(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
         }
 
         //导入特殊格子信息
@@ -165,7 +165,7 @@ public class Board : MonoBehaviour{
 
     //检测某坐标是否在地图合法范围内
     public bool IsInBoard(Vector2Int pos) {
-        return map.IsValid(pos);
+        return map.Contains(pos);
     }
 }
 

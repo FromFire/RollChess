@@ -51,112 +51,58 @@ public class SingleGrid {
 
 
 
-// 实现地图基本功能，主要是支持两个维度坐标可在正负两方向无限延伸
+// 实现地图中数据存储的功能
 public class BaseBoard<T> where T:new(){
 
-    /// <summary>
-    ///   <para> 数据容器 </para>
-    ///   <para> 第一维：容量=4。四象限分别存储，顺序是负负，负正，正负，正正，即二进制递增。
-    ///          四象限分别存储，0存储且仅存储在正象限上。 </para>
-    ///   <para> 第二维：容量=capacity。x轴。 </para>
-    ///   <para> 第三维：容量=capacity。y轴。 </para>
-    /// </summary>
-    List<List<List<T>>> mapList;
+    // 数据容器
+    Dictionary<Vector2Int, T> positionOfGrid;
 
-    //默认每个象限20*20，全地图39*39
-    const int DEFAULT_CAPACITY = 20;
-    //实际容量
-    int capacity;
-
-    // 可能不为空的坐标集合（可能不为空：此坐标被设置过）
-    HashSet<Vector2Int> validPositionList;
+    //边界
+    int borderUp = int.MinValue;
+    int  borderDown = int.MaxValue;
+    int borderLeft = int.MinValue;
+    int borderRight = int.MaxValue;
 
     //初始化，将四个象限初始化为四个默认大小的二维矩阵
     public BaseBoard() {
-        //初始化数据容器
-        mapList = new List<List<List<T>>> {new List<List<T>>(), new List<List<T>>(), new List<List<T>>(), new List<List<T>>()};
-
-        //初始化容量
-        capacity = DEFAULT_CAPACITY;
-
-        //使用new List<T>会运行崩溃，因为List初始化不能指定容量
-        for(int i=0; i<4; i++) {
-            for(int j=0; j<DEFAULT_CAPACITY; j++){
-                mapList[i].Add(new List<T>());
-                for(int k=0;k<DEFAULT_CAPACITY;k++) {
-                    mapList[i][j].Add(new T());
-                }
-            }
-        }
-
-        //初始化validPositionList
-        validPositionList = new HashSet<Vector2Int>();
+        positionOfGrid = new Dictionary<Vector2Int, T>();
     }
 
-    //根据x,y寻找所在地图下标，返回0-3
-    int FindIndex(Vector2Int pos) {
-        return 0 + (pos.x>=0? 2:0) + (pos.y>=0? 1:0);
-    }
-
-    //检查某下标是否合法
-    public bool IsValid(Vector2Int pos) {
-        if(System.Math.Abs(pos.x) >= capacity || System.Math.Abs(pos.y) >= capacity) {
-            return false;
-        }
-        return true;
+    //检查某下标是否有定义
+    public bool Contains(Vector2Int pos) {
+        return positionOfGrid.ContainsKey(pos);
     }
 
     //获取T
     public T GetData(Vector2Int pos) {
-        int index = FindIndex(pos);
-        Debug.Assert(IsValid(pos));
-        return mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)];
+        return Contains(pos) ? positionOfGrid[pos] : new T();
     }
 
     //设置T
-    public void SetData(Vector2Int pos, T data) {
-        // 若pos不在地图范围内，则扩充地图直到地图包含pos的位置
-        while(!IsValid(pos)) {
-            ExpandSpace();
-        }
-        // 设置信息
-        int index = FindIndex(pos);
-        mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = data;
-        // 所有设置过的都视为关键信息
-        validPositionList.Add(pos);
+    public void Add(Vector2Int pos, T data) {
+        positionOfGrid.Add(pos, data);
+        UpdateBorder(pos);
     }
     
     //删除T
     public void RemoveData(Vector2Int pos) {
-        int index = FindIndex(pos);
-        mapList[index][System.Math.Abs(pos.x)][System.Math.Abs(pos.y)] = new T();
-        validPositionList.Remove(pos);
+        if(Contains(pos)) positionOfGrid.Remove(pos);
     }
 
-    //获取所有可能非空的坐标
-    public HashSet<Vector2Int> ToList() {
-        return validPositionList;
-    }
-
-    //将地图长宽都*2，即面积*4
-    void ExpandSpace() {
-        int expandedCapacity = 2 * capacity;
-        for(int map=0; map<4; map++) {
-            // 扩充y，[a][a]扩充为[a][2a]
-            for(int i=0; i<capacity; i++) {
-                for(int j=capacity; j<expandedCapacity; j++) {
-                    mapList[map][i].Add(new T());
-                }
-            }
-
-            // 扩充x，[a][2a]扩充为[2a][2a]
-            for(int i=capacity; i<expandedCapacity; i++) {
-                mapList[map].Add(new List<T>());
-                for(int j=0; j<expandedCapacity; j++) {
-                    mapList[map][i].Add(new T());
-                }
-            }
+    //返回所有有定义的数据列表
+    public HashSet<Vector2Int> ToPositionsSet() {
+        HashSet<Vector2Int> ret = new HashSet<Vector2Int>();
+        foreach(KeyValuePair<Vector2Int, T> kvp in positionOfGrid) {
+            ret.Add(kvp.Key);
         }
-        capacity *= 2;
+        return ret;
+    }
+
+    // 更新地图边界
+    void UpdateBorder(Vector2Int pos) {
+        borderLeft = System.Math.Min(borderLeft, pos.x);
+        borderRight = System.Math.Max(borderRight, pos.x);
+        borderUp = System.Math.Max(borderUp, pos.y);
+        borderDown = System.Math.Min(borderDown, pos.y);
     }
 }

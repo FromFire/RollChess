@@ -18,7 +18,7 @@ namespace Widget {
         //显示自身
         public void Display(BaseBoard<SingleGrid> map) {
             //获取有效数据列表
-            HashSet<Vector2Int> keyInfo = map.ToList();
+            HashSet<Vector2Int> keyInfo = map.ToPositionsSet();
             HashSet<Vector2Int> poses = new HashSet<Vector2Int>();
             foreach (Vector2Int pos in keyInfo) {
                 //去除不可走的坐标
