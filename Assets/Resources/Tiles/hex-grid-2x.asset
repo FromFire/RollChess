@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: hex-grid
+  m_Name: hex-grid-2x
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 66e8dfad9c276704180b6b0165f4b4fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28536eea769ed08448643e1535f4c739, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

@@ -18,6 +18,12 @@ public class PauseGame : MonoBehaviour
     //退出游戏按钮
     public Button backGameButton;
 
+    //显示网格按钮
+    public Button switchGrid;
+
+    //网格
+    public HexGridDisplay hexGridDisplay;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +31,16 @@ public class PauseGame : MonoBehaviour
         pauseButton.onClick.AddListener(ShowPausePanel);
         backGameButton.onClick.AddListener(HidePausePanel);
         exitGameButton.onClick.AddListener(BackMainMenu);
+        switchGrid.onClick.AddListener(ShowGrid);
+    }
+
+    //显示网格
+    public void ShowGrid() {
+        if(hexGridDisplay.ShowHexGrid == true) {
+            hexGridDisplay.ShowHexGrid = false;
+        } else {
+            hexGridDisplay.ShowHexGrid = true;
+        }
     }
 
     //弹出暂停框
