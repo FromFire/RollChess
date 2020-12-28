@@ -13,8 +13,8 @@ public class CameraController : MonoBehaviour {
     bool isMousePressedLastTime = false;
     public int dragKey = 0;
 
-    //禁用鼠标滚轮放大缩小
-    public bool banZoom;
+    //允许鼠标滚轮放大缩小
+    public bool allowZoom;
 
 
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         //鼠标滚轮放大缩小
-        if(!banZoom) {
+        if(allowZoom) {
             Zoom();
         }
 

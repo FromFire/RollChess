@@ -12,17 +12,17 @@ public class HexGridDisplay : MonoBehaviour
     public Tile tile;
 
     // 是否显示网格
-    bool showHexGrid;
+    bool visible;
 
     // Start is called before the first frame update
     void Start()
     {
-        ShowHexGrid = true;
+        Visible = true;
     }
 
     // 显示和隐藏网格
-    public bool ShowHexGrid {
-        get { return showHexGrid; }
+    public bool Visible {
+        get { return visible; }
         set {
             Tile tileToShow = value ? tile : null;
             for(int i=-20; i<20; i++) {
@@ -30,7 +30,7 @@ public class HexGridDisplay : MonoBehaviour
                     tilemap.SetTile(new Vector3Int(i,j,0), tileToShow);
                 }
             }
-            showHexGrid = value;
+            visible = value;
         }
     }
 

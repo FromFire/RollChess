@@ -31,16 +31,12 @@ public class PauseGame : MonoBehaviour
         pauseButton.onClick.AddListener(ShowPausePanel);
         backGameButton.onClick.AddListener(HidePausePanel);
         exitGameButton.onClick.AddListener(BackMainMenu);
-        switchGrid.onClick.AddListener(ShowGrid);
+        switchGrid.onClick.AddListener(SwitchHexGridVisiblity);
     }
 
-    //显示网格
-    public void ShowGrid() {
-        if(hexGridDisplay.ShowHexGrid == true) {
-            hexGridDisplay.ShowHexGrid = false;
-        } else {
-            hexGridDisplay.ShowHexGrid = true;
-        }
+    // 切换网格显示状态
+    public void SwitchHexGridVisiblity() {
+        hexGridDisplay.Visible = !hexGridDisplay.Visible;
     }
 
     //弹出暂停框
