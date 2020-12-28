@@ -59,9 +59,9 @@ public class BaseBoard<T> where T:new(){
 
     //边界
     int borderUp = int.MinValue;
-    int  borderDown = int.MaxValue;
-    int borderLeft = int.MinValue;
-    int borderRight = int.MaxValue;
+    int borderDown = int.MaxValue;
+    int borderLeft = int.MaxValue;
+    int borderRight = int.MinValue;
 
     //初始化，将四个象限初始化为四个默认大小的二维矩阵
     public BaseBoard() {
@@ -105,4 +105,10 @@ public class BaseBoard<T> where T:new(){
         borderUp = System.Math.Max(borderUp, pos.y);
         borderDown = System.Math.Min(borderDown, pos.y);
     }
+
+    // 获取边界
+    public int BorderUp { get{ return borderUp; } }
+    public int BorderDown { get{ return borderDown; } }
+    public int BorderLeft { get{ return borderLeft; } }
+    public int BorderRight { get{ return borderRight; } }
 }

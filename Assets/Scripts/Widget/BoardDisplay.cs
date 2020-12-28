@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Structure;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Widget {
     public class BoardDisplay : MonoBehaviour {
@@ -13,11 +14,19 @@ namespace Widget {
         //显示传送门的箭头
         public GameObject portalArrows;
 
+        //传送门的样式案例
         public GameObject arrowSample;
+
+        //摄像头
+        public CameraController cameraController;
+
+        // 数据
+        BaseBoard<SingleGrid> map;
 
         //显示自身
         public void Display(BaseBoard<SingleGrid> map) {
             //获取有效数据列表
+            this.map = map;
             HashSet<Vector2Int> keyInfo = map.ToPositionsSet();
             HashSet<Vector2Int> poses = new HashSet<Vector2Int>();
             foreach (Vector2Int pos in keyInfo) {
@@ -64,6 +73,18 @@ namespace Widget {
                     line.SetPosition(1, to3);
                 }
             }
+        }
+
+        void Update() {
+            // 获取屏幕中心的Tilemap坐标
+            Vector3 screenCenterWorld = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width/2,Screen.height/2,0));
+            Vector2Int screenCenter = tilemapManagerBoard.WorldToCell(screenCenterWorld);
+
+            // 判定是否已超过地图边界，若越界，则不允许向那个方向继续滑动
+            cameraController.allowMoveLeft = screenCenter.x > map.BorderLeft;
+            cameraController.allowMoveRight = screenCenter.x < map.BorderRight;
+            cameraController.allowMoveUp = screenCenter.y < map.BorderUp;
+            cameraController.allowMoveDown = screenCenter.y > map.BorderDown;
         }
 
         //移除指定格子

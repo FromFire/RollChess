@@ -30,5 +30,10 @@ namespace Widget {
             cells.Remove(cell);
             return true;
         }
+
+        public Vector2Int WorldToCell(Vector3 loc) {
+            Vector3Int vector = tilemap.WorldToCell(loc);
+            return new Vector2Int(vector.x, vector.y);
+        }
     }
 }

@@ -356,6 +356,7 @@ MonoBehaviour:
   tilemapManagerSpecial: {fileID: 383354259}
   portalArrows: {fileID: 1612175133}
   arrowSample: {fileID: 106934706}
+  cameraController: {fileID: 592560950}
 --- !u!114 &53899738
 MonoBehaviour:
   m_ObjectHideFlags: 0
