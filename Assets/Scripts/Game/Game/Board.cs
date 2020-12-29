@@ -10,6 +10,12 @@ public class Board : MonoBehaviour{
     //棋盘的显示
     public BoardDisplay boardDisplay;
 
+    // 六边形网格显示
+    public HexGridDisplay hexGridDisplay;
+
+    // 不可走格子显示
+    public UnwalkableDisplay unwalkableDisplay;
+
     //存储每一个格子
     BaseBoard<SingleGrid> map;
 
@@ -45,7 +51,16 @@ public class Board : MonoBehaviour{
             map.GetData(new Vector2Int(portal.fromX, portal.fromY)).PortalTarget = new Vector2Int(portal.toX, portal.toY);
         }
         
+        //显示地图
         boardDisplay.Display(map);
+
+        //显示不可走格子
+        unwalkableDisplay.map = map;
+        unwalkableDisplay.Display();
+
+        //显示六边形网格
+        hexGridDisplay.map = map;
+        hexGridDisplay.Visible = true;
     }
 
     // Update is called once per frame
