@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 using PlayerColor = Structure.PlayerColor;
 
-public class HUD : MonoBehaviour
-{
+public class HUD : MonoBehaviour {
     public Rule rule;
 
     //roll点按钮
     public Button rollButton;
+
     //roll出的数值
     public Text rollNumber;
 
@@ -23,17 +22,29 @@ public class HUD : MonoBehaviour
     //正在行动提示
     public Text actionPlayer;
 
+    // 用于获取鼠标所在的坐标
+    public Cursor cursor;
+
+    // 是否开启弹窗
+    public bool popupVisible = false;
+
+    // 弹窗
+    public Popup popup;
+
+    // 弹窗时间间隔
+    public float popupDelay = 0.6f;
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         //初始化获胜界面
         gameReview.gameObject.SetActive(false);
+        popup.Hide();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+        if (popupVisible)
+            UpdatePopup();
     }
 
     /// <summary>
@@ -63,7 +74,7 @@ public class HUD : MonoBehaviour
     ///   <para> 更新正在行动提示 </para>
     /// </summary>
     public void UpdateActionPlayer(int player) {
-        string str = GetColorfulTokenString((PlayerColor)player);
+        string str = GetColorfulTokenString((PlayerColor) player);
         str += "行动中";
         actionPlayer.text = str;
     }
@@ -73,7 +84,7 @@ public class HUD : MonoBehaviour
     /// </summary>
     string GetColorfulTokenString(PlayerColor color) {
         string str = "";
-        switch((PlayerColor)color) {
+        switch ((PlayerColor) color) {
             case PlayerColor.Red:
                 str = "<color=#DD0000FF>红棋</color>";
                 break;
@@ -87,6 +98,7 @@ public class HUD : MonoBehaviour
                 str = "<color=#00DD00FF>绿棋</color>";
                 break;
         }
+
         return str;
     }
 
@@ -95,7 +107,21 @@ public class HUD : MonoBehaviour
     /// </summary>
     public void ShowGameReview(int winner) {
         gameReview.gameObject.SetActive(true);
-        Text winnerInfo = GameObject.Find("/HUD/GameReview/WinnerInfo").GetComponent<Text> ();
-        winnerInfo.text = GetColorfulTokenString((PlayerColor)winner) + " 获胜了！";
+        Text winnerInfo = GameObject.Find("/HUD/GameReview/WinnerInfo").GetComponent<Text>();
+        winnerInfo.text = GetColorfulTokenString((PlayerColor) winner) + " 获胜了！";
+    }
+
+    /// <summary>
+    ///   <para> 更新浮窗 </para>
+    /// </summary>
+    void UpdatePopup() {
+        if (cursor.GetStayDuration() > popupDelay) {
+            popup.SetText(cursor.GetPointedCell().ToString());
+            popup.Show();
+            popup.SetPosition(cursor.GetMousePosition());
+        }
+        else {
+            popup.Hide();
+        }
     }
 }
