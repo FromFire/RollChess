@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +18,8 @@ public class PauseGame : MonoBehaviour
     //退出游戏按钮
     public Button backGameButton;
 
-    //显示网格按钮
-    public Button switchGrid;
+    //显示网格开关
+    public Toggle switchGrid;
 
     //网格
     public HexGridDisplay hexGridDisplay;
@@ -31,12 +31,12 @@ public class PauseGame : MonoBehaviour
         pauseButton.onClick.AddListener(ShowPausePanel);
         backGameButton.onClick.AddListener(HidePausePanel);
         exitGameButton.onClick.AddListener(BackMainMenu);
-        switchGrid.onClick.AddListener(SwitchHexGridVisiblity);
+        switchGrid.onValueChanged.AddListener(SwitchHexGridVisiblity);
     }
 
     // 切换网格显示状态
-    public void SwitchHexGridVisiblity() {
-        hexGridDisplay.Visible = !hexGridDisplay.Visible;
+    public void SwitchHexGridVisiblity(bool isOn) {
+        hexGridDisplay.Visible = isOn;
     }
 
     //弹出暂停框
