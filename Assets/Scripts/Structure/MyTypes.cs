@@ -13,6 +13,11 @@ namespace Structure {
         Special_Portal,
         Special_DoubleStep,
         Special_BrokenBridge,
+        Special_PulseOn,
+        Special_PulseOff,
+        Special_Stop,
+        Special_Ritual,
+        Special_RollAgain,
         Special_End,
         Token_Begin,
 
@@ -153,8 +158,11 @@ namespace Structure {
             {TileType.Special_Portal, "Tiles/special-portal"},
             {TileType.Special_DoubleStep, "Tiles/special-doubleStep"},
             {TileType.Special_BrokenBridge, "Tiles/special-brokenBridge"},
-            // {TileType.Token_Tank_Blue, "Tiles/token-blueTank"},
-            // {TileType.Token_Tank_Red, "Tiles/token-redTank"},
+            {TileType.Special_PulseOn, "Tiles/special-pulseOn"},
+            {TileType.Special_PulseOff, "Tiles/special-pulseOff"},
+            {TileType.Special_Stop, "Tiles/special-stop"},
+            {TileType.Special_Ritual, "Tiles/special-ritual"},
+            {TileType.Special_RollAgain, "Tiles/special-rollAgain"},
             {TileType.Token_Alien_Blue, "Tiles/token-blueAlien"},
             {TileType.Token_Alien_Red, "Tiles/token-redAlien"},
             {TileType.Token_Alien_Green, "Tiles/token-greenAlien"},
@@ -174,7 +182,12 @@ namespace Structure {
                     new List<TileType>() {
                         TileType.Special_Portal,
                         TileType.Special_BrokenBridge,
-                        TileType.Special_DoubleStep
+                        TileType.Special_DoubleStep,
+                        TileType.Special_PulseOn,
+                        TileType.Special_PulseOff,
+                        TileType.Special_Stop,
+                        TileType.Special_Ritual,
+                        TileType.Special_RollAgain
                     }
                 }, {
                     TilemapType.Token,
@@ -192,12 +205,22 @@ namespace Structure {
             {"portal", TileType.Special_Portal},
             {"brokenBridge", TileType.Special_BrokenBridge},
             {"doubleStep", TileType.Special_DoubleStep},
+            {"pulseOn", TileType.Special_PulseOn},
+            {"pulseOff", TileType.Special_PulseOff},
+            {"stop", TileType.Special_Stop},
+            {"ritual", TileType.Special_Ritual},
+            {"rollAgain", TileType.Special_RollAgain},
         };
 
         public static Dictionary<TileType, string> specialNameOfTileType = new Dictionary<TileType, string>() {
             {TileType.Special_Portal, "portal"},
             {TileType.Special_BrokenBridge, "brokenBridge"},
             {TileType.Special_DoubleStep, "doubleStep"},
+            {TileType.Special_PulseOn, "pulseOn"},
+            {TileType.Special_PulseOff, "pulseOff"},
+            {TileType.Special_Stop, "stop"},
+            {TileType.Special_Ritual, "ritual"},
+            {TileType.Special_RollAgain, "rollAgain"},
         };
 
         public static Dictionary<TileType, int> playerIdOfTileType = new Dictionary<TileType, int>() {
