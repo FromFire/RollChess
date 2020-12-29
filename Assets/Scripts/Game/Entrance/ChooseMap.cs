@@ -71,6 +71,7 @@ public class ChooseMap : MonoBehaviour
         // 预览地图
         Sprite image = Resources.Load<Sprite>(filename);
         mapPreview.sprite = image;
+        mapPreview.color = Color.white;
         // 通知MenuGUI
         mapFilename = filename.Split('/').Last();
         menuGUI.SetCurrentMap(mapFilename);

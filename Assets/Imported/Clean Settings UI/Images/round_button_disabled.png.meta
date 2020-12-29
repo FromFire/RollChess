@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a8f55224091722d4ba68343a678cce74
+guid: 236fe33ac072944f983f4ac8b459d751
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -27,12 +27,12 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: 1
+  textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -100
     wrapU: 1
     wrapV: 1
@@ -46,7 +46,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 168, y: 178, z: 142, w: 241}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -84,7 +84,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+  spritePackingTag: cleanSettingsUI
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
