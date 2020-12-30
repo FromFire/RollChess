@@ -76,8 +76,7 @@ namespace Widget {
                     GameObject obj = Object.Instantiate(arrowSample);
                     obj.transform.parent = portalArrows.transform;
                     LineRenderer line = obj.GetComponent<LineRenderer>();
-                    line.SetPosition(0, from3);
-                    line.SetPosition(1, to3);
+                    DrawCurve(from3, (from3+to3)/2 + 2*Vector3.up, to3, line);
                 }
             }
 
@@ -86,6 +85,22 @@ namespace Widget {
             string json = text.text;
             Debug.Log(json);
             specialIntroductionsEntity = JsonHelper.FromJson<SpecialIntroductionsEntity> (json);
+        }
+
+        // 画贝塞尔曲线
+        void DrawCurve (Vector3 point1,Vector3 point2,Vector3 point3,LineRenderer MyL) {
+            int vertexCount = 30;//采样点数量
+	        List<Vector3> pointList = new List<Vector3> ();
+ 
+	        for (float ratio = 0; ratio <= 1; ratio +=1.0f/ vertexCount)
+	        {
+		        Vector3 tangentLineVertex1 = Vector3.Lerp (point1, point2, ratio);
+		        Vector3 tangentLineVectex2 = Vector3.Lerp (point2, point3, ratio);
+		        Vector3 bezierPoint = Vector3.Lerp (tangentLineVertex1, tangentLineVectex2, ratio);
+		        pointList.Add (bezierPoint);
+	        }
+	        MyL.positionCount = pointList.Count;
+	        MyL.SetPositions (pointList.ToArray());
         }
 
         void Update() {
