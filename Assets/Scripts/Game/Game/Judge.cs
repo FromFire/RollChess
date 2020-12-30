@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using PlayerChoices = Structure.PlayerChoices;
 
@@ -46,6 +47,11 @@ public class Judge : MonoBehaviour
     {
         //游戏已结束，Update失效
         if(isGameOver) {
+            return;
+        }
+
+        // 避免与UI按键冲突
+        if (Cursor.isOverUI()) {
             return;
         }
 

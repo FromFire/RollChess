@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 // using Cell = UnityEngine.Vector3Int;
 
@@ -27,6 +28,11 @@ public class Cursor : MonoBehaviour {
             duration = 0;
         }
         lastCell = cell;
+    }
+
+    // 判断鼠标当前是否位于UI上
+    static public bool isOverUI() {
+        return ( EventSystem.current.IsPointerOverGameObject() || EventSystem.current.currentSelectedGameObject != null );
     }
 
     // 获取当前鼠标指向的块

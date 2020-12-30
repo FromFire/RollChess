@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using PlayerChoices = Structure.PlayerChoices;
 
@@ -86,6 +85,11 @@ public class Rule : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // 避免与UI按键冲突
+        if (Cursor.isOverUI()) {
+            return;
+        }
+
         //获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);

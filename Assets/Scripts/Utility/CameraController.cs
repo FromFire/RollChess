@@ -28,6 +28,11 @@ public class CameraController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        // 避免与UI按键冲突
+        if (Cursor.isOverUI()) {
+            return;
+        }
+
         //鼠标滚轮放大缩小
         if(allowZoom) {
             Zoom();
