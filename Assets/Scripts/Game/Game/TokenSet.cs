@@ -25,6 +25,7 @@ public class TokenSet : MonoBehaviour {
         //移动棋子
         int player = -1;
         foreach(Token token in tokenList) {
+            Debug.Log(token.GetXY() + " " + from);
             if(token.GetXY() == from) {
                 player = token.player;
                 token.SetXY(to);

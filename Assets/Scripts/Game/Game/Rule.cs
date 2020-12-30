@@ -96,11 +96,6 @@ public class Rule : MonoBehaviour {
         Vector2Int pos = highlightDisplay.WorldToCell(loc);
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
-        // 若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
-        if(!board.IsInBoard(pos)) {
-            return;
-        }
-
         // 判断鼠标是否在可走的格子上，若不在，取消路径高亮
         if(pos3 != highlightDisplay.highlightRouteEnd) {
             highlightDisplay.CancelRouteHightlight();
@@ -157,11 +152,10 @@ public class Rule : MonoBehaviour {
         //传送门须放在走子前面，否则会有BUG：B站在传送站处，A踩到传送站，传送前会吃掉B
         if(board.GetEffect(to) == SingleGrid.Effect.Portal) {
             Vector2Int target = board.GetPortalTarget(to);
-            tokenSet.MoveToken(to, target);
+            tokenSet.MoveToken(from, target);
+        } else {
+            tokenSet.MoveToken(from, to);
         }
-
-        //由tokenSet进行操作
-        tokenSet.MoveToken(from, to);
 
         //检测危桥
         board.DetectBrokenBridge(route);
@@ -185,11 +179,7 @@ public class Rule : MonoBehaviour {
         //      是：预览可走位置（高亮它可以到达的所有格子）
 
         //获取点击的点在tilemap上的坐标
-        //若鼠标所点坐标为非法坐标（在地图之外），则不进行操作
         Vector2Int pos = highlightDisplay.WorldToCell(loc);  // TODO: 用TilemapDisplay来干这件事
-        if(!board.IsInBoard(pos)) {
-            return;
-        }
         Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
 
         //检测是否是走子

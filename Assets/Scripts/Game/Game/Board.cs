@@ -177,11 +177,6 @@ public class Board : MonoBehaviour{
             }
         }
     }
-
-    //检测某坐标是否在地图合法范围内
-    public bool IsInBoard(Vector2Int pos) {
-        return map.Contains(pos);
-    }
 }
 
 

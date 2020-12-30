@@ -66,7 +66,7 @@ namespace Widget {
                     Vector3 to3 = tilemapManagerSpecial.tilemap.CellToLocal(new Vector3Int(to.x, to.y, 0));
 
                     //绘制箭头
-                    GameObject obj = arrowSample;
+                    GameObject obj = Object.Instantiate(arrowSample);
                     obj.transform.parent = portalArrows.transform;
                     LineRenderer line = obj.GetComponent<LineRenderer>();
                     line.SetPosition(0, from3);

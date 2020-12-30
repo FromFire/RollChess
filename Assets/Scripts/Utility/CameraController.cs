@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour {
 
     // 允许的方向，allowMoveUp表示允许摄像机向上移动
     public bool allowMoveUp = true;
-    public bool  allowMoveDown = true;
+    public bool allowMoveDown = true;
     public bool allowMoveLeft = true;
     public bool allowMoveRight = true;
 
