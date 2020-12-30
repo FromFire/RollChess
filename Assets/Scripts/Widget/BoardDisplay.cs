@@ -23,8 +23,10 @@ namespace Widget {
         // 数据
         BaseBoard<SingleGrid> map;
 
+        //鼠标
         public Cursor cursor;
 
+        //特殊格子描述
         SpecialIntroductionsEntity specialIntroductionsEntity;
 
         // 弹窗
@@ -117,7 +119,7 @@ namespace Widget {
             // 当鼠标所在格子是特殊格子时，通知PopUp
             SingleGrid.Effect pointedEffect = map.GetData(cursor.GetPointedCell()).SpecialEffect;
             if(pointedEffect != SingleGrid.Effect.None) {
-                popup.popupVisible = true;
+                //获取类型名称
                 string effectName = "";
                 switch(pointedEffect) {
                     case SingleGrid.Effect.DoubleStep:
@@ -131,15 +133,17 @@ namespace Widget {
                         break;
                 }
 
+                //设置PopUp显示
+                popup.available = true;
                 for(int i=0; i<specialIntroductionsEntity.SpecialIntroductions.Count; i++) {
                     if(specialIntroductionsEntity.SpecialIntroductions[i].name == effectName) {
-                        popup.Title = specialIntroductionsEntity.SpecialIntroductions[i].name;
-                        popup.IntroText = specialIntroductionsEntity.SpecialIntroductions[i].introText;
+                        popup.Title = specialIntroductionsEntity.SpecialIntroductions[i].introTitle;
+                        popup.Describe = specialIntroductionsEntity.SpecialIntroductions[i].introText;
                         popup.EffectIntro = specialIntroductionsEntity.SpecialIntroductions[i].effectText;
                     }
                 }
             } else {
-                popup.popupVisible = false;
+                popup.available = false;
             }
         }
 

@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 6757456507499838390}
   - component: {fileID: 7564120308421528840}
   m_Layer: 5
-  m_Name: IntroText
+  m_Name: Describe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,9 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e217755e4a6388439f345f8a56fe660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 0}
-  introText: {fileID: 0}
-  effectIntro: {fileID: 0}
+  title: {fileID: 8406600844492966006}
+  describe: {fileID: 7564120308421528840}
+  effectIntro: {fileID: 4766562646121118575}
   popupVisible: 0
   popupDelay: 0.6
   cursor: {fileID: 0}

@@ -10,20 +10,21 @@ public class Popup : MonoBehaviour {
 
     // 块的名称
     public Text title;
-    // 块的介绍
-    public Text introText;
+    // 块的描述
+    public Text describe;
     // 块的效果
     public Text effectIntro;
 
     // 是否开启弹窗
-    public bool popupVisible = false;
+    public bool available = false;
 
     // 弹窗时间间隔
-    public float popupDelay;
+    public float delay;
 
     // 用于获取鼠标所在的坐标
     public Cursor cursor;
 
+    // 无穷远处
     Vector3 FAR_AWAY = new Vector3(3000, 3000, 3000);
 
     private void Start() {
@@ -31,7 +32,7 @@ public class Popup : MonoBehaviour {
     }
 
     void Update() {
-        if (popupVisible && cursor.GetStayDuration() > popupDelay) {
+        if (available && cursor.GetStayDuration() > delay) {
             Show();
         }
         else {
@@ -39,24 +40,29 @@ public class Popup : MonoBehaviour {
         }
     }
 
+    //显示
     public void Show() {
         SetPosition(cursor.GetMousePosition());
     }
 
+    //隐藏
     public void Hide() {
         gameObject.transform.position = FAR_AWAY;
     }
 
+    // 设置名称
     public string Title {
         get { return title.text; }
         set { title.text = value; }
     }
 
-    public string IntroText {
-        get { return introText.text; }
-        set { introText.text = value; }
+    // 设置描述
+    public string Describe {
+        get { return describe.text; }
+        set { describe.text = value; }
     }
 
+    // 设置特性介绍
     public string EffectIntro {
         get { return effectIntro.text; }
         set { effectIntro.text = value; }

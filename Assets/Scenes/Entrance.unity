@@ -3307,15 +3307,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22498868, guid: 5bc72610e5ee04f2b9832aa65c9270c4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 196.9
+      value: 193.3
       objectReference: {fileID: 0}
     - target: {fileID: 22498868, guid: 5bc72610e5ee04f2b9832aa65c9270c4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: -0.000003331
       objectReference: {fileID: 0}
     - target: {fileID: 22498868, guid: 5bc72610e5ee04f2b9832aa65c9270c4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 17.654251
+      value: 22.971542
       objectReference: {fileID: 0}
     - target: {fileID: 22498868, guid: 5bc72610e5ee04f2b9832aa65c9270c4, type: 3}
       propertyPath: m_AnchorMin.x

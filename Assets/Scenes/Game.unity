@@ -1821,7 +1821,7 @@ PrefabInstance:
     - target: {fileID: 8406600844344178687, guid: 667e4d0613d6c3b48b1c5de9901da4e3,
         type: 3}
       propertyPath: popupVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8406600844344178687, guid: 667e4d0613d6c3b48b1c5de9901da4e3,
         type: 3}
@@ -1833,6 +1833,11 @@ PrefabInstance:
       propertyPath: popupDelay
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8406600844344178687, guid: 667e4d0613d6c3b48b1c5de9901da4e3,
+        type: 3}
+      propertyPath: describe
+      value: 
+      objectReference: {fileID: 365218902}
     - target: {fileID: 8406600844492966005, guid: 667e4d0613d6c3b48b1c5de9901da4e3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1995,7 +2000,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125.1, y: -60.350006}
+  m_AnchoredPosition: {x: 125.100006, y: -60.350006}
   m_SizeDelta: {x: 250.1705, y: 120.69212}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1038998280
