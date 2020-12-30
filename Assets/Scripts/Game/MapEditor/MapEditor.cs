@@ -123,7 +123,7 @@ namespace Game.MapEditor {
             UpdatePreview();
             
             // 显示浮窗
-            UpdatePopup();
+            //UpdatePopup();
         }
 
         // 将手上选择的块放到选定的坐标上
@@ -193,17 +193,17 @@ namespace Game.MapEditor {
             }
         }
         
-        // 更新浮窗
-        void UpdatePopup() {
-            if (cursor.GetStayDuration() > popupDelay) {
-                popup.SetText(selectedCell+"\n"+selectedTileType+"\n"+selectedTilemapManager);
-                popup.Show();
-                popup.SetPosition(cursor.GetMousePosition());
-            }
-            else {
-                popup.Hide();
-            }
-        }
+        // // 更新浮窗
+        // void UpdatePopup() {
+        //     if (cursor.GetStayDuration() > popupDelay) {
+        //         popup.SetText(selectedCell+"\n"+selectedTileType+"\n"+selectedTilemapManager);
+        //         popup.Show();
+        //         popup.SetPosition(cursor.GetMousePosition());
+        //     }
+        //     else {
+        //         popup.Hide();
+        //     }
+        // }
 
         // 保存地图
         void SaveMap() {

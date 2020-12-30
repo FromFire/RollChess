@@ -20,7 +20,7 @@ public class Cursor : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         Vector3Int cell = tilemap.WorldToCell(mainCamera.ScreenToWorldPoint(GetMousePosition()));
-        if ((cell - lastCell).magnitude <= 2.1) {
+        if (cell == lastCell) {
             if (duration < maxDuration)
                 duration += Time.deltaTime;
         }

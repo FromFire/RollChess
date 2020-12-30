@@ -23,6 +23,13 @@ namespace Widget {
         // 数据
         BaseBoard<SingleGrid> map;
 
+        public Cursor cursor;
+
+        SpecialIntroductionsEntity specialIntroductionsEntity;
+
+        // 弹窗
+        public Popup popup;
+
         //显示自身
         public void Display(BaseBoard<SingleGrid> map) {
             //获取有效数据列表
@@ -73,6 +80,12 @@ namespace Widget {
                     line.SetPosition(1, to3);
                 }
             }
+
+            // 获取格子介绍
+            TextAsset text = Resources.Load<TextAsset>("Texts/SpecialIntroductions");
+            string json = text.text;
+            Debug.Log(json);
+            specialIntroductionsEntity = JsonHelper.FromJson<SpecialIntroductionsEntity> (json);
         }
 
         void Update() {
@@ -85,6 +98,34 @@ namespace Widget {
             cameraController.allowMoveRight = screenCenter.x < map.BorderRight;
             cameraController.allowMoveUp = screenCenter.y < map.BorderUp;
             cameraController.allowMoveDown = screenCenter.y > map.BorderDown;
+
+            // 当鼠标所在格子是特殊格子时，通知PopUp
+            SingleGrid.Effect pointedEffect = map.GetData(cursor.GetPointedCell()).SpecialEffect;
+            if(pointedEffect != SingleGrid.Effect.None) {
+                popup.popupVisible = true;
+                string effectName = "";
+                switch(pointedEffect) {
+                    case SingleGrid.Effect.DoubleStep:
+                        effectName = "doubleStep";
+                        break;
+                    case SingleGrid.Effect.BrokenBridge:
+                        effectName = "brokenBridge";
+                        break;
+                    case SingleGrid.Effect.Portal:
+                        effectName = "portal";
+                        break;
+                }
+
+                for(int i=0; i<specialIntroductionsEntity.SpecialIntroductions.Count; i++) {
+                    if(specialIntroductionsEntity.SpecialIntroductions[i].name == effectName) {
+                        popup.Title = specialIntroductionsEntity.SpecialIntroductions[i].name;
+                        popup.IntroText = specialIntroductionsEntity.SpecialIntroductions[i].introText;
+                        popup.EffectIntro = specialIntroductionsEntity.SpecialIntroductions[i].effectText;
+                    }
+                }
+            } else {
+                popup.popupVisible = false;
+            }
         }
 
         //移除指定格子

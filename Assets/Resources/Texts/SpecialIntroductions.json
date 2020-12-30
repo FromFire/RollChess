@@ -1,0 +1,22 @@
+{
+    "SpecialIntroductions": [
+        {
+            "name": "brokenBridge", 
+            "introTitle": "危桥", 
+            "introText": "年久失修的危桥，小心不要掉下去了。", 
+            "effectText": "棋子通过危桥格一次后，该格变为不可通过。"
+        },
+        {
+            "name": "doubleStep", 
+            "introTitle": "倍速", 
+            "introText": "“我跑得比风还快！”", 
+            "effectText": "站在倍速格上的棋子，移动距离是掷出点数的2倍。"
+        },
+        {
+            "name": "portal", 
+            "introTitle": "传送门", 
+            "introText": "古老的传送门，铸造技术已然失传。", 
+            "effectText": "若棋子停在传送格上，则将它传送至箭头指向的格子。"
+        }
+    ]
+}
