@@ -1,400 +1,334 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using Structure;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Widget;
 
-public class MapEditor : MonoBehaviour {
-    public Cursor cursor;
-    public PortalPainter portalPainter;
-    public Tilemap tilemapBoard;
-    public Tilemap tilemapBoardPreview;
-    public Tilemap tilemapSpecial;
-    public Tilemap tilemapSpecialPreview;
-    public Tilemap tilemapToken;
-    public Tilemap tilemapTokenPreview;
+namespace Game.MapEditor {
+    public class MapEditor : MonoBehaviour {
+        // 用于动态维护地图数据
+        private BaseBoard<SingleGrid> board = new BaseBoard<SingleGrid>();
+        private List<TokenEntity> tokens = new List<TokenEntity>();
+        private HashSet<int> players;
+        private PlayersEntity player = new PlayersEntity(0, 0);
 
-    private BaseBoard<SingleGrid> map = new BaseBoard<SingleGrid>();
-    private List<TokenEntity> tokens = new List<TokenEntity>();
-    private PlayersEntity player = new PlayersEntity(0, 0);
+        // Tilemap们
+        public Tilemap tilemapBoard;
+        public Tilemap tilemapBoardPreview;
+        public Tilemap tilemapSpecial;
+        public Tilemap tilemapSpecialPreview;
+        public Tilemap tilemapToken;
+        public Tilemap tilemapTokenPreview;
+        private Tilemap selectedTilemap;
+        private Tilemap selectedTilemapPreview;
 
-    private enum Action {
-        Nop,
-        Move,
-        SwitchLayer,
-        SwitchTile,
-        Paint,
-        Erase,
-        Save,
-        Load
-    }
+        // Tile们
+        private BoardDisplay.TileKeys boardTileKey = BoardDisplay.TileKeys.floorLawnGreen;
+        private List<Tile> boardTileList;
+        private TokensDisplay.TileKeys tokensTileKey = TokensDisplay.TileKeys.tokenRedAlien;
+        private List<Tile> tokensTileList;
+        private Tile selectedTile;
 
-    private enum State {
-        Init,
-        Idle,
-        BuildingPortal,
-        BuiltPortal
-    }
+        // 用于获取鼠标所在的坐标
+        public Cursor cursor = null;
 
-    private State state=State.Init;
+        // 用于绘制传送通道
+        public PortalPainter portalPainter = null;
 
-    private Vector2Int lastPos = Vector2Int.zero;
-    private Vector3Int lastPos3 = Vector3Int.zero;
+        // 选定的坐标
+        private Vector2Int _selectedCell;
 
-    private enum Layer {
-        Board,
-        Tokens
-    }
-
-    private Layer layer = Layer.Board;
-    private BoardDisplay.TileKeys boardTileKey = BoardDisplay.TileKeys.floorLawnGreen;
-    private List<Tile> boardTileList;
-    private TokensDisplay.TileKeys tokensTileKey = TokensDisplay.TileKeys.tokenRedAlien;
-    private List<Tile> tokensTileList;
-
-    private List<Portal> portals = new List<Portal>();
-    private Portal newPortal = null;
-
-    // Start is called before the first frame update
-    void Start() {
-        // tile顺序按照enum tileKeys中规定的来
-        List<string> tokensTileNames = new List<string> {
-            "Tiles/token-redAlien", //tokenRedAlien
-            "Tiles/token-blueAlien", //tokenBlueAlien
-            "Tiles/token-yellowAlien", //tokenYellowAlien
-            "Tiles/token-greenAlien", //tokenGreenAlien
-            "Tiles/token-neutralAlien" //tokenNeutralAlien
-        };
-        List<string> boardTileNames = new List<string> {
-            "Tiles/floor-lawnGreen", //floorLawnGreen
-            "Tiles/special-brokenBridge", //special_brokenBridge
-            "Tiles/special-doubleStep", //special_doubleStep
-            "Tiles/special-portal", //special_portal
-        };
-
-        // 读取所有tile
-        tokensTileList = new List<Tile>();
-        foreach (string name in tokensTileNames) {
-            tokensTileList.Add(Resources.Load<Tile>(name));
-        }
-
-        boardTileList = new List<Tile>();
-        foreach (string name in boardTileNames) {
-            boardTileList.Add(Resources.Load<Tile>(name));
-        }
-    }
-
-    // Update is called once per frame
-    void Update() {
-        Queue<Action> actions = new Queue<Action>();
-
-        actions.Enqueue(Action.Nop);
-        Vector2Int pos = cursor.GetPointedCell();
-        Vector3Int pos3 = (Vector3Int) pos;
-        if (lastPos != pos)
-            actions.Enqueue(Action.Move);
-        if (Input.GetKeyUp(KeyCode.Tab))
-            actions.Enqueue(Action.SwitchLayer);
-        if (Input.GetKeyUp(KeyCode.Space))
-            actions.Enqueue(Action.SwitchTile);
-        if (Input.GetMouseButton(1))
-            actions.Enqueue(Action.Erase);
-        if ((state == State.Idle && Input.GetMouseButton(0))
-            || (state == State.BuildingPortal && Input.GetMouseButtonDown(0))
-            || (state == State.BuiltPortal && Input.GetMouseButtonUp(0)))
-            actions.Enqueue(Action.Paint);
-        if (Input.GetKeyUp(KeyCode.S))
-            actions.Enqueue(Action.Save);
-        if (Input.GetKeyUp(KeyCode.L))
-            actions.Enqueue(Action.Load);
-
-
-        while (actions.Count > 0) {
-            Action action = actions.Dequeue();
-            switch (state) {
-                case State.Init:
-                    switch (action) {
-                        default:
-                            state = State.Idle;
-                            tilemapBoardPreview.SetTile(
-                                pos3,
-                                boardTileList[(int) BoardDisplay.TileKeys.floorLawnGreen]
-                            );
-                            break;
-                    }
-
-                    break;
-                case State.Idle:
-                    switch (action) {
-                        case Action.Move:
-                            switch (layer) {
-                                case Layer.Board:
-                                    tilemapBoardPreview.SetTile(pos3, tilemapBoardPreview.GetTile(lastPos3));
-                                    tilemapBoardPreview.SetTile(lastPos3, null);
-                                    tilemapSpecialPreview.SetTile(pos3, tilemapSpecialPreview.GetTile(lastPos3));
-                                    tilemapSpecialPreview.SetTile(lastPos3, null);
-                                    break;
-                                case Layer.Tokens:
-                                    tilemapTokenPreview.SetTile(pos3, tilemapTokenPreview.GetTile(lastPos3));
-                                    tilemapTokenPreview.SetTile(lastPos3, null);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            break;
-                        case Action.SwitchLayer:
-                            layer = (layer == Layer.Board ? Layer.Tokens : Layer.Board);
-                            switch (layer) {
-                                case Layer.Board:
-                                    tilemapBoardPreview.SetTile(
-                                        pos3,
-                                        boardTileList[(int) BoardDisplay.TileKeys.floorLawnGreen]
-                                    );
-                                    tilemapSpecialPreview.SetTile(
-                                        pos3,
-                                        (
-                                            boardTileKey == BoardDisplay.TileKeys.floorLawnGreen
-                                                ? null
-                                                : boardTileList[(int) boardTileKey]
-                                        )
-                                    );
-                                    tilemapTokenPreview.SetTile(pos3, null);
-                                    break;
-                                case Layer.Tokens:
-                                    tilemapBoardPreview.SetTile(pos3, null);
-                                    tilemapSpecialPreview.SetTile(pos3, null);
-                                    tilemapTokenPreview.SetTile(pos3, tokensTileList[(int) tokensTileKey]);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            break;
-                        case Action.SwitchTile:
-                            switch (layer) {
-                                case Layer.Board:
-                                    if (boardTileKey == BoardDisplay.TileKeys.special_portal)
-                                        boardTileKey = BoardDisplay.TileKeys.floorLawnGreen;
-                                    else
-                                        boardTileKey++;
-                                    tilemapSpecialPreview.SetTile(
-                                        pos3,
-                                        (
-                                            boardTileKey == BoardDisplay.TileKeys.floorLawnGreen
-                                                ? null
-                                                : boardTileList[(int) boardTileKey]
-                                        )
-                                    );
-                                    break;
-                                case Layer.Tokens:
-                                    if (tokensTileKey == TokensDisplay.TileKeys.tokenNeutralAlien)
-                                        tokensTileKey = TokensDisplay.TileKeys.tokenRedAlien;
-                                    else
-                                        tokensTileKey++;
-                                    tilemapTokenPreview.SetTile(pos3, tokensTileList[(int) tokensTileKey]);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            break;
-                        case Action.Paint:
-                            switch (layer) {
-                                case Layer.Board:
-                                    tilemapBoard.SetTile(
-                                        pos3,
-                                        boardTileList[(int) BoardDisplay.TileKeys.floorLawnGreen]
-                                    );
-                                    SingleGrid singleGrid = new SingleGrid(true);
-                                    if (boardTileKey != BoardDisplay.TileKeys.floorLawnGreen) {
-                                        tilemapSpecial.SetTile(pos3, boardTileList[(int) boardTileKey]);
-                                        switch (boardTileKey) {
-                                            case BoardDisplay.TileKeys.special_brokenBridge:
-                                                singleGrid.SpecialEffect = SingleGrid.Effect.BrokenBridge;
-                                                break;
-                                            case BoardDisplay.TileKeys.special_doubleStep:
-                                                singleGrid.SpecialEffect = SingleGrid.Effect.DoubleStep;
-                                                break;
-                                            case BoardDisplay.TileKeys.special_portal:
-                                                singleGrid.SpecialEffect = SingleGrid.Effect.Portal;
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-
-                                    if (boardTileKey == BoardDisplay.TileKeys.special_portal) {
-                                        newPortal = portalPainter.Draw(pos, pos);
-                                        state = State.BuildingPortal;
-                                    }
-
-                                    map.Add(pos, singleGrid);
-
-                                    break;
-                                case Layer.Tokens:
-                                    tilemapToken.SetTile(pos3, tokensTileList[(int) tokensTileKey]);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            break;
-                        case Action.Erase:
-                            switch (layer) {
-                                case Layer.Board:
-                                    tilemapBoard.SetTile(pos3, null);
-                                    tilemapSpecial.SetTile(pos3, null);
-                                    break;
-                                case Layer.Tokens:
-                                    tilemapToken.SetTile(pos3, null);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            break;
-                        case Action.Load:
-                            Load("Untitled.json");
-                            break;
-                        case Action.Save:
-                            Save("Untitled.json");
-                            break;
-                        default:
-                            break;
-                    }
-
-                    break;
-                case State.BuildingPortal:
-                    switch (action) {
-                        case Action.Move:
-                            switch (layer) {
-                                case Layer.Board:
-                                    tilemapBoardPreview.SetTile(pos3, tilemapBoardPreview.GetTile(lastPos3));
-                                    tilemapBoardPreview.SetTile(lastPos3, null);
-                                    tilemapSpecialPreview.SetTile(pos3, tilemapSpecialPreview.GetTile(lastPos3));
-                                    tilemapSpecialPreview.SetTile(lastPos3, null);
-                                    break;
-                                case Layer.Tokens:
-                                    tilemapTokenPreview.SetTile(pos3, tilemapTokenPreview.GetTile(lastPos3));
-                                    tilemapTokenPreview.SetTile(lastPos3, null);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            newPortal.to = pos;
-
-                            break;
-                        case Action.Paint:
-                            if (pos == newPortal.from)
-                                break;
-                            tilemapBoard.SetTile(pos3, boardTileList[(int) BoardDisplay.TileKeys.floorLawnGreen]);
-                            tilemapSpecial.SetTile(pos3, boardTileList[(int) BoardDisplay.TileKeys.special_portal]);
-                            newPortal.to = pos;
-                            portals.Add(newPortal);
-                            state = State.BuiltPortal;
-                            break;
-                        case Action.Erase:
-                            if (pos == newPortal.from) {
-                                newPortal.Destroy();
-                                newPortal = null;
-                                state = State.BuiltPortal;
-                            }
-
-                            tilemapBoard.SetTile(pos3, null);
-                            tilemapSpecial.SetTile(pos3, null);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    break;
-                case State.BuiltPortal:
-                    switch (action) {
-                        case Action.Nop:
-                            break;
-                        default:
-                            state = State.Idle;
-                            break;
-                    }
-
-                    break;
-                default:
-                    break;
+        private Vector2Int selectedCell {
+            get { return _selectedCell; }
+            set {
+                lastSelectedCell = _selectedCell;
+                _selectedCell = value;
             }
         }
 
-        lastPos = pos;
-        lastPos3 = pos3;
-    }
+        // 上一个选定的坐标
+        private Vector2Int lastSelectedCell;
 
-    /// <summary>
-    ///   <para>将map、tokens、player中的数据存到filename文件中</para>
-    /// </summary>
-    void Save(string filename) {
-        BoardEntity boardEntity = new BoardEntity {
-            map = new List<SingleMapGridEntity>(),
-            special = new List<SingleSpecialEntity>(),
-            portal = new List<SinglePortalEntity>(),
-            tokens = tokens,
-            player = player
+        // 已建的传送通道
+        private Dictionary<Vector2Int, Portal> portals = new Dictionary<Vector2Int, Portal>();
+
+        // 正在构建的传送通道
+        private Portal newPortal = null;
+
+        // 编辑器状态集
+        enum EditorState {
+            Normal, // 一般模式
+            Portal // 正在绘制传送通道
         };
-        foreach (Vector2Int pos in map.ToPositionsSet()) {
-            SingleGrid singleGrid = map.GetData(pos);
-            if (singleGrid.walkable)
-                boardEntity.map.Add(new SingleMapGridEntity(pos.x, pos.y));
-            if (singleGrid.SpecialEffect == SingleGrid.Effect.BrokenBridge)
-                boardEntity.special.Add(new SingleSpecialEntity(pos.x, pos.y, "brokenBridge"));
-            if (singleGrid.SpecialEffect == SingleGrid.Effect.DoubleStep)
-                boardEntity.special.Add(new SingleSpecialEntity(pos.x, pos.y, "doubleStep"));
-            if (singleGrid.SpecialEffect == SingleGrid.Effect.Portal)
-                boardEntity.portal.Add(new SinglePortalEntity(
-                    pos.x, pos.y,
-                    singleGrid.PortalTarget.x, singleGrid.PortalTarget.y
-                ));
+
+        // 编辑器当前的状态
+        private EditorState editorState = EditorState.Normal;
+
+        // 弹窗
+        public Popup popup;
+
+        // 弹窗时间间隔
+        public float popupDelay = 0.6f;
+
+        private void Start() {
+            selectedTilemap = tilemapBoard;
+            selectedTilemapPreview = tilemapBoardPreview;
+            // tile顺序按照enum tileKeys中规定的来
+            List<string> tokensTileNames = new List<string> {
+                "Tiles/token-redAlien", //tokenRedAlien
+                "Tiles/token-blueAlien", //tokenBlueAlien
+                "Tiles/token-yellowAlien", //tokenYellowAlien
+                "Tiles/token-greenAlien", //tokenGreenAlien
+                "Tiles/token-neutralAlien" //tokenNeutralAlien
+            };
+            List<string> boardTileNames = new List<string> {
+                "Tiles/floor-lawnGreen", //floorLawnGreen
+                "Tiles/special-brokenBridge", //special_brokenBridge
+                "Tiles/special-doubleStep", //special_doubleStep
+                "Tiles/special-portal", //special_portal
+            };
+
+            // 读取所有tile
+            tokensTileList = new List<Tile>();
+            foreach (string name in tokensTileNames) {
+                tokensTileList.Add(Resources.Load<Tile>(name));
+            }
+
+            boardTileList = new List<Tile>();
+            foreach (string name in boardTileNames) {
+                boardTileList.Add(Resources.Load<Tile>(name));
+            }
+
+            selectedTile = boardTileList[(int) BoardDisplay.TileKeys.floorLawnGreen];
         }
 
-        File.WriteAllText(
-            "Assets/Resources/" + filename,
-            boardEntity.ToJson()
-        );
-    }
+        void Update() {
+            // 更新预览
+            UpdatePreview();
 
-    /// <summary>
-    ///   <para>将filename文件中的数据加载到map、tokens、player上</para>
-    /// </summary>
-    void Load(string filename) {
-        BoardEntity boardEntity = BoardEntity.FromJson(
-            Resources.Load<TextAsset>(filename).text
-        );
-        foreach (SingleMapGridEntity singleMapGridEntity in boardEntity.map) {
-            map.Add(
-                new Vector2Int(singleMapGridEntity.x, singleMapGridEntity.y),
-                new SingleGrid(true)
+            // 更新鼠标选中的坐标
+            selectedCell = cursor.GetPointedCell();
+
+            // 鼠标左键绘制
+            if (Input.GetMouseButtonUp(0)) {
+                PaintTile();
+            }
+
+            // 鼠标右键清除
+            if (Input.GetMouseButton(1)) {
+                EraseTile();
+            }
+
+            // 键盘Tab/S-Tab切换层
+            if (Input.GetKeyUp(KeyCode.Tab)) {
+                bool reversed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                int i;
+                if (selectedTilemap == tilemapBoard)
+                    i = 0;
+                else if (selectedTilemap == tilemapSpecial)
+                    i = 1;
+                else
+                    i = 2;
+                i = (i + (reversed ? -1 : 1) + 3) % 3;
+                switch (i) {
+                    case 0:
+                        selectedTilemap = tilemapBoard;
+                        selectedTilemapPreview = tilemapBoardPreview;
+                        break;
+                    case 1:
+                        selectedTilemap = tilemapSpecial;
+                        selectedTilemapPreview = tilemapSpecialPreview;
+                        break;
+                    default:
+                        selectedTilemap = tilemapToken;
+                        selectedTilemapPreview = tilemapTokenPreview;
+                        break;
+                }
+
+                UpdatePreview(true);
+            }
+
+            // 键盘Space/S-Space切换块
+            if (Input.GetKeyUp(KeyCode.Space)) {
+                bool reversed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                List<Tile> tileList = (boardTileList.Contains(selectedTile) ? boardTileList : tokensTileList);
+                int i = tileList.IndexOf(selectedTile);
+                i = (i + (reversed ? -1 : 1) + tileList.Count) % tileList.Count;
+                selectedTile = tileList[i];
+                UpdatePreview(true);
+            }
+
+            // 键盘S存档
+            if (Input.GetKeyUp(KeyCode.S)) {
+                Save("Untitled.json");
+            }
+
+            // 键盘L读档
+            if (Input.GetKeyUp(KeyCode.L)) {
+                Load("Untitled.json");
+            }
+
+            // 更新预览
+            UpdatePreview();
+        }
+
+        // 将手上选择的块放到选定的坐标上
+        void PaintTile() {
+            // 如果在画传送站终点
+            if (editorState == EditorState.Portal) {
+                // 如果尝试使起点和终点相同，那么终止此次传送站的建立
+                if (selectedCell == newPortal.from) {
+                    selectedTilemap.SetTile((Vector3Int) selectedCell, null);
+                    newPortal.Destroy();
+                }
+                // 否则，完成传送通道（不用清除终点位置的其他块）
+                else {
+                    portals.Add(newPortal.from, newPortal);
+                }
+
+                editorState = EditorState.Normal;
+            }
+            // 如果在画传送站起点
+            else if (selectedTile == boardTileList[(int) BoardDisplay.TileKeys.special_portal]) {
+                EraseTile();
+                // 画上传送站起点
+                selectedTilemap.SetTile((Vector3Int) selectedCell, selectedTile);
+                // 创建传送通道预览
+                newPortal = portalPainter.Draw(selectedCell, selectedCell);
+                editorState = EditorState.Portal;
+            }
+            // 一般情况下
+            else {
+                EraseTile();
+                // 直接把块放上去
+                selectedTilemap.SetTile((Vector3Int) selectedCell, selectedTile);
+                if (selectedTilemap == tilemapBoard) {
+                    SingleGrid singleGrid = new SingleGrid(true);
+                    board.SetData(selectedCell, singleGrid);
+                    // TODO
+                }
+                else if (selectedTilemap == tilemapSpecial) {
+                    SingleGrid singleGrid = new SingleGrid(true);
+                    board.SetData(selectedCell, singleGrid);
+                    // TODO
+                }
+                else {
+                    int playerId = tokensTileList.IndexOf(selectedTile);
+                    TokenEntity tokenEntity = new TokenEntity(selectedCell.x, selectedCell.y, playerId);
+                    players.Add(playerId);
+                    player.max = Math.Max(player.max, players.Count);
+                    player.min = Math.Min(2, Math.Max(player.min, players.Count));
+                    tokens.Add(tokenEntity);
+                }
+            }
+        }
+
+        // 将选定坐标上的块给清除掉
+        void EraseTile() {
+            // 如果即将被清除的块是某个传送站的起点，那么破坏掉它所对应的传送通道
+            if (board.GetData(selectedCell).SpecialEffect == SingleGrid.Effect.Portal) {
+                if (portals.ContainsKey(selectedCell)) {
+                    // 已画好的传送通道
+                    portals[selectedCell].Destroy();
+                    portals.Remove(selectedCell);
+                }
+                else {
+                    // 正在画的传送通道
+                    newPortal.Destroy();
+                    editorState = EditorState.Normal;
+                }
+            }
+
+            // 清除目标块
+            selectedTilemap.SetTile((Vector3Int) selectedCell, null);
+        }
+
+        // 更新预览
+        void UpdatePreview(bool force = false) {
+            // 只要鼠标没动，不必刷新，就尽量不刷新
+            if (!force && lastSelectedCell == selectedCell) return;
+
+            // 预览手上的块
+            tilemapBoardPreview.SetTile((Vector3Int) lastSelectedCell, null);
+            tilemapSpecialPreview.SetTile((Vector3Int) lastSelectedCell, null);
+            tilemapTokenPreview.SetTile((Vector3Int) lastSelectedCell, null);
+            selectedTilemapPreview.SetTile((Vector3Int) selectedCell, selectedTile);
+
+            // 预览正在构建的传送通道
+            if (editorState == EditorState.Portal) {
+                newPortal.to = selectedCell;
+            }
+        }
+
+        /// <summary>
+        ///   <para>将map、tokens、player中的数据存到filename文件中</para>
+        /// </summary>
+        void Save(string filename) {
+            BoardEntity boardEntity = new BoardEntity {
+                map = new List<SingleMapGridEntity>(),
+                special = new List<SingleSpecialEntity>(),
+                portal = new List<SinglePortalEntity>(),
+                tokens = tokens,
+                player = player
+            };
+            foreach (Vector2Int pos in board.ToPositionsSet()) {
+                SingleGrid singleGrid = board.GetData(pos);
+                if (singleGrid.walkable)
+                    boardEntity.map.Add(new SingleMapGridEntity(pos.x, pos.y));
+                if (singleGrid.SpecialEffect == SingleGrid.Effect.BrokenBridge)
+                    boardEntity.special.Add(new SingleSpecialEntity(pos.x, pos.y, "brokenBridge"));
+                if (singleGrid.SpecialEffect == SingleGrid.Effect.DoubleStep)
+                    boardEntity.special.Add(new SingleSpecialEntity(pos.x, pos.y, "doubleStep"));
+                if (singleGrid.SpecialEffect == SingleGrid.Effect.Portal)
+                    boardEntity.portal.Add(new SinglePortalEntity(
+                        pos.x, pos.y,
+                        singleGrid.PortalTarget.x, singleGrid.PortalTarget.y
+                    ));
+            }
+
+            File.WriteAllText(
+                "Assets/Resources/" + filename,
+                boardEntity.ToJson()
             );
         }
 
-        foreach (SingleSpecialEntity singleSpecialEntity in boardEntity.special) {
-            SingleGrid singleGrid = map.GetData(
-                new Vector2Int(singleSpecialEntity.x, singleSpecialEntity.y)
+        /// <summary>
+        ///   <para>将filename文件中的数据加载到map、tokens、player上</para>
+        /// </summary>
+        void Load(string filename) {
+            BoardEntity boardEntity = BoardEntity.FromJson(
+                Resources.Load<TextAsset>(filename).text
             );
-            if (singleSpecialEntity.effect == "brokenBridge")
-                singleGrid.SpecialEffect = SingleGrid.Effect.BrokenBridge;
-            else if (singleSpecialEntity.effect == "doubleStep")
-                singleGrid.SpecialEffect = SingleGrid.Effect.DoubleStep;
-            else
-                singleGrid.SpecialEffect = SingleGrid.Effect.None;
-        }
+            foreach (SingleMapGridEntity singleMapGridEntity in boardEntity.map) {
+                board.Add(
+                    new Vector2Int(singleMapGridEntity.x, singleMapGridEntity.y),
+                    new SingleGrid(true)
+                );
+            }
 
-        foreach (SinglePortalEntity singlePortalEntity in boardEntity.portal) {
-            SingleGrid singleGridFrom = map.GetData(
-                new Vector2Int(singlePortalEntity.fromX, singlePortalEntity.fromY)
-            );
-            singleGridFrom.PortalTarget = new Vector2Int(singlePortalEntity.toX, singlePortalEntity.toY);
-            singleGridFrom.SpecialEffect = SingleGrid.Effect.Portal;
+            foreach (SingleSpecialEntity singleSpecialEntity in boardEntity.special) {
+                SingleGrid singleGrid = board.GetData(
+                    new Vector2Int(singleSpecialEntity.x, singleSpecialEntity.y)
+                );
+                if (singleSpecialEntity.effect == "brokenBridge")
+                    singleGrid.SpecialEffect = SingleGrid.Effect.BrokenBridge;
+                else if (singleSpecialEntity.effect == "doubleStep")
+                    singleGrid.SpecialEffect = SingleGrid.Effect.DoubleStep;
+                else
+                    singleGrid.SpecialEffect = SingleGrid.Effect.None;
+            }
+
+            foreach (SinglePortalEntity singlePortalEntity in boardEntity.portal) {
+                SingleGrid singleGridFrom = board.GetData(
+                    new Vector2Int(singlePortalEntity.fromX, singlePortalEntity.fromY)
+                );
+                singleGridFrom.PortalTarget = new Vector2Int(singlePortalEntity.toX, singlePortalEntity.toY);
+                singleGridFrom.SpecialEffect = SingleGrid.Effect.Portal;
+            }
         }
     }
 }
