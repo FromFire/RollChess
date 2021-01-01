@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 // 存储单个地图格子情况
@@ -15,13 +14,12 @@ public class SingleGrid {
         BrokenBridge, //危桥：只能通过一次，之后就会损坏
         Portal //传送门：传送到另一个格子
     }
-
     //此格子的特殊效果
     Effect effect;
 
     //仅effect=portal时有效，传送的目的地
     Vector2Int portalTarget;
-
+    
     // 格子特殊效果的读写函数
     public Effect SpecialEffect {
         set { effect = value; }
@@ -51,8 +49,11 @@ public class SingleGrid {
 }
 
 
+
+
 // 实现地图中数据存储的功能
-public class BaseBoard<T> where T : new() {
+public class BaseBoard<T> where T:new(){
+
     // 数据容器
     Dictionary<Vector2Int, T> positionOfGrid;
 
@@ -77,30 +78,23 @@ public class BaseBoard<T> where T : new() {
         return Contains(pos) ? positionOfGrid[pos] : new T();
     }
 
-    //新增T
+    //设置T
     public void Add(Vector2Int pos, T data) {
         positionOfGrid.Add(pos, data);
         UpdateBorder(pos);
     }
-
-    //设置T
-    public void SetData(Vector2Int pos, T data) {
-        if (Contains(pos)) positionOfGrid[pos] = data;
-        else Add(pos, data);
-    }
-
+    
     //删除T
     public void RemoveData(Vector2Int pos) {
-        if (Contains(pos)) positionOfGrid.Remove(pos);
+        if(Contains(pos)) positionOfGrid.Remove(pos);
     }
 
     //返回所有有定义的数据列表
     public HashSet<Vector2Int> ToPositionsSet() {
         HashSet<Vector2Int> ret = new HashSet<Vector2Int>();
-        foreach (KeyValuePair<Vector2Int, T> kvp in positionOfGrid) {
+        foreach(KeyValuePair<Vector2Int, T> kvp in positionOfGrid) {
             ret.Add(kvp.Key);
         }
-
         return ret;
     }
 
@@ -113,19 +107,8 @@ public class BaseBoard<T> where T : new() {
     }
 
     // 获取边界
-    public int BorderUp {
-        get { return borderUp; }
-    }
-
-    public int BorderDown {
-        get { return borderDown; }
-    }
-
-    public int BorderLeft {
-        get { return borderLeft; }
-    }
-
-    public int BorderRight {
-        get { return borderRight; }
-    }
+    public int BorderUp { get{ return borderUp; } }
+    public int BorderDown { get{ return borderDown; } }
+    public int BorderLeft { get{ return borderLeft; } }
+    public int BorderRight { get{ return borderRight; } }
 }
