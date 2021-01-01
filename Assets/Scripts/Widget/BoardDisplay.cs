@@ -18,7 +18,7 @@ namespace Widget {
         List<Tile> tileList;
 
         //Tile在tileList中存储的顺序
-        public enum TileKeys {
+        enum TileKeys {
             floorLawnGreen, //绿色地板
             special_brokenBridge, //危桥
             special_doubleStep, //步数翻倍

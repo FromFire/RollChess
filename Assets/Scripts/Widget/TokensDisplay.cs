@@ -13,7 +13,7 @@ namespace Widget {
         List<Tile> tileList;
 
         //Tile在tileList中存储的顺序
-        public enum TileKeys {
+        enum TileKeys {
             tokenRedAlien,
             tokenBlueAlien,
             tokenYellowAlien,
