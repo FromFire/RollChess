@@ -85,6 +85,11 @@ namespace Game.MapEditor {
             // 更新鼠标选中的坐标
             selectedCell = cursor.GetPointedCell();
 
+            // 避免与UI按键冲突
+            if (Cursor.isOverUI()) {
+                return;
+            }
+
             // 鼠标左键绘制
             if (Input.GetMouseButtonUp(0)) {
                 PaintTile();
