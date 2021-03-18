@@ -2,6 +2,53 @@
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+// 角色操控方式
+public enum PlayerForm {
+    Player,     //玩家操控
+    Computer,   //AI操控
+    Banned      //禁用角色
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 namespace Structure {
     /// <summary>
     ///   <para>Tile的类型。</para>
