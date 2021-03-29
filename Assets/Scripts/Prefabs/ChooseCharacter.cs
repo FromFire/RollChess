@@ -8,7 +8,7 @@ using UnityEngine.UI;
 ///   <para> 本组件读取Model！ </para>
 ///   <para> 子组件：CharacterFormShift </para>
 /// </summary>
-public class CharacterChoose : MonoBehaviour
+public class ChooseCharacter : MonoBehaviour
 {
     // 切换按钮
     public List<CharacterFormShift> buttons;
@@ -35,10 +35,10 @@ public class CharacterChoose : MonoBehaviour
         // 锁定和解锁玩家
         for(int i=0; i<buttons.Count; i++) {
             if(i<max) {
-                buttons[i].Unlock();
+                buttons[i].IsLocked = false;
                 // todo: buttons[i].SetForm
             } else {
-                buttons[i].Lock();
+                buttons[i].IsLocked = true;
             }
         }
     }

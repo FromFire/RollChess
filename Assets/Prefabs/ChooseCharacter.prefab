@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 4760846909174069015}
   - component: {fileID: 4760846909174069013}
   - component: {fileID: 4760846909174069014}
-  - component: {fileID: 4760846909174069012}
-  - component: {fileID: 2489495674414277087}
+  - component: {fileID: 1662500269188913811}
   m_Layer: 0
   m_Name: ChooseCharacter
   m_TagString: Untagged
@@ -82,38 +81,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.26
---- !u!114 &4760846909174069012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4760846909174069008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5f8a5e82aecd347914b3a0a0a9c36e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerSprites:
-  - {fileID: 21300000, guid: 7e5c19a25318b384c877c88b4f281935, type: 3}
-  - {fileID: 21300000, guid: 8695bc03e6f19404aae9d1c9b6298efe, type: 3}
-  - {fileID: 21300000, guid: 187c4d2b2108d8845943b4077e333e34, type: 3}
-  playerNumLimitLabel: {fileID: 4760846910058509691}
-  currentMap:
-    mapName: 
-    player:
-      min: 0
-      max: 0
-    tokens: []
-    map: []
-    special: []
-    portal: []
---- !u!114 &2489495674414277087
+--- !u!114 &1662500269188913811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

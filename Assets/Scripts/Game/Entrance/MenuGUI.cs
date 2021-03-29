@@ -12,7 +12,7 @@ public class MenuGUI : MonoBehaviour
     public Scroller scroller;
 
     //选择玩家
-    public CharacterChoose characterChoose;
+    public ChooseCharacter chooseCharacter;
 
     //选择地图
     public ChooseMap chooseMap;

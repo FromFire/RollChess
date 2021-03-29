@@ -11,6 +11,12 @@ using UnityEngine.UI;
 /// </summary>
 public class CharacterFormShift : MonoBehaviour
 {
+    // 当前的操控方式，在锁定状态下存储锁定前的选择
+    PlayerForm currentPlayerForm;
+
+    // 是否已锁定
+    bool isLocked;
+
     // 切换按钮
     public Button button;
 
@@ -31,26 +37,28 @@ public class CharacterFormShift : MonoBehaviour
     }
 
     /// <summary>
-    ///   <para> 锁定玩家。显示为Banned，按钮变灰。 </para>
+    ///   <para> 读写currentPlayerForm </para>
     /// </summary>
-    public void Lock() {
-        button.interactable = false;
-        SetForm(PlayerForm.Banned);
+    public PlayerForm CurrentPlayerForm {
+        set {
+            currentPlayerForm = value;
+            // 更新显示
+            image.sprite = playerSprites[(int)currentPlayerForm];
+        }
+        get {return currentPlayerForm;}
     }
 
     /// <summary>
-    ///   <para> 解锁玩家。按钮变为可用。 </para>
-    ///   <para> 注意：解锁后须使用UpdateDisplay指定 </para>
+    ///   <para> 锁定和解锁按钮 </para>
     /// </summary>
-    public void Unlock() {
-        button.interactable = true;
-    }
-
-    /// <summary>
-    ///   <para> 设置显示的PlayerForm。 </para>
-    /// </summary>
-    public void SetForm(PlayerForm playerForm) {
-        image.sprite = playerSprites[(int)playerForm];
+    public bool IsLocked {
+        get {return isLocked;}
+        set {
+            // 锁定时显示为Banned，按钮变灰。
+            // 解锁时恢复原本选项，按钮变为可用。
+            button.interactable = isLocked = value;
+            CurrentPlayerForm = isLocked ? PlayerForm.Banned : currentPlayerForm;
+        }
     }
 
     /// <summary>
