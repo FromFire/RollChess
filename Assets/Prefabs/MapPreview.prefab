@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7763464732479347418}
   - component: {fileID: 9145451270345056659}
+  - component: {fileID: 3656790781701039522}
   m_Layer: 0
   m_Name: MapPreview
   m_TagString: Untagged
@@ -46,6 +47,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7763464732479347397}
   m_CullTransparentMesh: 0
+--- !u!114 &3656790781701039522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763464732479347397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ed58964b8c5704ba605025747e2559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thumbnail: {fileID: 7763464733187404418}
+  mapName: {fileID: 7763464732530493995}
 --- !u!1 &7763464732524074454
 GameObject:
   m_ObjectHideFlags: 0

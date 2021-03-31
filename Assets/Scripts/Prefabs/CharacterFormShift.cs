@@ -12,24 +12,30 @@ using UnityEngine.UI;
 public class CharacterFormShift : MonoBehaviour
 {
     // 当前的操控方式，在锁定状态下存储锁定前的选择
-    PlayerForm currentPlayerForm;
+    private PlayerForm _currentPlayerForm;
 
     // 是否已锁定
-    bool isLocked;
+    private bool _isLocked;
+
+    /// <summary>
+    ///   <para> 左键切换操控方式（用于单机和host） </para>
+    /// </summary>
+    public onClick onLeftClick;
+
+    /// <summary>
+    ///   <para> 右键选择操控该角色（仅用于Client） </para>
+    /// </summary>
+    public onClick onRightClick;
 
     // 切换按钮
-    public Button button;
-
-    // 选择栏的三个图标
-    public List<Sprite> playerSprites;
-
+    [SerializeField] Button button;
     // 图标
-    public Image image;
+    [SerializeField] Image image;
+    // 选择栏的三个图标
+    [SerializeField] List<Sprite> playerSprites;
 
     // 点击响应函数
     public delegate void onClick();
-    public onClick onLeftClick;
-    public onClick onRightClick;
 
     // 创建时绑定响应函数
     void Start() {
@@ -37,27 +43,27 @@ public class CharacterFormShift : MonoBehaviour
     }
 
     /// <summary>
-    ///   <para> 读写currentPlayerForm </para>
+    ///   <para> 当前的操控方式，在锁定状态下存储锁定前的选择 </para>
     /// </summary>
     public PlayerForm CurrentPlayerForm {
         set {
-            currentPlayerForm = value;
+            _currentPlayerForm = value;
             // 更新显示
-            image.sprite = playerSprites[(int)currentPlayerForm];
+            image.sprite = playerSprites[(int)_currentPlayerForm];
         }
-        get {return currentPlayerForm;}
+        get {return _currentPlayerForm;}
     }
 
     /// <summary>
-    ///   <para> 锁定和解锁按钮 </para>
+    ///   <para> 按钮锁定控制 </para>
+    ///   <para> 锁定时显示为Banned，按钮变灰。 </para>
+    ///   <para> 解锁时恢复原本选项，按钮变为可用。 </para>
     /// </summary>
     public bool IsLocked {
-        get {return isLocked;}
+        get {return _isLocked;}
         set {
-            // 锁定时显示为Banned，按钮变灰。
-            // 解锁时恢复原本选项，按钮变为可用。
-            button.interactable = isLocked = value;
-            CurrentPlayerForm = isLocked ? PlayerForm.Banned : currentPlayerForm;
+            button.interactable = _isLocked = value;
+            CurrentPlayerForm = _isLocked ? PlayerForm.Banned : _currentPlayerForm;
         }
     }
 

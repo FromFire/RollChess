@@ -10,11 +10,15 @@ using UnityEngine.UI;
 /// </summary>
 public class ChooseCharacter : MonoBehaviour
 {
-    // 切换按钮
-    public List<CharacterFormShift> buttons;
+    // 地图人数限制
+    private int _limitMax;
+    private int _limitMin;
 
-    // 人数限制
-    public Text playerLimit;
+    // 切换按钮
+    [SerializeField] List<CharacterFormShift> buttons;
+
+    // 人数限制显示
+    [SerializeField] Text playerLimit;
 
     // 初始化
     void Start() {
@@ -22,24 +26,53 @@ public class ChooseCharacter : MonoBehaviour
     }
 
     /// <summary>
-    ///   <para> 显示玩家数量限制 </para>
+    ///   <para> 人数限制上限 </para>
     /// </summary>
-    public void SetPlayerLimit(int min, int max) {
-        // 显示玩家数量限制
-        if(min == max) {
-            playerLimit.text = min + "人";
-        } else {
-            playerLimit.text = min + "-" + max + "人";
-        }
-
-        // 锁定和解锁玩家
-        for(int i=0; i<buttons.Count; i++) {
-            if(i<max) {
-                buttons[i].IsLocked = false;
-                // todo: buttons[i].SetForm
-            } else {
-                buttons[i].IsLocked = true;
+    public int LimitMax {
+        get {return _limitMax;}
+        set {
+            _limitMax = value;
+            // 保证Min<Max
+            if(_limitMin > _limitMax) {
+                _limitMin = _limitMax;
             }
+            //更新显示
+            UpdateLimitLabel();
+            UpdateLock();
+        }
+    }
+
+    /// <summary>
+    ///   <para> 人数限制下限 </para>
+    /// </summary>
+    public int LimitMin {
+        get {return _limitMin;}
+        set {
+            _limitMin = value;
+            // 保证Min<Max
+            if(_limitMin > _limitMax) {
+                _limitMax = _limitMin;
+            }
+            //更新显示
+            UpdateLimitLabel();
+            UpdateLock();
+        }
+    }
+
+    // 更新玩家数量限制显示
+    void UpdateLimitLabel() {
+        if(_limitMin == _limitMax) {
+            playerLimit.text = _limitMin + "人";
+        } else {
+            playerLimit.text = _limitMin + "-" + _limitMax + "人";
+        }
+    }
+
+    // 更新按钮锁定情况
+    void UpdateLock() {
+        for(int i=0; i<buttons.Count; i++) {
+            // Max之前的解锁，之后的锁定
+            buttons[i].IsLocked = (i >= _limitMax);
         }
     }
 
