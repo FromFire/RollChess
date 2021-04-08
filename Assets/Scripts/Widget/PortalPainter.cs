@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Structure;
+using Structure_old;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

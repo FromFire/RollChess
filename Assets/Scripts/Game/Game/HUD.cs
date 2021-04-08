@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayerColor = Structure.PlayerColor;
+using PlayerColor = Structure_old.PlayerColor;
 
 public class HUD : MonoBehaviour {
     public Rule rule;

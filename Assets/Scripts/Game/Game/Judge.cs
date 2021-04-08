@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-using PlayerChoices = Structure.PlayerChoices;
+using PlayerChoices = Structure_old.PlayerChoices;
 
 //裁判类：管理对局信息，包括回合计数、胜负判断、记录操作
 public class Judge : MonoBehaviour
@@ -32,7 +32,7 @@ public class Judge : MonoBehaviour
     void Start()
     {
         //初始化玩家人数
-        totalPlayer = Structure.Constants.PLAYERNUMBER;
+        totalPlayer = Structure_old.Constants.PLAYERNUMBER;
         nowPlayer = 0;
 
         //初始化玩家操控状态

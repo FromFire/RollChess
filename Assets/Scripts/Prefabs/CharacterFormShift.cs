@@ -1,7 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+using Structure;
 
 /// <summary>
 ///   <para> 切换角色操控方式的按钮 </para>

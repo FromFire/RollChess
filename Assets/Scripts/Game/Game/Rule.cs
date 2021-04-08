@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-using PlayerChoices = Structure.PlayerChoices;
+using PlayerChoices = Structure_old.PlayerChoices;
 
 //规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
 public class Rule : MonoBehaviour {
     //棋子数量默认是4
-    int PLAYERNUMBER = Structure.Constants.PLAYERNUMBER;
+    int PLAYERNUMBER = Structure_old.Constants.PLAYERNUMBER;
 
     //显示高光tilemap层
     public HighlightDisplay highlightDisplay;

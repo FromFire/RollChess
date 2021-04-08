@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-using PlayerChoices = Structure.PlayerChoices;
+using PlayerChoices = Structure_old.PlayerChoices;
 
 public class MenuGUI : MonoBehaviour
 {

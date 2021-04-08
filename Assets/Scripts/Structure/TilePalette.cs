@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Structure {
+namespace Structure_old {
     public class TilePalette : MonoBehaviour {
         public readonly Dictionary<TileType, Tile> tileOfTileType = new Dictionary<TileType, Tile>();
 

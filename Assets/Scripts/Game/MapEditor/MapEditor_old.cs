@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Structure;
+using Structure_old;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
