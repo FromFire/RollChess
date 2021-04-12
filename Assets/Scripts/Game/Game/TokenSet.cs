@@ -4,17 +4,17 @@ using UnityEngine;
 using Widget;
 
 //管理所有棋子的类
-public class TokenSet : MonoBehaviour {
+public class TokenSet_old : MonoBehaviour {
 
     public TokensDisplay tokensDisplay;
 
-    List<Token> tokenList;
+    List<Token_old> tokenList;
 
     // 使用TokensEntity初始化
     public void Init(List<TokenEntity> entity) {
-        tokenList = new List<Token>();
+        tokenList = new List<Token_old>();
         foreach(TokenEntity token in entity) {
-            tokenList.Add(new Token(token.x, token.y, token.player));
+            tokenList.Add(new Token_old(token.x, token.y, token.player));
         }
 
         tokensDisplay.Display(entity);
@@ -24,7 +24,7 @@ public class TokenSet : MonoBehaviour {
     public void MoveToken(Vector2Int from, Vector2Int to) {
         //移动棋子
         int player = -1;
-        foreach(Token token in tokenList) {
+        foreach(Token_old token in tokenList) {
             Debug.Log(token.GetXY() + " " + from);
             if(token.GetXY() == from) {
                 player = token.player;
@@ -56,7 +56,7 @@ public class TokenSet : MonoBehaviour {
     //查询某位玩家的棋子数量
     public int GetTokenNumber(int player) {
         int ret=0;
-        foreach(Token token in tokenList) {
+        foreach(Token_old token in tokenList) {
             if(player == token.player) {
                 ret++;
             }
@@ -66,9 +66,9 @@ public class TokenSet : MonoBehaviour {
 
     // 查找棋子
     // player未指定或为-1时，忽略player
-    public List<Token> Find(Vector2Int pos, int player=-1) {
-        List<Token> ret = new List<Token>();
-        foreach(Token token in tokenList) {
+    public List<Token_old> Find(Vector2Int pos, int player=-1) {
+        List<Token_old> ret = new List<Token_old>();
+        foreach(Token_old token in tokenList) {
             if(token.GetXY() == pos && (player == -1 || player == token.player)) {
                 ret.Add(token);
             }
@@ -102,13 +102,13 @@ public class TokenSet : MonoBehaviour {
 }
 
 //棋子类：单个棋子
-public class Token{
+public class Token_old{
 
     int x;
     int y;
     public int player;
 
-    public Token(int x, int y, int player) {
+    public Token_old(int x, int y, int player) {
         this.x = x;
         this.y = y;
         this.player = player;

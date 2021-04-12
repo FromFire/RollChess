@@ -6,7 +6,7 @@ using Widget;
 
 // 地图类
 // 加载地图、管理地图状态
-public class Board : MonoBehaviour{
+public class BoardOld : MonoBehaviour{
     //棋盘的显示
     public BoardDisplay boardDisplay;
 

@@ -17,9 +17,9 @@ public class Rule : MonoBehaviour {
     public HUD hud;
 
     // 存储棋盘信息
-    public Board board;
+    public BoardOld board;
     // 存储棋子信息
-    public TokenSet tokenSet;
+    public TokenSet_old tokenSet;
 
     // 当前状态
     // waiting: 等待玩家操作
@@ -207,7 +207,7 @@ public class Rule : MonoBehaviour {
         }
 
         //检测格子上是否有己方棋子，有则选中它
-        List<Token> tokens = tokenSet.Find(pos);
+        List<Token_old> tokens = tokenSet.Find(pos);
         if(tokens.Count != 0 && tokens[0].player == nowPlayer) {
             AddChoose(pos);
         }

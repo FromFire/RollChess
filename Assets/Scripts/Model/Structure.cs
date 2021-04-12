@@ -22,6 +22,16 @@ namespace Structure
         Broken_Bridge,  //危桥
         Portal          //传送门
     }
+
+    /// <summary>
+    ///   <para> 玩家，用棋子颜色唯一标识 </para>
+    /// </summary>
+    public enum PlayerID {
+        Red,
+        Blue,
+        Yellow,
+        Green
+    }
 }
 
 
