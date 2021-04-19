@@ -41,5 +41,5 @@ public class MapChooseState {
     /// <summary>
     ///   <para> 当前选中的地图 </para>
     /// </summary>
-    //public SaveEntity currentMap {get;}
+    public SaveEntity currentMap {get;}
 }
