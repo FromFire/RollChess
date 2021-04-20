@@ -32,6 +32,26 @@ namespace Structure
         Yellow,
         Green
     }
+
+    /// <summary>
+    ///   <para> Model修改事件 </para>
+    /// </summary>
+    public enum ModelModifyEvent {
+        // 地图格子被修改
+        Cell,           //地图格子被修改
+
+        // 该格子上的棋子被修改
+        Token,          //该格子上的棋子被修改
+        
+        // 游戏状态被修改 GameState
+        Turn,           //回合数
+        Roll_Result,    //掷骰子结果
+        Player_Form,    //玩家操作形式
+        Now_Player,     //当前操作的玩家
+        Operation_State,//当前操作状态
+        Is_Game_Over,   //游戏是否结束
+        Winner          //赢家
+    }
 }
 
 
