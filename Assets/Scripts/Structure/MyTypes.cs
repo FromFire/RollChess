@@ -245,35 +245,7 @@ namespace Structure_old {
                 }
             };
 
-        /// <summary>
-        ///   <para>获取给定特殊块名字的TileType。</para>
-        ///   <para>用于将地图json文件中的特殊块类型字符串对应到TileType。</para>
-        /// </summary>
-        public static Dictionary<string, TileType> tileTypeOfSpecialName = new Dictionary<string, TileType>() {
-            {"portal", TileType.Special_Portal},
-            {"brokenBridge", TileType.Special_BrokenBridge},
-            {"doubleStep", TileType.Special_DoubleStep},
-            {"pulseOn", TileType.Special_PulseOn},
-            {"pulseOff", TileType.Special_PulseOff},
-            {"stop", TileType.Special_Stop},
-            {"ritual", TileType.Special_Ritual},
-            {"rollAgain", TileType.Special_RollAgain},
-        };
-
-        /// <summary>
-        ///   <para>获取给定特殊块TileType的名字。</para>
-        ///   <para>用于将特殊块TileType转化为字符串，然后就能存储到地图json文件中。</para>
-        /// </summary>
-        public static Dictionary<TileType, string> specialNameOfTileType = new Dictionary<TileType, string>() {
-            {TileType.Special_Portal, "portal"},
-            {TileType.Special_BrokenBridge, "brokenBridge"},
-            {TileType.Special_DoubleStep, "doubleStep"},
-            {TileType.Special_PulseOn, "pulseOn"},
-            {TileType.Special_PulseOff, "pulseOff"},
-            {TileType.Special_Stop, "stop"},
-            {TileType.Special_Ritual, "ritual"},
-            {TileType.Special_RollAgain, "rollAgain"},
-        };
+        
 
         /// <summary>
         ///   <para>获取给定棋子块TileType的玩家编号。</para>

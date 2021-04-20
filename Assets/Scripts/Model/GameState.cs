@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Structure;
 
 /// <summary>
 ///   <para> 游戏状态 </para>

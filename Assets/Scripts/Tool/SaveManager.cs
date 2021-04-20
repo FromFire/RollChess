@@ -4,7 +4,6 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Structure;
 
 /// <summary>
 ///   <para> 存档管理 </para>

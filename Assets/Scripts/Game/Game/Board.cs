@@ -26,30 +26,7 @@ public class BoardOld : MonoBehaviour{
 
     //初始化
     public void Init(List<SingleMapGridEntity> mapEntity, List<SingleSpecialEntity> specialEntity, List<SinglePortalEntity> portalEntity) {
-        //导入地图信息
-        map = new BaseBoard<SingleGrid>();
-        foreach(SingleMapGridEntity grid in mapEntity) {
-            map.Add(new Vector2Int(grid.x, grid.y), new SingleGrid(true));
-        }
-
-        //导入特殊格子信息
-        foreach(SingleSpecialEntity special in specialEntity) {
-            SingleGrid.Effect effect = SingleGrid.Effect.None;
-            switch(special.effect) {
-                case "doubleStep":
-                    effect = SingleGrid.Effect.DoubleStep;
-                    break;
-                case "brokenBridge":
-                    effect = SingleGrid.Effect.BrokenBridge;
-                    break;
-            }
-            map.GetData(new Vector2Int(special.x, special.y)).SpecialEffect = effect;
-        }
-
-        //导入传送门信息
-        foreach(SinglePortalEntity portal in portalEntity) {
-            map.GetData(new Vector2Int(portal.fromX, portal.fromY)).PortalTarget = new Vector2Int(portal.toX, portal.toY);
-        }
+        
         
         //显示地图
         boardDisplay.Display(map);

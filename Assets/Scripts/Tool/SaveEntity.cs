@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Structure;
 
 /// <summary>
 ///   <para> 存档数据 </para>
@@ -32,7 +31,7 @@ public class SaveEntity {
     /// <summary>
     ///   <para> 特殊块信息 </para>
     /// </summary>  
-    public List<LandSaveEntity> special;
+    public List<SpecialSaveEntity> special;
 
     /// <summary>
     ///   <para> 传送门信息 </para>

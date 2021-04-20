@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Structure;
 
 /// <summary>
 ///   <para> 棋盘数据 </para>
@@ -11,7 +10,7 @@ public class Board {
     /// <summary>
     ///   <para> 存储坐标和格子 </para>
     /// </summary>
-    private Dictionary<Vector2Int, Cell> positionOfCell;
+    private Dictionary<Vector2Int, Cell> map;
 
     // 数据边界
     private int borderUp;
@@ -21,25 +20,48 @@ public class Board {
 
     // todo: subject 更新推送
 
-    /// <summary>
-    ///   <para> 初始化空的列表 </para>
-    /// </summary>
-    public void Init() {
+    public Board() {
+        map = new Dictionary<Vector2Int, Cell>();
+        borderUp = borderRight = int.MinValue;
+        borderDown = borderLeft = int.MaxValue;
+    }
 
+    /// <summary>
+    ///   <para> 加载数据 </para>
+    /// </summary>
+    public void Load(SaveEntity saveEntity) {
+        // 加载可走格子信息，默认无效果
+        List<LandSaveEntity> mapEntity = saveEntity.map;
+        foreach(LandSaveEntity cell in mapEntity) {
+            Add(new Vector2Int(cell.x, cell.y), new Cell(true, SpecialEffect.None));
+        }
+
+        // 加载特殊格子信息
+        List<SpecialSaveEntity> specialEntity = saveEntity.special;
+        foreach(SpecialSaveEntity cell in specialEntity) {
+            Get(new Vector2Int(cell.x, cell.y)).effect = Transform.specialEffectOfName[cell.effect];
+        }
+
+        // 加载传送门信息
+        List<PortalSaveEntity> portalEntity = saveEntity.portal;
+        foreach(PortalSaveEntity cell in portalEntity) {
+            Vector2Int pos = new Vector2Int(cell.fromX, cell.fromY);
+            Add(pos, new PortalCell( Get(pos), new Vector2Int(cell.toX, cell.toY) ));
+        }
     }
 
     /// <summary>
     ///   <para> 包含性检查 </para>
     /// </summary>
     public bool Contains(Vector2Int pos) {
-        return positionOfCell.ContainsKey(pos);
+        return map.ContainsKey(pos);
     }
 
     /// <summary>
     ///   <para> 设置和增加Cell </para>
     /// </summary>
     public void Add(Vector2Int pos, Cell cell) {
-        positionOfCell.Add(pos, cell);
+        map.Add(pos, cell);
         UpdateBorder(pos);
     }
 
@@ -47,7 +69,7 @@ public class Board {
     ///   <para> 删除Cell </para>
     /// </summary>
     public void Remove(Vector2Int pos) {
-        if(Contains(pos)) positionOfCell.Remove(pos);
+        if(Contains(pos)) map.Remove(pos);
     }
 
     /// <summary>
@@ -62,7 +84,7 @@ public class Board {
     /// </summary>
     public HashSet<Vector2Int> ToPositionSet() {
         HashSet<Vector2Int> ret = new HashSet<Vector2Int>();
-        foreach(KeyValuePair<Vector2Int, Cell> kvp in positionOfCell) {
+        foreach(KeyValuePair<Vector2Int, Cell> kvp in map) {
             ret.Add(kvp.Key);
         }
         return ret;

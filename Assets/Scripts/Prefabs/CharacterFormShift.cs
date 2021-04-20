@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Structure;
-
 /// <summary>
 ///   <para> 切换角色操控方式的按钮 </para>
 ///   <para> 功能1：面对用户。点击时触发响应函数，并切换显示。 </para>
