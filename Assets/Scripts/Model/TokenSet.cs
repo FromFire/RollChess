@@ -25,6 +25,16 @@ public class TokenSet {
     }
 
     /// <summary>
+    ///   <para> 加载数据 </para>
+    /// </summary>
+    public void Load(SaveEntity saveEntity) {
+        List<TokenSaveEntity> tokenEntity = saveEntity.token;
+        foreach(TokenSaveEntity token in tokenEntity) {
+            Add(new Token(new Vector2Int(token.x, token.y), (PlayerID)token.player));
+        }
+    }
+
+    /// <summary>
     ///   <para> 增加棋子 </para>
     /// </summary>
     public void Add(Token token) {
