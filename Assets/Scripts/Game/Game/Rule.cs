@@ -241,19 +241,4 @@ public class Rule : MonoBehaviour {
         //取消所有高光
         highlightDisplay.CancelHighlight();
     }
-
-    //从json文件中读取地图
-    // TODO: 提取到Utility里边
-    public BoardEntity LoadMapFromJson(string filename) {
-        Debug.Log("加载地图：" + filename);
-
-        //读取json字符串
-        TextAsset text = Resources.Load<TextAsset>(filename);
-        string json = text.text;
-        //将json字符串转换为BoardEntity类
-        BoardEntity boardEntity = BoardEntity.FromJson(json);
-        //boardEntity.toConsole();
-        return boardEntity;
-    }
-
 }

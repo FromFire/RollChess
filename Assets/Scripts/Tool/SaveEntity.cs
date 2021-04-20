@@ -38,11 +38,36 @@ public class SaveEntity {
     ///   <para> 传送门信息 </para>
     /// </summary>  
     public List<PortalSaveEntity> portal;
+
+    /// <summary>
+    ///   <para> 转换为json格式文本 </para>
+    /// </summary>
+    public string ToJson() {
+        return JsonUtility.ToJson(this);
+    }
+
+    /// <summary>
+    ///   <para> 从json格式转换 </para>
+    /// </summary>
+    static public SaveEntity FromJson(string json) {
+        return JsonUtility.FromJson<SaveEntity>(json);
+    }
+
+    /// <summary>
+    ///   <para> 在控制台输出部分信息 </para>
+    /// </summary>
+    public void ToConsole() {
+        string str = "mapName: " + mapName + "\n" +
+                     "players - number: " + player.min + "\n" +
+                     "tokens - size" + token.Count + "\n";
+        Debug.Log(str);
+    }
 }
 
 /// <summary>
 ///   <para> 玩家信息 </para>
 /// </summary>
+[System.Serializable]
 public class PlayerSaveEntity {
     
     /// <summary>
@@ -59,6 +84,7 @@ public class PlayerSaveEntity {
 /// <summary>
 ///   <para> 单个棋子信息 </para>
 /// </summary>
+[System.Serializable]
 public class TokenSaveEntity {
     
     /// <summary>
@@ -80,6 +106,7 @@ public class TokenSaveEntity {
 /// <summary>
 ///   <para> 单个可走格子信息 </para>
 /// </summary>
+[System.Serializable]
 public class LandSaveEntity {
     
     /// <summary>
@@ -96,6 +123,7 @@ public class LandSaveEntity {
 /// <summary>
 ///   <para> 单个特殊块信息 </para>
 /// </summary>
+[System.Serializable]
 public class SpecialSaveEntity {
     
     /// <summary>
@@ -117,6 +145,7 @@ public class SpecialSaveEntity {
 /// <summary>
 ///   <para> 单个传送门信息 </para>
 /// </summary>
+[System.Serializable]
 public class PortalSaveEntity {
     
     /// <summary>

@@ -4,7 +4,7 @@
         "min":2,
         "max":2
    },
-   "tokens": [
+   "token": [
        {"x":-6, "y":-1, "player":0},
        {"x":-6, "y":0, "player":0},
        {"x":-5, "y":-1, "player":0},
