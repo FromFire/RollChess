@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Cell {
     // 所在坐标
+    // 可以获取，不能修改，只能在初始化时指定
     protected Vector2Int position;
 
     // 是否可放置棋子
@@ -20,19 +21,20 @@ public class Cell {
     /// </summary>
     public PositionSubject subject;
 
-    // 构造函数
-    public Cell() {
-        walkable = false;
-        effect = SpecialEffect.None;
+    // 不能构造空的Cell
+    private Cell() {
     }
 
     // 构造函数
     public Cell(Cell cell) {
         position = cell.position;
+        walkable = cell.walkable;
+        effect = cell.effect;
     }
 
     // 构造函数
-    public Cell(bool walkable, SpecialEffect effect) {
+    public Cell(Vector2Int position, bool walkable, SpecialEffect effect) {
+        this.position = position;
         this.walkable = walkable;
         this.effect = effect;
     }
@@ -42,11 +44,6 @@ public class Cell {
     /// </summary>
     public Vector2Int Position {
         get {return position;}
-        set {
-            position = value;
-            //推送修改
-            subject.Notify(ModelModifyEvent.Cell, position); 
-        }
     }
 
     /// <summary>
@@ -84,11 +81,6 @@ public class PortalCell : Cell {
 
     // 构造函数
     public PortalCell(Cell cell, Vector2Int target) : base(cell) {
-        this.target = target;
-    }
-
-    // 构造函数
-    public PortalCell(bool walkable, SpecialEffect effect, Vector2Int target) : base(walkable, effect) {
         this.target = target;
     }
 

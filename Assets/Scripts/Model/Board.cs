@@ -36,7 +36,7 @@ public class Board {
         // 加载可走格子信息，默认无效果
         List<LandSaveEntity> mapEntity = saveEntity.map;
         foreach(LandSaveEntity cell in mapEntity) {
-            Cell newCell = new Cell(true, SpecialEffect.None);
+            Cell newCell = new Cell( new Vector2Int(cell.x, cell.y), true, SpecialEffect.None);
             newCell.subject = this.subject;
             Add(new Vector2Int(cell.x, cell.y), newCell);
         }
