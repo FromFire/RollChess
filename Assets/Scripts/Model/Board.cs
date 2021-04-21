@@ -18,7 +18,10 @@ public class Board {
     private int borderLeft;
     private int borderRight;
 
-    // todo: subject 更新推送
+    /// <summary>
+    ///   <para> 更新推送 </para>
+    /// </summary>
+    public PositionSubject subject;
 
     public Board() {
         map = new Dictionary<Vector2Int, Cell>();
@@ -48,6 +51,9 @@ public class Board {
             Vector2Int pos = new Vector2Int(cell.fromX, cell.fromY);
             Add(pos, new PortalCell( Get(pos), new Vector2Int(cell.toX, cell.toY) ));
         }
+
+        // 初始化时在Add()中推送修改，但此时Subject中无observer，所以推送无效
+        // View将统一在初始化时读取和显示数据
     }
 
     /// <summary>
@@ -63,6 +69,9 @@ public class Board {
     public void Add(Vector2Int pos, Cell cell) {
         map.Add(pos, cell);
         UpdateBorder(pos);
+
+        // 推送修改
+        subject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>
@@ -70,6 +79,9 @@ public class Board {
     /// </summary>
     public void Remove(Vector2Int pos) {
         if(Contains(pos)) map.Remove(pos);
+
+        // 推送修改
+        subject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>

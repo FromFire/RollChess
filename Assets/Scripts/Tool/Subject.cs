@@ -68,11 +68,11 @@ public class Subject {
 }
 
 /// <summary>
-///   <para> 更新订阅，继承于Subject </para>
+///   <para> 更新订阅 </para>
 ///   <para> Model有修改时，通过此类通知已注册的所有观察者 </para>
 ///   <para> 同时通知被修改的坐标 </para>
 /// </summary>
-public class PositionSubject : Subject {
+public class PositionSubject {
 
     /// <summary>
     ///   <para> 观察者，即发生修改时调用的函数 </para>
@@ -125,6 +125,23 @@ public class PositionSubject : Subject {
         // 推送
         foreach(PositionObserver observer in observers[modelModifyEvent]) {
             observer(position);
+        }
+    }
+
+    /// <summary>
+    ///   <para> 推送某一事件的修改，涉及一系列坐标 </para>
+    /// </summary>
+    public void Notify(ModelModifyEvent modelModifyEvent, List<Vector2Int> position) {
+        // 合法性检查：事件不存在、数组为null
+        // 直接返回
+        if(!observers.ContainsKey(modelModifyEvent) || observers[modelModifyEvent] == null)
+            return;
+
+        // 推送
+        foreach(PositionObserver observer in observers[modelModifyEvent]) {
+            foreach(Vector2Int pos in position) {
+                observer(pos);
+            }
         }
     }
 }

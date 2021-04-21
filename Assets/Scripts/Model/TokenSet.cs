@@ -18,20 +18,26 @@ public class TokenSet {
     /// </summary>
     private int nextId = 0;
 
-    // todo: subject 更新推送
+    /// <summary>
+    ///   <para> 更新推送 </para>
+    /// </summary>
+    public PositionSubject subject;
 
     public TokenSet() {
         tokenList = new Dictionary<int, Token> ();
     }
 
     /// <summary>
-    ///   <para> 加载数据 </para>
+    ///   <para> 初始化数据 </para>
     /// </summary>
     public void Load(SaveEntity saveEntity) {
         List<TokenSaveEntity> tokenEntity = saveEntity.token;
         foreach(TokenSaveEntity token in tokenEntity) {
             Add(new Token(new Vector2Int(token.x, token.y), (PlayerID)token.player));
         }
+
+        // 初始化时在Add()中推送修改，但此时Subject中无observer，所以推送无效
+        // View将统一在初始化时读取和显示数据
     }
 
     /// <summary>
@@ -40,15 +46,25 @@ public class TokenSet {
     public void Add(Token token) {
         tokenList[nextId] = token;
         nextId ++;
+
+        // 推送修改
+        subject.Notify(ModelModifyEvent.Token, token.position);
     }
 
     /// <summary>
     ///   <para> 移除棋子 </para>
     /// </summary>
     public void Remove(List<int> idList) {
+        List<Vector2Int> modified = new List<Vector2Int>();
         foreach(int id in idList) {
+            // 记录被修改的坐标
+            modified.Add(tokenList[id].position);
+            // 移除
             tokenList.Remove(id);
         }
+
+        // 推送修改
+        subject.Notify(ModelModifyEvent.Token, modified);
     }
 
     /// <summary>
@@ -69,6 +85,12 @@ public class TokenSet {
 
         // 移除target处其他玩家的棋子
         Remove(toEat);
+
+        // 推送修改
+        List<Vector2Int> modified = new List<Vector2Int>();
+        modified.Add(from);
+        modified.Add(target);
+        subject.Notify(ModelModifyEvent.Token, modified);
     }
 
     /// <summary>
