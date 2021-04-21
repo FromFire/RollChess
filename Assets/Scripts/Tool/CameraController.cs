@@ -1,10 +1,30 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///   <para> 摄像头相关功能 </para>
+/// </summary>
 public class CameraController : MonoBehaviour {
     //本摄像头
-    public Camera mcamera;
+    private Camera mcamera;
+
+    /// <summary>
+    ///   <para> 允许鼠标滚轮放大缩小 </para>
+    /// </summary>
+    public bool allowZoom;
+
+    // 允许拖拽方向，allowMoveUp表示允许摄像机向上移动
+    public bool allowMoveUp = true;
+    public bool allowMoveDown = true;
+    public bool allowMoveLeft = true;
+    public bool allowMoveRight = true;
+
+    /// <summary>
+    ///   <para> 拖拽按键 </para>
+    /// </summary>
+    public int dragKey = 0;
+
 
     //鼠标拖拽时的原本位置
     Vector3 mousePosPre;
@@ -13,16 +33,13 @@ public class CameraController : MonoBehaviour {
     bool isMousePressedLastTime = false;
     public int dragKey = 0;
 
-    // 允许鼠标滚轮放大缩小
-    public bool allowZoom;
+    
 
-    // 允许的方向，allowMoveUp表示允许摄像机向上移动
-    public bool allowMoveUp = true;
-    public bool allowMoveDown = true;
-    public bool allowMoveLeft = true;
-    public bool allowMoveRight = true;
+    
 
-    //
+    /// <summary>
+    ///   <para> 世界坐标到屏幕坐标（存疑） </para>
+    /// </summary>
     public Vector3 WorldToScreen(Vector3 position) {
         return mcamera.ScreenToWorldPoint(position);
     }
