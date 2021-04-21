@@ -28,4 +28,25 @@ public class Transform {
         {SpecialEffect.Magical_Circle, "magicalCircle"},
         {SpecialEffect.Roll_Again, "rollAgain"},
     };
+
+    /// <summary>
+    ///   <para>给定TileType，得到资源路径。</para>
+    /// </summary>
+    public static Dictionary<TileType, string> resourceOfTileType = new Dictionary<TileType, string>() {
+        {TileType.Land, "Tiles/floor-lawnGreen"},
+        {TileType.Special_Portal, "Tiles/special-portal"},
+        {TileType.Special_Double_Step, "Tiles/special-doubleStep"},
+        {TileType.Special_Broken_Bridge, "Tiles/special-brokenBridge"},
+        {TileType.Special_Pulse_On, "Tiles/special-pulseOn"},
+        {TileType.Special_Pulse_Off, "Tiles/special-pulseOff"},
+        {TileType.Special_Stop, "Tiles/special-stop"},
+        {TileType.Special_Magical_Circle, "Tiles/special-ritual"},
+        {TileType.Special_Roll_Again, "Tiles/special-rollAgain"},
+        {TileType.Player_Red, "Tiles/token-blueAlien"},
+        {TileType.Player_Blue, "Tiles/token-redAlien"},
+        {TileType.Player_Green, "Tiles/token-greenAlien"},
+        {TileType.Player_Yellow, "Tiles/token-yellowAlien"},
+        {TileType.Player_Neutral, "Tiles/token-neutralAlien"},
+        {TileType.HexGrid, "Tiles/token-hexGrid"}
+    };
 }

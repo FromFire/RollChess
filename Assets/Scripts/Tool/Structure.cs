@@ -54,3 +54,40 @@ public enum ModelModifyEvent {
     Is_Game_Over,   //游戏是否结束
     Winner          //赢家
 }
+
+
+/// <summary>
+///   <para> Tile绘制类型 </para>
+///   <para> 用来描述Tile的类型，只面向底层绘图，不描述功能，仅在View内部使用 </para>
+/// </summary>
+public enum TileType {
+    // 空
+    None,                   //空
+
+    // 普通地板
+    Land,                   //陆地
+
+    // 特殊格子
+    Special_Double_Step,    //倍速
+    Special_Broken_Bridge,  //危桥
+    Special_Portal,         //传送门
+    Special_Pulse_On,       //脉冲块开启
+    Special_Pulse_Off,      //脉冲块闭合
+    Special_Stop,           //到此止步
+    Special_Magical_Circle, //魔法阵
+    Special_Roll_Again,     //再掷一次
+
+    // 玩家
+    Player_Red,
+    Player_Blue,
+    Player_Yellow,
+    Player_Green,
+    Player_Neutral,
+
+    // 高亮
+    Highlight_Blue,
+    Highlight_Yellow,
+
+    // 六边形网格
+    HexGrid
+}

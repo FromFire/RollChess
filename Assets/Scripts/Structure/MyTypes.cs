@@ -191,25 +191,6 @@ namespace Structure_old {
     ///   <para>提供了一系列与TileType、TilemapType相关的全局静态常量。</para>
     /// </summary>
     public static class Constants {
-        /// <summary>
-        ///   <para>获取给定TileType对应的资源文件路径。</para>
-        /// </summary>
-        public static Dictionary<TileType, string> resourcePathOfTileType = new Dictionary<TileType, string>() {
-            {TileType.Land_Lawn_Green, "Tiles/floor-lawnGreen"},
-            {TileType.Special_Portal, "Tiles/special-portal"},
-            {TileType.Special_DoubleStep, "Tiles/special-doubleStep"},
-            {TileType.Special_BrokenBridge, "Tiles/special-brokenBridge"},
-            {TileType.Special_PulseOn, "Tiles/special-pulseOn"},
-            {TileType.Special_PulseOff, "Tiles/special-pulseOff"},
-            {TileType.Special_Stop, "Tiles/special-stop"},
-            {TileType.Special_Ritual, "Tiles/special-ritual"},
-            {TileType.Special_RollAgain, "Tiles/special-rollAgain"},
-            {TileType.Token_Alien_Blue, "Tiles/token-blueAlien"},
-            {TileType.Token_Alien_Red, "Tiles/token-redAlien"},
-            {TileType.Token_Alien_Green, "Tiles/token-greenAlien"},
-            {TileType.Token_Alien_Yellow, "Tiles/token-yellowAlien"},
-            {TileType.Token_Alien_Neutral, "Tiles/token-neutralAlien"},
-        };
 
         /// <summary>
         ///   <para>获取给定TilemapType所对应的一组TileType。</para>

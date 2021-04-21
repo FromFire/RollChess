@@ -137,7 +137,7 @@ namespace Game.MapEditor {
             if (editorState == EditorState.Portal) {
                 // 如果尝试使起点和终点相同，那么终止此次传送站的建立
                 if (selectedCell == newPortal.from) {
-                    selectedTilemapManager.EraseTile(selectedCell);
+                    selectedTilemapManager.RemoveTile(selectedCell);
                     newPortal.Destroy();
                 }
                 // 否则，完成传送通道（不用清除终点位置的其他块）
@@ -179,7 +179,7 @@ namespace Game.MapEditor {
             }
 
             // 清除目标块
-            selectedTilemapManager.EraseTile(selectedCell);
+            selectedTilemapManager.RemoveTile(selectedCell);
         }
 
         // 更新预览
@@ -189,7 +189,7 @@ namespace Game.MapEditor {
 
             // 预览手上的块
             foreach (TilemapManager tilemapManager in objectSelector.GetPreviewTilemapManagers())
-                tilemapManager.EraseTile(lastSelectedCell);
+                tilemapManager.RemoveTile(lastSelectedCell);
             selectedPreviewTilemapManager.SetTile(selectedCell, selectedTileType);
 
             // 预览正在构建的传送通道
