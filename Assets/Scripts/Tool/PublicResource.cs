@@ -9,4 +9,6 @@ public class PublicResource {
     static public Board board;
     static public TokenSet tokenSet;
     static public SaveManager saveManager;
+    static public CameraController cameraController;
+    static public InputMonitor inputMonitor;
 }

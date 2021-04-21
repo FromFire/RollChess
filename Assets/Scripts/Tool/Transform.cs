@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+/// <summary>
+///   <para> 类型转换 </para>
+/// </summary>
 public class Transform {
     /// <summary>
     ///   <para>给定地图json文件中的特殊块类型名称，得到SpecialEffect。</para>

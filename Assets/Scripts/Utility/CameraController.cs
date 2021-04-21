@@ -22,6 +22,11 @@ public class CameraController : MonoBehaviour {
     public bool allowMoveLeft = true;
     public bool allowMoveRight = true;
 
+    //
+    public Vector3 WorldToScreen(Vector3 position) {
+        return mcamera.ScreenToWorldPoint(position);
+    }
+
 
     // Start is called before the first frame update
     void Start() { }

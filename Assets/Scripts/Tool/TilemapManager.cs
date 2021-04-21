@@ -72,8 +72,10 @@ public class TilemapManager{
     /// <summary>
     ///   <para> 鼠标当前所在格子坐标 </para>
     /// </summary>
-    public Vector2Int MousePointingCell() {
-        return Vector2Int.zero;
+    public Vector2Int CursorPointingCell() {
+        Vector3 cursorPositionWorld = InputMonitor.CursorPosition();
+        Vector3 cursorPositionScreen = PublicResource.cameraController.WorldToScreen(cursorPositionWorld);
+        return (Vector2Int)tilemap.WorldToCell(cursorPositionScreen);
     }
 
     /// <summary>
