@@ -22,8 +22,7 @@ public class Cell {
     public PositionSubject subject;
 
     // 不能构造空的Cell
-    private Cell() {
-    }
+    private Cell() {}
 
     // 构造函数
     public Cell(Cell cell) {
@@ -41,6 +40,7 @@ public class Cell {
 
     /// <summary>
     ///   <para> 所在坐标 </para>
+    ///   <para> 可以获取，不能修改，只能在初始化时指定 </para>
     /// </summary>
     public Vector2Int Position {
         get {return position;}

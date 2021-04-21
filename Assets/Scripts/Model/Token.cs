@@ -7,20 +7,47 @@ using UnityEngine;
 /// </summary>
 public class Token {
 
-    //属于哪个玩家
-    public PlayerID player;
+    // 属于哪个玩家
+    private PlayerID player;
+
+    // 棋子位置
+    private Vector2Int position;
 
     /// <summary>
-    ///   <para> 棋子位置 </para>
+    ///   <para> 更新推送 </para>
     /// </summary>
-    public Vector2Int position;
+    public PositionSubject subject;
 
+    // 构造函数
     public Token(Vector2Int position, PlayerID player) {
         this.position = position;
         this.player = player;
     }
 
-    public Token() {
+    // 不能构造空的Token
+    private Token() {}
 
+    /// <summary>
+    ///   <para> 属于哪个玩家 </para>
+    /// </summary>
+    public PlayerID Player {
+        get {return player;}
+        set {
+            player = value;
+            //推送修改
+            subject.Notify(ModelModifyEvent.Token, position); 
+        }
+    }
+
+    /// <summary>
+    ///   <para> 棋子位置 </para>
+    /// </summary>
+    public Vector2Int Position {
+        get {return position;}
+        set {
+            position = value;
+            //推送修改
+            subject.Notify(ModelModifyEvent.Token, position); 
+        }
     }
 }

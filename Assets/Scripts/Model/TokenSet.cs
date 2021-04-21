@@ -23,8 +23,10 @@ public class TokenSet {
     /// </summary>
     public PositionSubject subject;
 
+    // 构造函数
     public TokenSet() {
         tokenList = new Dictionary<int, Token> ();
+        subject = new PositionSubject();
     }
 
     /// <summary>
@@ -33,7 +35,9 @@ public class TokenSet {
     public void Load(SaveEntity saveEntity) {
         List<TokenSaveEntity> tokenEntity = saveEntity.token;
         foreach(TokenSaveEntity token in tokenEntity) {
-            Add(new Token(new Vector2Int(token.x, token.y), (PlayerID)token.player));
+            Token newToken = new Token(new Vector2Int(token.x, token.y), (PlayerID)token.player);
+            newToken.subject = this.subject;
+            Add(newToken);
         }
 
         // 初始化时在Add()中推送修改，但此时Subject中无observer，所以推送无效
@@ -48,7 +52,7 @@ public class TokenSet {
         nextId ++;
 
         // 推送修改
-        subject.Notify(ModelModifyEvent.Token, token.position);
+        subject.Notify(ModelModifyEvent.Token, token.Position);
     }
 
     /// <summary>
@@ -58,7 +62,7 @@ public class TokenSet {
         List<Vector2Int> modified = new List<Vector2Int>();
         foreach(int id in idList) {
             // 记录被修改的坐标
-            modified.Add(tokenList[id].position);
+            modified.Add(tokenList[id].Position);
             // 移除
             tokenList.Remove(id);
         }
@@ -73,12 +77,12 @@ public class TokenSet {
     public void Move(int id, Vector2Int target) {
         // 修改该棋子位置
         Token token = tokenList[id];
-        Vector2Int from = token.position;
-        token.position = target;
+        Vector2Int from = token.Position;
+        token.Position = target;
 
         // 查询target处其他玩家的棋子
         Dictionary<QueryParam, int> param = new Dictionary<QueryParam, int>();
-        param[QueryParam.Player_Ignore] = (int)token.player;
+        param[QueryParam.Player_Ignore] = (int)token.Player;
         param[QueryParam.PositionX] = target.x;
         param[QueryParam.PositionY] = target.y;
         List<int> toEat = Query(param);
@@ -86,11 +90,7 @@ public class TokenSet {
         // 移除target处其他玩家的棋子
         Remove(toEat);
 
-        // 推送修改
-        List<Vector2Int> modified = new List<Vector2Int>();
-        modified.Add(from);
-        modified.Add(target);
-        subject.Notify(ModelModifyEvent.Token, modified);
+        // 无须推送修改，因为Token内部修改和Remove已有推送
     }
 
     /// <summary>
@@ -122,9 +122,9 @@ public class TokenSet {
         // 查询
         foreach(KeyValuePair<int, Token> kvp in tokenList) {
             if(
-                (playerAvailable && kvp.Value.player == player)
-                || (playerIgnoreAvailable && kvp.Value.player != playerIgnore)
-                || (positionAvailable && kvp.Value.position == position)
+                (playerAvailable && kvp.Value.Player == player)
+                || (playerIgnoreAvailable && kvp.Value.Player != playerIgnore)
+                || (positionAvailable && kvp.Value.Position == position)
             )
             ret.Add(kvp.Key);
         }

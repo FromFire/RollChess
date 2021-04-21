@@ -23,10 +23,12 @@ public class Board {
     /// </summary>
     public PositionSubject subject;
 
+    // 构造函数
     public Board() {
         map = new Dictionary<Vector2Int, Cell>();
         borderUp = borderRight = int.MinValue;
         borderDown = borderLeft = int.MaxValue;
+        subject = new PositionSubject();
     }
 
     /// <summary>
