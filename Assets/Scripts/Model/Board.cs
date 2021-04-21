@@ -36,13 +36,15 @@ public class Board {
         // 加载可走格子信息，默认无效果
         List<LandSaveEntity> mapEntity = saveEntity.map;
         foreach(LandSaveEntity cell in mapEntity) {
-            Add(new Vector2Int(cell.x, cell.y), new Cell(true, SpecialEffect.None));
+            Cell newCell = new Cell(true, SpecialEffect.None);
+            newCell.subject = this.subject;
+            Add(new Vector2Int(cell.x, cell.y), newCell);
         }
 
         // 加载特殊格子信息
         List<SpecialSaveEntity> specialEntity = saveEntity.special;
         foreach(SpecialSaveEntity cell in specialEntity) {
-            Get(new Vector2Int(cell.x, cell.y)).effect = Transform.specialEffectOfName[cell.effect];
+            Get(new Vector2Int(cell.x, cell.y)).Effect = Transform.specialEffectOfName[cell.effect];
         }
 
         // 加载传送门信息
