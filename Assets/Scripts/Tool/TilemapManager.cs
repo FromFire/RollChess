@@ -73,9 +73,10 @@ public class TilemapManager{
     ///   <para> 鼠标当前所在格子坐标 </para>
     /// </summary>
     public Vector2Int CursorPointingCell() {
-        Vector3 cursorPositionWorld = InputMonitor.CursorPosition();
-        Vector3 cursorPositionScreen = PublicResource.cameraController.WorldToScreen(cursorPositionWorld);
-        return (Vector2Int)tilemap.WorldToCell(cursorPositionScreen);
+        // 获取屏幕坐标，转换为世界坐标，再转换为Tilemap的坐标
+        Vector3 cursorPositionScreen = CursorMonitor.MouseScreenPositionNow;
+        Vector3 cursorPositionWorld = PublicResource.cameraController.ScreenToWorld(cursorPositionScreen);
+        return (Vector2Int)tilemap.WorldToCell(cursorPositionWorld);
     }
 
     /// <summary>

@@ -38,9 +38,9 @@ public class CameraController : MonoBehaviour {
     
 
     /// <summary>
-    ///   <para> 世界坐标到屏幕坐标（存疑） </para>
+    ///   <para> 屏幕坐标到世界坐标 </para>
     /// </summary>
-    public Vector3 WorldToScreen(Vector3 position) {
+    public Vector3 ScreenToWorld(Vector3 position) {
         return mcamera.ScreenToWorldPoint(position);
     }
 

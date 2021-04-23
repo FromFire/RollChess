@@ -10,5 +10,5 @@ public class PublicResource {
     static public TokenSet tokenSet;
     static public SaveManager saveManager;
     static public CameraController cameraController;
-    static public InputMonitor inputMonitor;
+    static public CursorMonitor cursorMonitor;
 }
