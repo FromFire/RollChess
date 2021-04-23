@@ -35,7 +35,6 @@ public class CameraController : MonoBehaviour {
     ///   <para> 视角拉近 </para>
     /// </summary>
     public void ZoomIn() {
-        // Input.GetAxis("Mouse ScrollWheel") < 0 判断滚轮
         if (mcamera.orthographicSize <= zoomMax) {
             mcamera.orthographicSize += zoomSensitivity;
         }
@@ -45,16 +44,33 @@ public class CameraController : MonoBehaviour {
     ///   <para> 视角拉远 </para>
     /// </summary>
     public void ZoomOut() {
-        // Input.GetAxis("Mouse ScrollWheel") > 0 判断滚轮
         if (mcamera.orthographicSize >= zoomMin) {
             mcamera.orthographicSize += zoomSensitivity;
         }
     }
 
     /// <summary>
-    ///   <para> 摄像头平移（z轴不变） </para>
+    ///   <para> 摄像头平移（z轴不变），单位为Unit </para>
     /// </summary>
     public void Translate(Vector3 translation) {
         transform.Translate(translation, Space.Self);
+    }
+
+    /// <summary>
+    ///   <para> 摄像头平移（z轴不变），单位为像素 </para>
+    /// </summary>
+    public void TranslateByPixel(Vector3 translation) {
+        // Camera.orthographicSize表示摄像机范围高度一半，单位为Unit
+        // 计算出Unit/Pixel的比值
+        float unitPerPixel = mcamera.orthographicSize * 2 / Screen.height;
+
+        // 以Unit为单位转换
+        Vector3 trans = translation * unitPerPixel;
+        Translate(trans);
+
+        //旧算法：
+        //摄像头离地图越近，移动幅度越小
+        //200是试出来的参数，防止拖动速度太快，但鼠标和地图移动速度仍有一点差异
+        //Vector3 trans = (mousePosPre - mousePosNow) * mcamera.orthographicSize / 200;
     }
 }

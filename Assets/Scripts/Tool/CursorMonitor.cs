@@ -30,11 +30,11 @@ public class CursorMonitor : MonoBehaviour{
         // 更新鼠标本帧位置
         mouseScreenPositionNow = Input.mousePosition;
 
-        // 更新keyDownDuration
-        // 若没有按下，则清空在字典中的记录。
+        // 更新keyDownDuration，第一次按下记录视时长为0
+        // 若没有按下，清空在字典中的记录。
         for(int i=0; i<=2; i++) {
             if(Input.GetMouseButton(i))
-                mouseDownDuration[i] += Time.deltaTime;
+                mouseDownDuration[i] = mouseDownDuration.ContainsKey(i) ? mouseDownDuration[i]+Time.deltaTime : 0;
             else
                 mouseDownDuration.Remove(i);
         }
@@ -55,6 +55,14 @@ public class CursorMonitor : MonoBehaviour{
         if(!mouseDownDuration.ContainsKey(button)) 
             return -1;
         return mouseDownDuration[button];
+    }
+
+    /// <summary>
+    ///   <para> 鼠标是否在拖拽，0=左键，1=右键，2=中键 </para>
+    /// </summary>
+    static public bool IsMouseDrag(int button) {
+        // 若按下时间不长于一帧时间，视作只点过一帧，不算拖拽
+        return (mouseDownDuration.ContainsKey(button) && mouseDownDuration[button] >= Time.deltaTime);
     }
 
     /// <summary>
