@@ -64,9 +64,16 @@ public class TilemapManager{
     /// <summary>
     ///   <para> 世界坐标转换Tilemap坐标 </para>
     /// </summary>
-    public Vector2Int WorldToCell(Vector3 loc) {
-        Vector3Int vector = tilemap.WorldToCell(loc);
+    public Vector2Int WorldToCell(Vector3 pos) {
+        Vector3Int vector = tilemap.WorldToCell(pos);
         return new Vector2Int(vector.x, vector.y);
+    }
+
+    /// <summary>
+    ///   <para> 世界坐标转换Tilemap坐标 </para>
+    /// </summary>
+    public Vector3 CellToLocal(Vector3Int pos) {
+        return tilemap.CellToLocal(pos);
     }
 
     /// <summary>

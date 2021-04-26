@@ -8,6 +8,7 @@ using UnityEngine;
 public class Transform {
     /// <summary>
     ///   <para>给定地图json文件中的特殊块类型名称，得到SpecialEffect。</para>
+    ///   <para>用于从文件中读取地图到内存。</para>
     /// </summary>
     public static Dictionary<string, SpecialEffect> specialEffectOfName = new Dictionary<string, SpecialEffect>() {
         {"portal", SpecialEffect.Portal},
@@ -21,6 +22,7 @@ public class Transform {
 
     /// <summary>
     ///   <para>给定SpecialEffect，得到地图json文件中的特殊块类型名称。</para>
+    ///   <para>用于将内存中的地图导出至文件。</para>
     /// </summary>
     public static Dictionary<SpecialEffect, string> specialNameOfEffect = new Dictionary<SpecialEffect, string>() {
         {SpecialEffect.Portal, "portal"},
@@ -34,6 +36,7 @@ public class Transform {
 
     /// <summary>
     ///   <para>给定TileType，得到资源路径。</para>
+    ///   <para>用于TilemapManager内部绘制Tile。</para>
     /// </summary>
     public static Dictionary<TileType, string> resourceOfTileType = new Dictionary<TileType, string>() {
         {TileType.Land, "Tiles/floor-lawnGreen"},
@@ -51,5 +54,20 @@ public class Transform {
         {TileType.Player_Yellow, "Tiles/token-yellowAlien"},
         {TileType.Player_Neutral, "Tiles/token-neutralAlien"},
         {TileType.HexGrid, "Tiles/token-hexGrid"}
+    };
+
+    /// <summary>
+    ///   <para>给定TileType，得到资源路径。</para>
+    ///   <para>用于BoardDisplay将特殊块类型（逻辑层面）转换为TileType（显示层面）</para>
+    /// </summary>
+    public static Dictionary<SpecialEffect, TileType> tileTypeOfSpecialEffect = new Dictionary<SpecialEffect, TileType>() {
+        {SpecialEffect.None, TileType.Land},
+        {SpecialEffect.Portal, TileType.Special_Portal},
+        {SpecialEffect.Broken_Bridge, TileType.Special_Broken_Bridge},
+        {SpecialEffect.Double_Step, TileType.Special_Double_Step},
+        {SpecialEffect.Pulse, TileType.Special_Pulse_On},
+        {SpecialEffect.Stop, TileType.Special_Stop},
+        {SpecialEffect.Magical_Circle, TileType.Special_Magical_Circle},
+        {SpecialEffect.Roll_Again, TileType.Special_Roll_Again}
     };
 }
