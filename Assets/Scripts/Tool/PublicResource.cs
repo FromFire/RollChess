@@ -12,4 +12,5 @@ public class PublicResource {
     static public CameraController cameraController;
     static public CursorMonitor cursorMonitor;
     static public VisionController visionController;
+    static public SpecialIntroduction specialIntroduction;
 }

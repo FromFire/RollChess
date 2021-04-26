@@ -4,25 +4,18 @@ using UnityEngine.Tilemaps;
 
 /// <summary>
 ///   <para> 管理Tilemap </para>
+///   <para> 使用时挂在要管理的tilemap下面 </para>
 /// </summary>
-public class TilemapManager{
+public class TilemapManager : MonoBehaviour {
 
     // Tilemap本体
-    private Tilemap tilemap;
+    [SerializeField] private Tilemap tilemap;
+
+    // key为接受的有效Tile范围，value为对应的Tile
+    [SerializeField] private Dictionary<TileType, Tile> pallette;
 
     // 已填充的坐标，只读
     private HashSet<Vector2Int> cellSet;
-
-    // key为接受的有效Tile范围，value为对应的Tile
-    private Dictionary<TileType, Tile> pallette;
-
-    // 构造函数
-    public TilemapManager(HashSet<TileType> types) {
-        // 初始化时构造所有的Tile
-        foreach(TileType type in types) {
-            pallette[type] = Resources.Load<Tile>(Transform.resourceOfTileType[type]);
-        }
-    }
 
     /// <summary>
     ///   <para> 增改Tile </para>

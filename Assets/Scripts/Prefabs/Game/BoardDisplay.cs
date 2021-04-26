@@ -2,25 +2,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///   <para> 显示实体格子、特殊块、传送门箭头 </para>
+///   <para> 显示实体格子、特殊块、传送门箭头、特殊格子弹窗介绍 </para>
+///   <para> 使用时和TilemapManager挂在同一个Object下 </para>
 /// </summary>
+// todo：三个显示部分关系不大，考虑拆分
 public class BoardDisplay : MonoBehaviour {
-    //显示地板
-    public TilemapManager tilemapManagerBoard;
+    // 显示地板
+    [SerializeField] private TilemapManager tilemapManagerBoard;
 
-    //显示特殊格子贴图
-    public TilemapManager tilemapManagerSpecial;
+    // 显示特殊格子贴图
+    [SerializeField] private TilemapManager tilemapManagerSpecial;
 
-    //显示传送门的箭头
-    public GameObject portalArrows;
+    // 显示传送门的箭头
+    [SerializeField] private GameObject portalArrows;
 
-    //传送门的样式案例
-    public GameObject arrowSample;
+    // 传送门的样式案例
+    [SerializeField] private GameObject arrowSample;
 
     // 弹窗
-    public Popup popup;
+    [SerializeField] private Popup popup;
 
-    //显示自身
+    /// <summary>
+    ///   <para> 显示自身 </para>
+    /// </summary>
     public void Display() {
         // 获取有效数据列表
         Board board = PublicResource.board;
@@ -57,12 +61,6 @@ public class BoardDisplay : MonoBehaviour {
                 DrawCurve(from3, (from3+to3)/2 + 2*Vector3.up, to3, line);
             }
         }
-
-        // // 获取格子介绍
-        // TextAsset text = Resources.Load<TextAsset>("Texts/SpecialIntroductions");
-        // string json = text.text;
-        // Debug.Log(json);
-        // specialIntroductionsEntity = JsonHelper.FromJson<SpecialIntroductionsEntity> (json);
     }
 
     // 画贝塞尔曲线
@@ -94,40 +92,30 @@ public class BoardDisplay : MonoBehaviour {
         visionController.allowMoveUp = screenCenter.y < board.BorderUp;
         visionController.allowMoveDown = screenCenter.y > board.BorderDown;
 
-        // // 当鼠标所在格子是特殊格子时，通知PopUp
-        // SingleGrid.Effect pointedEffect = map.GetData(cursor.GetPointedCell()).SpecialEffect;
-        // if(pointedEffect != SingleGrid.Effect.None) {
-        //     //获取类型名称
-        //     string effectName = "";
-        //     switch(pointedEffect) {
-        //         case SingleGrid.Effect.DoubleStep:
-        //             effectName = "doubleStep";
-        //             break;
-        //         case SingleGrid.Effect.BrokenBridge:
-        //             effectName = "brokenBridge";
-        //             break;
-        //         case SingleGrid.Effect.Portal:
-        //             effectName = "portal";
-        //             break;
-        //     }
+        // 当鼠标所在格子是特殊格子时，通知PopUp
+        SpecialEffect pointedEffect = board.Get(tilemapManagerSpecial.CursorPointingCell()).Effect;
+        if(pointedEffect != SpecialEffect.None) {
+            SpecialIntroductionItem item = PublicResource.specialIntroduction.introduction[pointedEffect];
 
-        //     //设置PopUp显示
-        //     popup.available = true;
-        //     for(int i=0; i<specialIntroductionsEntity.SpecialIntroductions.Count; i++) {
-        //         if(specialIntroductionsEntity.SpecialIntroductions[i].name == effectName) {
-        //             popup.Title = specialIntroductionsEntity.SpecialIntroductions[i].introTitle;
-        //             popup.Describe = specialIntroductionsEntity.SpecialIntroductions[i].introText;
-        //             popup.EffectIntro = specialIntroductionsEntity.SpecialIntroductions[i].effectText;
-        //         }
-        //     }
-        // } else {
-        //     popup.available = false;
-        // }
+            //设置PopUp显示
+            popup.available = true;
+            popup.Title = item.introTitle;
+            popup.Describe = item.introText;
+            popup.EffectIntro = item.effectText;
+        } else {
+            popup.available = false;
+        }
     }
 
-    // //移除指定格子
-    // public void RemoveGrid(Vector2Int pos) {
-    //     tilemapManagerBoard.EraseTile(pos);
-    //     tilemapManagerSpecial.EraseTile(pos);
-    // }
+    /// <summary>
+    ///   <para> Board更新时调用 </para>
+    /// </summary>
+    public void BoardUpdate(Vector2Int position) {
+        Board board = PublicResource.board;
+
+        // 不可走 + 无特效：移除该格子
+        // 情况：经过危桥
+        tilemapManagerBoard.RemoveTile(position);
+        tilemapManagerSpecial.RemoveTile(position);
+    }
 }
