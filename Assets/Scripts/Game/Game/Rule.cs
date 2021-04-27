@@ -97,7 +97,7 @@ public class Rule : MonoBehaviour {
         Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
 
         // 判断鼠标是否在可走的格子上，若不在，取消路径高亮
-        if(pos3 != highlightDisplay.highlightRouteEnd) {
+        if(pos3 != highlightDisplay.HighlightRouteEnd) {
             highlightDisplay.CancelRouteHightlight();
         }
         if(isTokenChoosed) {
