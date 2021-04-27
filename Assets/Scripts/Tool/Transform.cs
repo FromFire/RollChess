@@ -59,7 +59,7 @@ public class Transform {
 
     /// <summary>
     ///   <para>给定TileType，得到资源路径。</para>
-    ///   <para>用于BoardDisplay将特殊块类型（逻辑层面）转换为TileType（显示层面）</para>
+    ///   <para>用于BoardDisplay显示特殊块</para>
     /// </summary>
     public static Dictionary<SpecialEffect, TileType> tileTypeOfSpecialEffect = new Dictionary<SpecialEffect, TileType>() {
         {SpecialEffect.None, TileType.Land},
@@ -70,5 +70,16 @@ public class Transform {
         {SpecialEffect.Stop, TileType.Special_Stop},
         {SpecialEffect.Magical_Circle, TileType.Special_Magical_Circle},
         {SpecialEffect.Roll_Again, TileType.Special_Roll_Again}
+    };
+
+    /// <summary>
+    ///   <para>给定PlayerId，得到TileType。</para>
+    ///   <para>用于TokenDisplay显示玩家棋子</para>
+    /// </summary>
+    public static Dictionary<PlayerID, TileType> tileTypeOfPlayerId = new Dictionary<PlayerID, TileType>() {
+        {PlayerID.Red, TileType.Player_Red},
+        {PlayerID.Blue, TileType.Player_Blue},
+        {PlayerID.Yellow, TileType.Player_Yellow},
+        {PlayerID.Green, TileType.Player_Green}
     };
 }

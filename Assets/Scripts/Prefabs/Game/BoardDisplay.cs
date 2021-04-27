@@ -112,7 +112,7 @@ public class BoardDisplay : MonoBehaviour {
     /// <summary>
     ///   <para> Board更新时调用 </para>
     /// </summary>
-    public void BoardUpdate(Vector2Int position) {
+    public void Update(Vector2Int position) {
         Cell cell = PublicResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，

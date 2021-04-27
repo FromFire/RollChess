@@ -30,9 +30,9 @@ public class UnwalkableDisplay : MonoBehaviour
     }
 
     /// <summary>
-    ///   <para> 响应Board更新，移除格子后将原位置填充为海洋 </para>
+    ///   <para> 响应Board更新</para>
     /// </summary>
-    public void RemoveCell(Vector2Int position) {
+    public void Update(Vector2Int position) {
         Cell cell = PublicResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，填充为海洋

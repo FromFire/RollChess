@@ -7,15 +7,11 @@ using UnityEngine;
 /// </summary>
 public class TokenSet {
 
-    /// <summary>
-    ///   <para> 数据存储，id对应棋子 </para>
-    /// </summary>
+    // 数据存储，id对应棋子
     private Dictionary<int, Token> tokenList;
 
-    /// <summary>
-    ///   <para> 下一个使用的棋子id </para>
-    ///   <para> 随棋子增加而增加，棋子减少时不影响 </para>
-    /// </summary>
+    // 下一个使用的棋子id
+    // 随棋子增加而增加，棋子减少时不影响
     private int nextId = 0;
 
     /// <summary>
@@ -27,6 +23,13 @@ public class TokenSet {
     public TokenSet() {
         tokenList = new Dictionary<int, Token> ();
         subject = new PositionSubject();
+    }
+
+    /// <summary>
+    ///   <para> 通过id获取棋子 </para>
+    /// </summary>
+    public Token GetToken(int id) {
+        return tokenList[id];
     }
 
     /// <summary>
@@ -75,20 +78,21 @@ public class TokenSet {
     ///   <para> 移动棋子位置，自动吃子 </para>
     /// </summary>
     public void Move(int id, Vector2Int target) {
-        // 修改该棋子位置
+        // 查询target处其他玩家的棋子，即被吃的棋子
         Token token = tokenList[id];
-        Vector2Int from = token.Position;
-        token.Position = target;
-
-        // 查询target处其他玩家的棋子
-        Dictionary<QueryParam, int> param = new Dictionary<QueryParam, int>();
-        param[QueryParam.Player_Ignore] = (int)token.Player;
-        param[QueryParam.PositionX] = target.x;
-        param[QueryParam.PositionY] = target.y;
+        Dictionary<QueryParam, int> param = new Dictionary<QueryParam, int>() {
+            {QueryParam.Player_Ignore, (int)token.Player},
+            {QueryParam.PositionX, target.x},
+            {QueryParam.PositionY, target.y}
+        };
         List<int> toEat = Query(param);
 
         // 移除target处其他玩家的棋子
         Remove(toEat);
+
+        // 修改该棋子位置
+        Vector2Int from = token.Position;
+        token.Position = target;
 
         // 无须推送修改，因为Token内部修改和Remove已有推送
     }
