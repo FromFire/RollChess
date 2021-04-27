@@ -10,16 +10,10 @@ public class Rule : MonoBehaviour {
     //棋子数量默认是4
     int PLAYERNUMBER = Structure_old.Constants.PLAYERNUMBER;
 
-    //显示高光tilemap层
-    public HighlightDisplay highlightDisplay;
+    
 
     //HUD层
     public HUD hud;
-
-    // 存储棋盘信息
-    public BoardOld board;
-    // 存储棋子信息
-    public TokenSet_old tokenSet;
 
     // 当前状态
     // waiting: 等待玩家操作
@@ -32,13 +26,7 @@ public class Rule : MonoBehaviour {
     // 目前正在行动的玩家，他只能移动己方的棋子
     public int nowPlayer;
 
-    // 棋子选中情况
-    // 是否已有棋子被选中
-    bool isTokenChoosed = false;
-    // 当前选中的棋子坐标
-    Vector2Int choosedTokenPos;
-    // 当前选中棋子可到达的位置，以及通向它的路线
-    List<(Vector2Int pos, List<Vector2Int> route)> reachablePos;
+
     // 当前可走步数
     int step;
 
@@ -167,78 +155,11 @@ public class Rule : MonoBehaviour {
         hud.ShowRollButton();
     }
 
-    // 选中格子
-    public void ChooseGrid(Vector3 loc) {
-        // 1. 判定是否是走子（已有棋子被选中，且此次点击的是可到达的格子）
-        //      是：移动棋子，return
-        //      否：清空棋子选中状态
-        // 2. 判定是否可走的格子
-        //      是：选中该格子（将其高亮，取消先前的高亮）
-        //      否：取消选中（取消先前的高亮）
-        // 3. 判定该格是否有己方棋子
-        //      是：预览可走位置（高亮它可以到达的所有格子）
-
-        //获取点击的点在tilemap上的坐标
-        Vector2Int pos = highlightDisplay.WorldToCell(loc);  // TODO: 用TilemapDisplay来干这件事
-        Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
-
-        //检测是否是走子
-        if(isTokenChoosed) {
-            for(int i=0; i<reachablePos.Count; i++) {
-                Vector2Int grid = reachablePos[i].pos;
-                List<Vector2Int> route = reachablePos[i].route;
-                if(grid == pos) {
-                    //显示走子效果
-                    Move(choosedTokenPos, pos, route);
-
-                    //取消所有选中
-                    ClearChoose();
-                    return;
-                }
-            }
-        }
-
-        //取消所有选中
-        ClearChoose();
-
-        //显示选中效果
-        if(board.IsWalkable(pos)) {
-            highlightDisplay.HighlightGrid(pos, HighlightDisplay.Color.blue);
-        }
-
-        //检测格子上是否有己方棋子，有则选中它
-        List<Token_old> tokens = tokenSet.Find(pos);
-        if(tokens.Count != 0 && tokens[0].player == nowPlayer) {
-            AddChoose(pos);
-        }
-    }
+   
     
     // TODO: 统一命名 ChooseGrid{ ChooseTokenSource(AddChoose), ChooseTokenTarget(Move) }
 
-    // 选中棋子，并显示它能到达的所有位置
-    void AddChoose(Vector2Int pos) {
-        //获取该棋子它所有可达位置
-        List<(Vector2Int now, List<Vector2Int> pre)> reachableGrids = board.GetReachableGrids(pos, step);
+    
 
-        //维护选中信息
-        isTokenChoosed = true;
-        choosedTokenPos = pos;
-        this.reachablePos = reachableGrids;
 
-        //显示高亮
-        for(int i=0; i<reachablePos.Count; i++) {
-            Vector2Int grid = reachablePos[i].pos;
-            highlightDisplay.HighlightGrid(grid, HighlightDisplay.Color.yellow);
-        }
-    }
-
-    // 取消选中棋子，显示效果
-    void ClearChoose() {
-        //维护选中信息
-        isTokenChoosed = false;
-        reachablePos.Clear();
-
-        //取消所有高光
-        highlightDisplay.CancelHighlight();
-    }
 }
