@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 ///   <para> 提供地图辅助功能，例如寻路 </para>
@@ -8,16 +9,18 @@ using UnityEngine;
 /// </summary>
 public class BoardAssistant {
 
-    // 获取所有从pos出发前进step步可到达的格子
+    /// <summary>
+    ///   <para> 获取所有从pos出发前进step步可到达的格子 </para>
+    /// </summary>
     public Dictionary<Vector2Int, List<Vector2Int>> GetRoute(Vector2Int pos, int step) {
         //若开始的格子是doubleStep，步数翻倍
-        if(Get(pos).Effect == SpecialEffect.Double_Step) {
+        if(PublicResource.board.Get(pos).Effect == SpecialEffect.Double_Step) {
             step *= 2;
             Debug.Log("doubleStep: " + step);
         }
 
         //返回列表
-        List<(Vector2Int now, List<Vector2Int> pre)> ret = new List<(Vector2Int now, List<Vector2Int> pre)>();
+        Dictionary<Vector2Int, List<Vector2Int>> ret = new Dictionary<Vector2Int, List<Vector2Int>>();
 
         //需要的信息：当前格子的坐标、上一步的坐标，已走步数
         Queue<(Vector2Int now, List<Vector2Int> pre, int step)> queue = new Queue<(Vector2Int now, List<Vector2Int> pre, int step)>();
@@ -29,7 +32,7 @@ public class BoardAssistant {
 
             //若step足够，不进行操作，直接加入返回列表
             if(thisTuple.step == step) {
-                ret.Add( (thisTuple.now, thisTuple.pre) );
+                ret[thisTuple.now] = thisTuple.pre;
                 continue;
             }
 
@@ -51,11 +54,6 @@ public class BoardAssistant {
                 }
             }
         }
-
-        //返回列表去重
-        Debug.Log("能走到的格子数："+ret.Count);
-        ret = ret.Distinct().ToList();
-
         return ret;
     }
 
@@ -85,7 +83,7 @@ public class BoardAssistant {
 
         //筛选出可到达的格子
         foreach(Vector2Int offset in offsets) {
-            if(Get(pos+offset).Walkable) {
+            if(PublicResource.board.Get(pos+offset).Walkable) {
                 ret.Add(pos+offset);
             }
         }
