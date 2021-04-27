@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 /// <summary>
 ///   <para> 管理Tilemap </para>
 ///   <para> 使用时挂在要管理的tilemap下面 </para>
+///   <para> 注意：不允许多个Manager共用一个tilemap，两者必须一对一 </para>
 /// </summary>
 public class TilemapManager : MonoBehaviour {
 

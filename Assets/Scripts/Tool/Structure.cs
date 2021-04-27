@@ -64,8 +64,9 @@ public enum TileType {
     // 空
     None,                   //空
 
-    // 普通地板
+    // 实体块
     Land,                   //陆地
+    Ocean,                  //海洋
 
     // 特殊格子
     Special_Double_Step,    //倍速

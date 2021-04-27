@@ -40,6 +40,7 @@ public class Transform {
     /// </summary>
     public static Dictionary<TileType, string> resourceOfTileType = new Dictionary<TileType, string>() {
         {TileType.Land, "Tiles/floor-lawnGreen"},
+        {TileType.Ocean, "Tiles/floor-ocean"},
         {TileType.Special_Portal, "Tiles/special-portal"},
         {TileType.Special_Double_Step, "Tiles/special-doubleStep"},
         {TileType.Special_Broken_Bridge, "Tiles/special-brokenBridge"},
