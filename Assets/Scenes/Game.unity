@@ -764,12 +764,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 383354255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0eb89d7c8a835f42879e7421758adb7, type: 3}
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 383354258}
-  type: 2
-  palette: {fileID: 1784450442}
 --- !u!1 &459069017
 GameObject:
   m_ObjectHideFlags: 0

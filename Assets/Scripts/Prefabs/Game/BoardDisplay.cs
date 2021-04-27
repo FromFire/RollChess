@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///   <para> 显示实体格子、特殊块、传送门箭头、特殊格子弹窗介绍 </para>
+///   <para> 显示实体格子、特殊块、传送门箭头、特殊格子浮窗介绍 </para>
 ///   <para> 使用时和TilemapManager挂在同一个Object下 </para>
 /// </summary>
 // todo：三个显示部分关系不大，考虑拆分
@@ -92,18 +92,20 @@ public class BoardDisplay : MonoBehaviour {
         visionController.allowMoveUp = screenCenter.y < board.BorderUp;
         visionController.allowMoveDown = screenCenter.y > board.BorderDown;
 
-        // 当鼠标所在格子是特殊格子时，通知PopUp
+        // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
         SpecialEffect pointedEffect = board.Get(tilemapManagerSpecial.CursorPointingCell()).Effect;
         if(pointedEffect != SpecialEffect.None) {
+            // 设置SpecialPopupContent的内容
             SpecialIntroductionItem item = PublicResource.specialIntroduction.introduction[pointedEffect];
+            SpecialPopupContent content = popup.Content.GetComponent<SpecialPopupContent>();
+            content.Title = item.introTitle;
+            content.Describe = item.introText;
+            content.EffectIntro = item.effectText;
 
             //设置PopUp显示
-            popup.available = true;
-            popup.Title = item.introTitle;
-            popup.Describe = item.introText;
-            popup.EffectIntro = item.effectText;
+            popup.Show();
         } else {
-            popup.available = false;
+            popup.Hide();
         }
     }
 
