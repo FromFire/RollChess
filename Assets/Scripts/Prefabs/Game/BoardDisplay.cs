@@ -80,19 +80,8 @@ public class BoardDisplay : MonoBehaviour {
     }
 
     void Update() {
-        // 获取屏幕中心的Tilemap坐标
-        Vector3 screenCenterWorld = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width/2,Screen.height/2,0));
-        Vector2Int screenCenter = tilemapManagerBoard.WorldToCell(screenCenterWorld);
-
-        // 判定是否已超过地图边界，若越界，则不允许向那个方向继续滑动
-        VisionController visionController = PublicResource.visionController;
-        Board board = PublicResource.board;
-        visionController.allowMoveLeft = screenCenter.x > board.BorderLeft;
-        visionController.allowMoveRight = screenCenter.x < board.BorderRight;
-        visionController.allowMoveUp = screenCenter.y < board.BorderUp;
-        visionController.allowMoveDown = screenCenter.y > board.BorderDown;
-
         // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
+        Board board = PublicResource.board;
         SpecialEffect pointedEffect = board.Get(tilemapManagerSpecial.CursorPointingCell()).Effect;
         if(pointedEffect != SpecialEffect.None) {
             // 设置SpecialPopupContent的内容
