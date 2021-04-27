@@ -4,62 +4,7 @@ using UnityEngine;
 
 
 namespace Structure_old {
-    /// <summary>
-    ///   <para>Tile的类型。</para>
-    ///   <para>Tile有很多类型，并且这些类型可以分成几个组，于是为了构建与其定位相符的层次结构，这里采用了前缀命名法。</para>
-    ///   <para>比如Token_Alien_Blue代表的是在Token层里的一种Alien块，且肤色为Blue。</para>
-    ///   <para>名字中带有Begin、End的TileType是用来划定一组TileType的界限的，便于判别任一个TileType的分组、进行组内枚举等等。</para>
-    ///   <para>TileType.End用来表示Null。</para>
-    /// </summary>
-    public enum TileType {
-        Begin,
-        Land_Begin,
-        Land_Lawn_Green,
-        Land_End,
-        Special_Begin,
-        Special_Portal,
-        Special_DoubleStep,
-        Special_BrokenBridge,
-        Special_PulseOn,
-        Special_PulseOff,
-        Special_Stop,
-        Special_Ritual,
-        Special_RollAgain,
-        Special_End,
-        Token_Begin,
-        Token_Alien_Red,
-        Token_Alien_Blue,
-        Token_Alien_Yellow,
-        Token_Alien_Green,
-        Token_Alien_Neutral,
-        Token_End,
-        End,
-        Null = End
-    };
 
-    /// <summary>
-    ///   <para> 角色对应颜色 </para>
-    /// </summary>
-    public enum PlayerColor {
-        Red,
-        Blue,
-        Yellow,
-        Green
-    }
-
-    /// <summary>
-    ///   <para>Tilemap的种类。</para>
-    ///   <para>这里的种类是按实际含义分得的。Land表示能象征地质的实体块，Special表示铺在实体块上的特殊地貌，Token表示行走在前两者上的棋子。</para>
-    ///   <para>TilemapType.End用来表示Null。</para>
-    /// </summary>
-    public enum TilemapType {
-        Begin,
-        Land,
-        Special,
-        Token,
-        End,
-        Null = End
-    };
 
     /// <summary>
     ///   <para> 角色的操控方式 </para>
@@ -225,30 +170,6 @@ namespace Structure_old {
                     }
                 }
             };
-
-        
-
-        /// <summary>
-        ///   <para>获取给定棋子块TileType的玩家编号。</para>
-        /// </summary>
-        public static Dictionary<TileType, int> playerIdOfTileType = new Dictionary<TileType, int>() {
-            {TileType.Token_Alien_Red, 0},
-            {TileType.Token_Alien_Blue, 1},
-            {TileType.Token_Alien_Yellow, 2},
-            {TileType.Token_Alien_Green, 3},
-            {TileType.Token_Alien_Neutral, 4},
-        };
-
-        /// <summary>
-        ///   <para>获取给定玩家编号所对应的棋子块TileType。</para>
-        /// </summary>
-        public static Dictionary<int, TileType> tileTypeOfPlayerId = new Dictionary<int, TileType>() {
-            {0, TileType.Token_Alien_Red},
-            {1, TileType.Token_Alien_Blue},
-            {2, TileType.Token_Alien_Yellow},
-            {3, TileType.Token_Alien_Green},
-            {4, TileType.Token_Alien_Neutral},
-        };
 
         /// <summary>
         ///   <para>玩家数量是4</para>
