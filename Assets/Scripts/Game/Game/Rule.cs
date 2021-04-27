@@ -10,25 +10,8 @@ public class Rule : MonoBehaviour {
     //棋子数量默认是4
     int PLAYERNUMBER = Structure_old.Constants.PLAYERNUMBER;
 
-    
-
     //HUD层
     public HUD hud;
-
-    // 当前状态
-    // waiting: 等待玩家操作
-    // moved: 玩家操作完成，等待处理
-    public enum Status{waiting, moved};
-    public Status status = Status.waiting;
-
-    // 玩家操控状态
-    public List<PlayerChoices> playerChoices;
-    // 目前正在行动的玩家，他只能移动己方的棋子
-    public int nowPlayer;
-
-
-    // 当前可走步数
-    int step;
 
     // 初始化全局
     void Start()
@@ -63,38 +46,6 @@ public class Rule : MonoBehaviour {
         for(int i=0; i<playerChoices.Count; i++) {
             if(playerChoices[i] == PlayerChoices.Banned) {
                 tokenSet.removePlayer(i);
-            }
-        }
-
-        //初始化选中信息
-        reachablePos = new List<(Vector2Int pos, List<Vector2Int> route)>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // 避免与UI按键冲突
-        if (Cursor.isOverUI()) {
-            return;
-        }
-
-        //获取鼠标所在点的点在tilemap上的坐标
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        Vector2Int pos = highlightDisplay.WorldToCell(loc);
-        Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
-
-        // 判断鼠标是否在可走的格子上，若不在，取消路径高亮
-        if(pos3 != highlightDisplay.HighlightRouteEnd) {
-            highlightDisplay.CancelRouteHightlight();
-        }
-        if(isTokenChoosed) {
-            for(int i=0; i<reachablePos.Count; i++) {
-                Vector2Int grid = reachablePos[i].pos;
-                List<Vector2Int> route = reachablePos[i].route;
-                if(grid == pos) {
-                    highlightDisplay.HighlightRoute(route);
-                }
             }
         }
     }

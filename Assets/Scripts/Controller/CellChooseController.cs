@@ -6,17 +6,27 @@ using UnityEngine;
 ///   <para> 用户点击格子后，根据状态不同判断事件类型，分发事件 </para>
 ///   <para> 本类不直接修改数据！ </para>
 /// </summary>
-public class CellChooseController {
+public class CellChooseController : MonoBehaviour {
     // 高光tilemap层
     [SerializeField] private HighlightDisplay highlightDisplay;
 
     // 棋子选中情况
     // 是否已有棋子被选中
-    bool isTokenChoosed = false;
+    private bool isTokenChoosed = false;
     // 当前选中的棋子坐标
-    Vector2Int choosedTokenPos;
+    private Vector2Int choosedTokenPos;
     // 当前选中棋子可到达的位置，以及通向它的路线
-    Dictionary<Vector2Int, List<Vector2Int>> route;
+    private Dictionary<Vector2Int, List<Vector2Int>> route = new Dictionary<Vector2Int, List<Vector2Int>>();
+
+    // 是否已有路径在高光中
+    private bool isRouteHighlighted = false;
+    // 当前高光的路径终点
+    private Vector2Int highlightedRouteEnd;
+
+    void Update()
+    {
+        
+    }
 
     /// <summary>
     ///   <para> 格子点击时触发，分发事件 </para>
@@ -62,13 +72,46 @@ public class CellChooseController {
         // 判断己方棋子
         if( !(tokenId is null) || tokenId.Count != 0 
             || PublicResource.tokenSet.GetToken(tokenId[0]).Player == PublicResource.gameState.nowPlayer) {
-                // 选中该棋子，预览可走位置
+                // 选中该棋子，获取可走位置
                 ChooseToken(pos);
         } else {
             // 选中格子
             highlightDisplay.HighlightToken(pos);
         }
     }
+
+    /// <summary>
+    ///   <para> 判断和预览到此格的路线 </para>
+    /// </summary>
+    void PreviewRoute() {
+        // 避免与UI按键冲突
+        if (CursorMonitor.CursorIsOverUI()) {
+            return;
+        }
+        // 获取鼠标所在点的点在tilemap上的坐标
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+        Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
+        Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
+
+        // 若鼠标已在正高亮中的格子上，直接返回
+        if(isRouteHighlighted && highlightedRouteEnd == pos)
+            return;
+
+        // 是否在可走的格子上，若在，高亮此路径
+        if(route.ContainsKey(pos)) {
+            highlightDisplay.HighlightRoute(route[pos]);
+            // 维护数据
+            isRouteHighlighted = true;
+            highlightedRouteEnd = pos;
+        }
+        // 若不在，取消路径高亮
+        else {
+            highlightDisplay.CancelRouteHightlight();
+            isRouteHighlighted = false;
+        }
+    }
+    
 
     // 取消选中棋子
     void ClearTokenChoose() {
