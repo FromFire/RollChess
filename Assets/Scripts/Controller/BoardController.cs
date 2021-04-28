@@ -12,20 +12,28 @@ public class BoardController {
     ///   <para> 例如：危桥 </para>
     /// </summary>
     public void PassRoute(List<Vector2Int> route) {
+        Board board = PublicResource.board;
 
+        // 检测路上所有危桥，并移除
+        foreach(Vector2Int cell in route)
+            if(board.Get(cell).Effect == SpecialEffect.Broken_Bridge)
+                RemoveBrokenBridge(cell);
     }
 
     /// <summary>
     ///   <para> 新一回合开始时更新地图 </para>
     /// </summary>
     public void NewTurnUpdate(int turn) {
-
+        //暂无，考虑未来加入的脉冲块
     }
 
     /// <summary>
-    ///   <para> 移除路径上所有危桥 </para>
+    ///   <para> 移除一座危桥 </para>
     /// </summary>
     public void RemoveBrokenBridge(Vector2Int position) {
-
+        Board board = PublicResource.board;
+        board.Get(position).Effect = SpecialEffect.None;
+        board.Get(position).Walkable = false;
+        // todo:考虑分2步推送是否可能导致bug
     }
 }
