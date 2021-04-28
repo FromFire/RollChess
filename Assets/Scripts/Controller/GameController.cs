@@ -45,7 +45,7 @@ public class GameController {
         }
     }
     //移动棋子
-    public void Move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
+    public void Move(Vector2Int from, List<Vector2Int> route) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
         //若目的点是传送门，将其传送
@@ -95,5 +95,26 @@ public class GameController {
             }
         }
         return winnerCandidate;
+    }
+
+    /// <summary>
+    ///   <para> 游戏结束 </para>
+    /// </summary>
+    public void GameOver() {
+
+    }
+
+    /// <summary>
+    ///   <para> 切换至下一位玩家 </para>
+    /// </summary>
+    public void NextPlayer() {
+
+    }
+
+    /// <summary>
+    ///   <para> 切换至下一回合 </para>
+    /// </summary>
+    public void NextTurn() {
+
     }
 }
