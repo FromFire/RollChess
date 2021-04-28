@@ -14,15 +14,9 @@ public class TokenSet {
     // 随棋子增加而增加，棋子减少时不影响
     private int nextId = 0;
 
-    /// <summary>
-    ///   <para> 更新推送 </para>
-    /// </summary>
-    public PositionSubject subject;
-
     // 构造函数
     public TokenSet() {
         tokenList = new Dictionary<int, Token> ();
-        subject = new PositionSubject();
     }
 
     /// <summary>
@@ -39,7 +33,6 @@ public class TokenSet {
         List<TokenSaveEntity> tokenEntity = saveEntity.token;
         foreach(TokenSaveEntity token in tokenEntity) {
             Token newToken = new Token(new Vector2Int(token.x, token.y), (PlayerID)token.player);
-            newToken.subject = this.subject;
             Add(newToken);
         }
 
@@ -55,7 +48,7 @@ public class TokenSet {
         nextId ++;
 
         // 推送修改
-        subject.Notify(ModelModifyEvent.Token, token.Position);
+        PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, token.Position);
     }
 
     /// <summary>
@@ -71,7 +64,7 @@ public class TokenSet {
         }
 
         // 推送修改
-        subject.Notify(ModelModifyEvent.Token, modified);
+        PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, modified);
     }
 
     /// <summary>

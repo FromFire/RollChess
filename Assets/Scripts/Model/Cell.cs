@@ -16,11 +16,6 @@ public class Cell {
     // 格子的特殊效果
     protected SpecialEffect effect;
 
-    /// <summary>
-    ///   <para> 更新推送 </para>
-    /// </summary>
-    public PositionSubject subject;
-
     // 不能构造空的Cell
     private Cell() {}
 
@@ -54,7 +49,7 @@ public class Cell {
         set {
             walkable = value;
             //推送修改
-            subject.Notify(ModelModifyEvent.Cell, position); 
+            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 
@@ -66,7 +61,7 @@ public class Cell {
         set {
             effect = value;
             //推送修改
-            subject.Notify(ModelModifyEvent.Cell, position); 
+            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 }
@@ -92,7 +87,7 @@ public class PortalCell : Cell {
         set {
             target = value;
             //推送修改
-            subject.Notify(ModelModifyEvent.Cell, position); 
+            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 }

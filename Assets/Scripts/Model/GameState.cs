@@ -42,6 +42,11 @@ public class GameState {
     /// </summary>
     public PlayerID winner;
 
+    /// <summary>
+    ///   <para> 更新推送 </para>
+    /// </summary>
+    public PositionSubject subject;
+
     // todo: subject 更新推送
 
     /// <summary>

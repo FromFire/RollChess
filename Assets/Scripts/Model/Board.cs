@@ -18,17 +18,11 @@ public class Board {
     private int borderLeft;
     private int borderRight;
 
-    /// <summary>
-    ///   <para> 更新推送 </para>
-    /// </summary>
-    public PositionSubject subject;
-
     // 构造函数
     public Board() {
         map = new Dictionary<Vector2Int, Cell>();
         borderUp = borderRight = int.MinValue;
         borderDown = borderLeft = int.MaxValue;
-        subject = new PositionSubject();
     }
 
     /// <summary>
@@ -39,7 +33,6 @@ public class Board {
         List<LandSaveEntity> mapEntity = saveEntity.map;
         foreach(LandSaveEntity cell in mapEntity) {
             Cell newCell = new Cell( new Vector2Int(cell.x, cell.y), true, SpecialEffect.None);
-            newCell.subject = this.subject;
             Add(new Vector2Int(cell.x, cell.y), newCell);
         }
 
@@ -75,7 +68,7 @@ public class Board {
         UpdateBorder(pos);
 
         // 推送修改
-        subject.Notify(ModelModifyEvent.Cell, pos);
+        PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>
@@ -85,7 +78,7 @@ public class Board {
         if(Contains(pos)) map.Remove(pos);
 
         // 推送修改
-        subject.Notify(ModelModifyEvent.Cell, pos);
+        PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>

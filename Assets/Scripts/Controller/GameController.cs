@@ -108,7 +108,10 @@ public class GameController {
     ///   <para> 切换至下一位玩家 </para>
     /// </summary>
     public void NextPlayer() {
-
+        GameState gameState = PublicResource.gameState;
+        do {
+            gameState.nowPlayer = (nowPlayer+1) % totalPlayer;
+        } while(playerChoices[nowPlayer] == PlayerChoices.Banned);
     }
 
     /// <summary>

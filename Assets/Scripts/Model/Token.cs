@@ -13,11 +13,6 @@ public class Token {
     // 棋子位置
     private Vector2Int position;
 
-    /// <summary>
-    ///   <para> 更新推送 </para>
-    /// </summary>
-    public PositionSubject subject;
-
     // 构造函数
     public Token(Vector2Int position, PlayerID player) {
         this.position = position;
@@ -35,7 +30,7 @@ public class Token {
         set {
             player = value;
             //推送修改
-            subject.Notify(ModelModifyEvent.Token, position); 
+            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position); 
         }
     }
 
@@ -47,7 +42,7 @@ public class Token {
         set {
             position = value;
             //推送修改
-            subject.Notify(ModelModifyEvent.Token, position); 
+            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position); 
         }
     }
 }

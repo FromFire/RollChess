@@ -17,6 +17,21 @@ public class PublicResource {
     static public BoardAssistant boardAssistant;
 
     /// <summary>
+    ///   <para> 棋盘更新的推送 </para>
+    /// </summary>
+    static public PositionSubject boardSubject = new PositionSubject();
+
+    /// <summary>
+    ///   <para> 棋子更新的推送 </para>
+    /// </summary>
+    static public PositionSubject tokenSubject = new PositionSubject();
+
+    /// <summary>
+    ///   <para> 游戏状态的推送 </para>
+    /// </summary>
+    static public Subject gameStateSubject = new Subject();
+
+    /// <summary>
     ///   <para> 不能显示任何Tile，仅用于获取坐标等 </para>
     /// </summary>
     static public TilemapManager tilemapManager;

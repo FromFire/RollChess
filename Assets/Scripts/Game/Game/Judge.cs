@@ -96,9 +96,7 @@ public class Judge : MonoBehaviour
 
     //切换到下一位玩家，跳过状态为Banned的角色
     public void NextPlayer() {
-        do {
-            nowPlayer = (nowPlayer+1) % totalPlayer;
-        } while(playerChoices[nowPlayer] == PlayerChoices.Banned);
+        
     }
 
     //有玩家获胜，结束游戏
