@@ -1,18 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Linq;
 
-using PlayerChoices = Structure_old.PlayerChoices;
-
-//规则类：管理棋子和棋盘/其他棋子的互动，包括高亮可到达格子、吃子判断等等
-public class Rule : MonoBehaviour {
-    //棋子数量默认是4
-    int PLAYERNUMBER = Structure_old.Constants.PLAYERNUMBER;
-
-    //HUD层
-    public HUD hud;
+/// <summary>
+///   <para> 对游戏进行的控制 </para>
+/// </summary>
+public class GameController {
 
     // 初始化全局
     void Start()
@@ -50,40 +44,6 @@ public class Rule : MonoBehaviour {
             }
         }
     }
-
-    //查询是否有获胜的玩家，若没有，返回-1
-    //若只有一个玩家棋子数不为0，则该玩家获胜
-    public int FindWinner() {
-        int winnerCandidate = -1; //可能赢（棋子数）的玩家序号
-        for(int i=0; i<PLAYERNUMBER; i++) {
-            if(tokenSet.GetTokenNumber(i) != 0) {
-                //若已查询的所有玩家棋子数均为0，此玩家可能会赢
-                if(winnerCandidate == -1) {
-                    winnerCandidate = i;
-                } 
-                //若在此人之前有玩家棋子数不为0，则无人获胜
-                else {
-                    return -1;
-                }
-            }
-        }
-        return winnerCandidate;
-    }
-
-    //掷骰子
-    //是RollButton的OnClick函数
-    public void RollDice() {
-        //生成随机数
-        step = new System.Random().Next(6)+1;
-        Debug.Log(step);
-
-        //隐藏按钮
-        hud.ShowRollStep(step);
-    }
-    
-    // TODO: 回调RollDice给HUD
-
-
     //移动棋子
     public void Move(Vector2Int from, Vector2Int to, List<Vector2Int> route) {
         Debug.Log("move: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
@@ -107,11 +67,33 @@ public class Rule : MonoBehaviour {
         hud.ShowRollButton();
     }
 
-   
-    
-    // TODO: 统一命名 ChooseGrid{ ChooseTokenSource(AddChoose), ChooseTokenTarget(Move) }
+    //掷骰子
+    //是RollButton的OnClick函数
+    public void RollDice() {
+        //生成随机数
+        step = new System.Random().Next(6)+1;
+        Debug.Log(step);
 
-    
+        //隐藏按钮
+        hud.ShowRollStep(step);
+    }
 
-
+    //查询是否有获胜的玩家，若没有，返回-1
+    //若只有一个玩家棋子数不为0，则该玩家获胜
+    public int FindWinner() {
+        int winnerCandidate = -1; //可能赢（棋子数）的玩家序号
+        for(int i=0; i<PLAYERNUMBER; i++) {
+            if(tokenSet.GetTokenNumber(i) != 0) {
+                //若已查询的所有玩家棋子数均为0，此玩家可能会赢
+                if(winnerCandidate == -1) {
+                    winnerCandidate = i;
+                } 
+                //若在此人之前有玩家棋子数不为0，则无人获胜
+                else {
+                    return -1;
+                }
+            }
+        }
+        return winnerCandidate;
+    }
 }
