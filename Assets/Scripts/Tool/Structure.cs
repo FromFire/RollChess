@@ -32,7 +32,8 @@ public enum PlayerID {
     Red,
     Blue,
     Yellow,
-    Green
+    Green,
+    None,   //无玩家或不合法
 }
 
 /// <summary>
@@ -52,7 +53,8 @@ public enum ModelModifyEvent {
     Now_Player,     //当前操作的玩家
     Operation_State,//当前操作状态
     Is_Game_Over,   //游戏是否结束
-    Winner          //赢家
+    Winner,         //赢家
+    Loser           //输家
 }
 
 
@@ -91,4 +93,15 @@ public enum TileType {
 
     // 六边形网格
     HexGrid
+}
+
+/// <summary>
+///   <para> 玩家操作状态，用处是限制玩家操作 </para>
+/// </summary>
+public enum GameStage {
+    Self_Operating,             // 自己（受本机控制，可以是多个角色）的行动回合，可以操作，可以查看信息
+    Self_Operation_Processing,  // 系统正在处理自己的操作，不可以操作，不可以查看消息
+    Other_Player_Operating,     // 其他玩家的操作回合，不可以操作，可以查看消息
+    Other_Player_Processing,    // 系统正在处理其他玩家的操作，不可以操作，可以查看消息
+    Game_Over,                  // 游戏结束，所有玩家均不能操作
 }

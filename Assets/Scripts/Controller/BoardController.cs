@@ -23,7 +23,7 @@ public class BoardController {
     /// <summary>
     ///   <para> 新一回合开始时更新地图 </para>
     /// </summary>
-    public void NewTurnUpdate(int turn) {
+    public void NewTurnUpdate() {
         //暂无，考虑未来加入的脉冲块
     }
 

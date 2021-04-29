@@ -15,6 +15,9 @@ public class PublicResource {
     static public VisionController visionController;
     static public SpecialIntroduction specialIntroduction;
     static public BoardAssistant boardAssistant;
+    static public BoardController boardController;
+    static public TokenController tokenController;
+    static public GameController gameController;
 
     /// <summary>
     ///   <para> 棋盘更新的推送 </para>

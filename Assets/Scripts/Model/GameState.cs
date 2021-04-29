@@ -8,32 +8,40 @@ using UnityEngine;
 public class GameState {
 
     // 回合数
-    private int turn;
+    // 游戏开始时是第1回合
+    private int turn = 1;
 
     // 掷骰子结果
-    private int rollResult;
+    // 每回合结束需要将rollResult还原为-1
+    private int rollResult = -1;
 
-    // 玩家操作形式
-    private List<PlayerForm> playerForm;
+    // 玩家操作形式，默认全部是玩家，默认4人
+    private List<PlayerForm> playerForm = new List<PlayerForm>() {
+        PlayerForm.Player, PlayerForm.Player, PlayerForm.Player, PlayerForm.Player
+    };
 
     // 当前玩家
-    private PlayerID nowPlayer;
+    private PlayerID nowPlayer = PlayerID.None;
 
-    // 当前操作状态
-    private OperationState opState;
+    // 本机ID，仅适用于多人联机模式
+    // 本地模式下此值为PlayerID.None
+    private PlayerID myID = PlayerID.None;
 
-    // 游戏是否结束
-    private bool isGameOver;
+    // 当前游戏阶段
+    // 默认是Processing，初始化完成后切换为Operating
+    private GameStage gameStage = GameStage.Self_Operation_Processing;
 
     // 赢家
-    private PlayerID winner;
+    private PlayerID winner = PlayerID.None;
+
+    // 输家
+    private HashSet<PlayerID> losers = new HashSet<PlayerID>();
 
     /// <summary>
-    ///   <para> 玩家操作状态，用处是限制玩家操作 </para>
+    ///   <para> 角色总数 </para>
     /// </summary>
-    public enum OperationState {
-        Waiting,    //等待玩家操作
-        Moved       //玩家操作完毕，等待处理
+    public int CharacterNumber() {
+        return playerForm.Count;
     }
 
     /// <summary>
@@ -84,24 +92,23 @@ public class GameState {
     }
 
     /// <summary>
-    ///   <para> 当前操作状态 </para>
+    ///   <para> 本机ID，仅适用于多人联机模式 </para>
     /// </summary>
-    public OperationState OpState {
-        get {return opState;}
+    public PlayerID MyID {
+        get {return myID;}
         set {
-            opState = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Operation_State);
+            myID = value;
         }
     }
 
     /// <summary>
-    ///   <para> 游戏是否结束 </para>
+    ///   <para> 当前操作状态 </para>
     /// </summary>
-    public bool IsGameOver {
-        get {return isGameOver;}
+    public GameStage Stage {
+        get {return gameStage;}
         set {
-            isGameOver = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Is_Game_Over);
+            gameStage = value;
+            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Operation_State);
         }
     }
 
@@ -114,5 +121,20 @@ public class GameState {
             winner = value;
             PublicResource.gameStateSubject.Notify(ModelModifyEvent.Winner);
         }
+    }
+
+    /// <summary>
+    ///   <para> 添加输家 </para>
+    /// </summary>
+    public void AddLoser(PlayerID loser) {
+        losers.Add(loser);
+        PublicResource.gameStateSubject.Notify(ModelModifyEvent.Loser);
+    }
+
+    /// <summary>
+    ///   <para> 查询输家 </para>
+    /// </summary>
+    public bool IsLoser(PlayerID loser) {
+        return losers.Contains(loser);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 ///   <para> 用户点击格子后，根据状态不同判断事件类型，分发事件 </para>
-///   <para> 本类不直接修改数据！ </para>
+///   <para> 作为用户输入，只会主动调用其他类，不被其他类调用，也不直接修改数据。 </para>
 /// </summary>
 public class CellChooseController : MonoBehaviour {
     // 高光tilemap层
@@ -23,14 +23,28 @@ public class CellChooseController : MonoBehaviour {
     // 当前高光的路径终点
     private Vector2Int highlightedRouteEnd;
 
+    // 检测鼠标点击
     void Update()
     {
-        
+        // 点击判断：鼠标左键点击 + 点击的不是UI
+        if( !Input.GetMouseButtonDown(0) || CursorMonitor.CursorIsOverUI())
+            return;
+
+        // 用户权限判断：游戏未结束 + 不是正在处理自己的操作
+        if(PublicResource.gameState.Stage == GameStage.Game_Over
+            || PublicResource.gameState.Stage == GameStage.Self_Operation_Processing)
+            return;
+
+        // 获取点击坐标（世界坐标）
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+
+        // 触发选中
+        CellClicked(loc);
     }
 
     /// <summary>
-    ///   <para> 格子点击时触发，分发事件 </para>
-    ///   <para> 需要调用外界处理的事件：走子、获取可达路径 </para>
+    ///   <para> 格子点击时触发，识别玩家操作权限，分发事件 </para>
     /// </summary>
     public void CellClicked(Vector3 loc) {
         // 获取点击的点在tilemap上的坐标
@@ -46,38 +60,44 @@ public class CellChooseController : MonoBehaviour {
             return;
         }
 
-        // 2. 判定是否是走子（已有棋子被选中，且此次点击的格子能走）
+        // 1.5 判断己方是否出于可走子，或可预览的状态（简称可操作）
+        // 须满足条件：是本机控制的回合 + 已roll点
+        bool opeartingAvailable = ( PublicResource.gameState.Stage == GameStage.Self_Operating 
+            && PublicResource.gameState.RollResult != -1 );
+
+        // 2. 判定是否是走子（已有棋子被选中 + 此次点击的格子能走 + 可操作）
         //      是：移动棋子，退出
         //      否：继续
-        if(isTokenChoosed && route.ContainsKey(pos)) {
-            List<Vector2Int> moveRoute = route[pos];
+        if(isTokenChoosed && route.ContainsKey(pos) && opeartingAvailable) {
             // 触发走子
-            // Move(choosedTokenPos, pos, route);
+            PublicResource.gameController.Move(choosedTokenPos, route[pos]);
             // 取消所有选中
             ClearTokenChoose();
             return;
         }
 
-        // 3. 判定该格是否有己方棋子
-        //      是：选中该棋子，预览可走位置（高亮它可以到达的所有格子）
-        //      否：选中该格子
-        // 这一步属于重新选择，故清空先前的选择信息
+        // 2.5 以下所有情况都会重新选择格子，故清空先前的选择信息
         ClearTokenChoose();
+
+        // 3. 判定是否选中己方棋子（点击的是己方棋子 + 可操作）
+        //      是：选中该棋子，预览可走位置（高亮它可以到达的所有格子）
+        //      否：继续
         // 查找此格的所有棋子
         Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
             {TokenSet.QueryParam.PositionX, pos.x},
             {TokenSet.QueryParam.PositionY, pos.y}
         };
         List<int> tokenId = PublicResource.tokenSet.Query(param);
-        // 判断己方棋子
-        if( !(tokenId is null) || tokenId.Count != 0 
-            || PublicResource.tokenSet.GetToken(tokenId[0]).Player == PublicResource.gameState.nowPlayer) {
+        // 判断己方棋子 + 可操作
+        if( !(tokenId is null) && tokenId.Count != 0 
+            && PublicResource.tokenSet.GetToken(tokenId[0]).Player == PublicResource.gameState.NowPlayer
+            && opeartingAvailable ) {
                 // 选中该棋子，获取可走位置
                 ChooseToken(pos);
-        } else {
-            // 选中格子
-            highlightDisplay.HighlightToken(pos);
         }
+
+        // 4. 选中该格子
+        highlightDisplay.HighlightToken(pos);
     }
 
     /// <summary>
@@ -127,7 +147,7 @@ public class CellChooseController : MonoBehaviour {
     void ChooseToken(Vector2Int pos) {
         //获取该棋子它所有可达位置
         Dictionary<Vector2Int, List<Vector2Int>> route = 
-            PublicResource.boardAssistant.GetRoute(pos, PublicResource.gameState.rollResult);
+            PublicResource.boardAssistant.GetRoute(pos, PublicResource.gameState.RollResult);
 
         //维护选中信息
         isTokenChoosed = true;
