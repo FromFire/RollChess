@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 ///   <para> 游戏状态 </para>
+///   <para> 只用于Game场景 </para>
 /// </summary>
 public class GameState {
 
@@ -16,15 +17,21 @@ public class GameState {
     private int rollResult = -1;
 
     // 玩家操作形式，默认全部是玩家，默认4人
-    private List<PlayerForm> playerForm = new List<PlayerForm>() {
-        PlayerForm.Player, PlayerForm.Player, PlayerForm.Player, PlayerForm.Player
+    // 需要手动初始化
+    private Dictionary<PlayerID, PlayerForm> playerForm = new Dictionary<PlayerID, PlayerForm> {
+        {PlayerID.Red, PlayerForm.Player},
+        {PlayerID.Blue, PlayerForm.Player},
+        {PlayerID.Green, PlayerForm.Player},
+        {PlayerID.Yellow, PlayerForm.Player},
     };
 
     // 当前玩家
+    // 需要手动初始化
     private PlayerID nowPlayer = PlayerID.None;
 
     // 本机ID，仅适用于多人联机模式
     // 本地模式下此值为PlayerID.None
+    // 需要手动初始化
     private PlayerID myID = PlayerID.None;
 
     // 当前游戏阶段
@@ -70,14 +77,14 @@ public class GameState {
     ///   <para> 设置玩家操作形式 </para>
     /// </summary>
     public void SetPlayerForm(PlayerID playerID, PlayerForm _playerForm) {
-        playerForm[(int)playerID] = _playerForm;
+        playerForm[playerID] = _playerForm;
     }
 
     /// <summary>
     ///   <para> 设置玩家操作形式 </para>
     /// </summary>
     public PlayerForm GetPlayerForm(PlayerID playerID) {
-        return playerForm[(int)playerID];
+        return playerForm[playerID];
     }
 
     /// <summary>

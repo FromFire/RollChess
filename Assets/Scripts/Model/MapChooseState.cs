@@ -4,13 +4,19 @@ using UnityEngine;
 
 /// <summary>
 ///   <para> 地图选择状态 </para>
+///   <para> 只用于Entrance，以及Game初始化，游戏开始后不使用 </para>
 /// </summary>
-public class MapChooseState {
+public class MapChooseState : MonoBehaviour {
 
     /// <summary>
-    ///   <para> 回合数 </para>
+    ///   <para> 玩家操作形式，默认全部是玩家，默认4人 </para>
     /// </summary>
-    public List<PlayerForm> nowPlayerForm {get;}
+    public Dictionary<PlayerID, PlayerForm> playerForm = new Dictionary<PlayerID, PlayerForm> {
+        {PlayerID.Red, PlayerForm.Player},
+        {PlayerID.Blue, PlayerForm.Player},
+        {PlayerID.Green, PlayerForm.Player},
+        {PlayerID.Yellow, PlayerForm.Player},
+    };
 
     /// <summary>
     ///   <para> 最大玩家数量 </para>

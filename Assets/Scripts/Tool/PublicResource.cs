@@ -6,14 +6,20 @@ using UnityEngine;
 ///   <para> 获取公有资源 </para>
 /// </summary>
 public class PublicResource {
+    // Model
     static public Board board;
     static public TokenSet tokenSet;
     static public GameState gameState;
+    static public SpecialIntroduction specialIntroduction;
+    static public MapChooseState mapChooseState;
+
+    // Tool
     static public SaveManager saveManager;
     static public CameraController cameraController;
     static public CursorMonitor cursorMonitor;
     static public VisionController visionController;
-    static public SpecialIntroduction specialIntroduction;
+
+    // Controller
     static public BoardAssistant boardAssistant;
     static public BoardController boardController;
     static public TokenController tokenController;

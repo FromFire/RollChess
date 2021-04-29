@@ -57,6 +57,10 @@ public class SaveManager {
     ///   <para> 读取单个存档 </para>
     /// </summary>  
     static public SaveEntity LoadMap(string filename){
+        // 若已有存储，直接返回
+        if(!(saveEntities[filename] is null))
+            return saveEntities[filename];
+
         // 读取文件内容
         byte[] bytes = ReadFile(Path.Combine(savePathThumb, filename) + ".json");
         string json = System.Text.Encoding.Default.GetString(bytes);

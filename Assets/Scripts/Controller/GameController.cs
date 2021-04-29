@@ -8,40 +8,55 @@ using System;
 ///   <para> 游戏流程的总控制 </para>
 ///   <para> 包括玩家操作的实施、玩家操作权控制、回合控制、游戏结束判断等 </para>
 /// </summary>
-public class GameController {
+public class GameController : MonoBehaviour {
 
     // 初始化全局
     void Start()
     {
         //无Entrance情况下的默认值，用于调试Game场景
-        string filename = "Maps/FourPlayers";
-        // 默认2玩家，一定不会出错
-        playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
-
-        //读取Entrance传来的Message
-        if(GameObject.Find("MessageToGame") != null) {
-            Message message = GameObject.Find("MessageToGame").GetComponent<Message>();
-            // 获取地图
-            filename = "Maps/" + message.GetMessage<string> ("mapFilename");
-            // 获取玩家数量
-            playerChoices = message.GetMessage<List<PlayerChoices>> ("playerChoice");
-            // 销毁Message，避免它被重复创建
-            GameObject.Destroy(message.gameObject);
+        if(PublicResource.mapChooseState is null) {
+            //todo
+            // 默认2玩家，一定不会出错
+            // playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
         }
-        
-        //读取地图json文件
-        BoardEntity boardEntity = LoadMapFromJson(filename);
 
-        //初始化board
-        board.Init(boardEntity.map, boardEntity.special, boardEntity.portal);
-
-        //初始化tokenSet
-        tokenSet.Init(boardEntity.tokens);
-        for(int i=0; i<playerChoices.Count; i++) {
-            if(playerChoices[i] == PlayerChoices.Banned) {
-                tokenSet.removePlayer(i);
-            }
+        // 初始化GameState
+        foreach(KeyValuePair<PlayerID, PlayerForm> kvp in PublicResource.mapChooseState.playerForm)
+            PublicResource.gameState.SetPlayerForm(kvp.Key, kvp.Value);
+        // nowPlayer是第一个不是Banned的玩家
+        foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
+            // 排除PlayerID.None，排除PlayerForm.Banned
+            if(id == PlayerID.None || PublicResource.gameState.GetPlayerForm(id) == PlayerForm.Banned)
+                continue;
+            PublicResource.gameState.NowPlayer = id;
         }
+        // todo: 初始化myID
+
+        // 读取存档
+        string filename = PublicResource.mapChooseState.mapPath;
+        SaveEntity saveEntity = SaveManager.LoadMap(filename);
+
+        // 初始化所有Model
+        PublicResource.board.Load(saveEntity);
+        PublicResource.tokenSet.Load(saveEntity);
+
+        // 删除Banned玩家的所有棋子
+        foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
+            // 排除PlayerID.None，不是Banned则忽略
+            if(id == PlayerID.None || PublicResource.gameState.GetPlayerForm(id) != PlayerForm.Banned)
+                continue;
+            // 获取该玩家的所有棋子
+            Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
+                {TokenSet.QueryParam.Player, (int)id}
+            };
+            List<int> tokenId = PublicResource.tokenSet.Query(param);
+            // 移除
+            PublicResource.tokenSet.Remove(tokenId);
+        }
+
+        // 销毁MapChooseState
+        Destroy(PublicResource.mapChooseState.gameObject);
+        PublicResource.mapChooseState = null;
 
         // 初始化完成后，操作权交给玩家
         StartOperating();
