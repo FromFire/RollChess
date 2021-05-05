@@ -38,6 +38,13 @@ public class SaveManager {
     }
 
     /// <summary>
+    ///   <para> 已知地图名，返回完整路径 </para>
+    /// </summary>
+    static public string MapNameToPath(string name) {
+        return Path.Combine(savePathMap, name); 
+    }
+
+    /// <summary>
     ///   <para> 读取所有存档 </para>
     /// </summary>
     static public void LoadAllSave(){
@@ -160,7 +167,7 @@ public class SaveManager {
     /// <summary>
     /// <para> 存储文件，路径为path，内容为bytes </para>
     /// </summary>
-    static private void WriteFile(string path, byte[] bytes) {
+    static public void WriteFile(string path, byte[] bytes) {
         FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
         fileStream.Write(bytes, 0, bytes.Length);
         fileStream.Flush();
@@ -170,7 +177,7 @@ public class SaveManager {
     /// <summary>
     /// <para> 读取文件，路径为path，byte[]格式返回 </para>
     /// </summary>
-    static private byte[] ReadFile(string path) {
+    static public byte[] ReadFile(string path) {
         FileStream fs = new FileStream(path, FileMode.Open);
         byte[] bytes = new byte[fs.Length];
         fs.Read(bytes, 0, bytes.Length);

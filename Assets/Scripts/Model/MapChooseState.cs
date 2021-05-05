@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 /// <summary>
 ///   <para> 地图选择状态 </para>
@@ -47,4 +50,28 @@ public class MapChooseState : MonoBehaviour {
     ///   <para> 当前选中的地图 </para>
     /// </summary>
     public SaveEntity currentMap {get;}
+
+    /// <summary>
+    ///   <para> 构造一个MapChooseState，仅用于调试时 </para>
+    /// </summary>
+    static public MapChooseState CreateSample() {
+        MapChooseState mapChooseState = new MapChooseState();
+
+        // 默认2玩家，一定不会出错
+        mapChooseState.playerForm[PlayerID.Green] = PlayerForm.Banned;
+        mapChooseState.playerForm[PlayerID.Yellow] = PlayerForm.Banned;
+
+        // 使用样例地图：Texts/MapSample.json
+        // 若地图文件夹中没有MapSample，则将其复制到要读取的文件中
+        string filepath = SaveManager.MapNameToPath("MapSample.json");
+        if(!File.Exists(filepath) ) {
+            TextAsset t = Resources.Load<TextAsset>("Texts/MapSample.json");
+            byte[] bytes = t.bytes;
+            SaveManager.WriteFile(filepath, bytes);
+        }
+        // 设置地图路径
+        mapChooseState.mapPath = filepath;
+
+        return mapChooseState;
+    }
 }

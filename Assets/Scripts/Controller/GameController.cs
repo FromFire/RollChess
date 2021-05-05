@@ -13,14 +13,23 @@ public class GameController : MonoBehaviour {
     // 初始化全局
     void Start()
     {
-        //无Entrance情况下的默认值，用于调试Game场景
+        // 调试时无Entrance，则现场构造mapChooseState
         if(PublicResource.mapChooseState is null) {
-            //todo
-            // 默认2玩家，一定不会出错
-            // playerChoices = new List<PlayerChoices> {PlayerChoices.Player, PlayerChoices.Player, PlayerChoices.Banned, PlayerChoices.Banned};
+            PublicResource.mapChooseState = MapChooseState.CreateSample();
         }
 
-        // 初始化GameState
+        // 初始化
+        Init();
+
+        // 初始化完成后，操作权交给玩家
+        StartOperating();
+    }
+
+    /// <summary>
+    ///   <para> 使用mapChooseState初始化，结束后销毁mapChooseState </para>
+    /// </summary>
+    void Init() {
+        // 初始化GameState，其数据来自于MapChooseState
         foreach(KeyValuePair<PlayerID, PlayerForm> kvp in PublicResource.mapChooseState.playerForm)
             PublicResource.gameState.SetPlayerForm(kvp.Key, kvp.Value);
         // nowPlayer是第一个不是Banned的玩家
@@ -30,6 +39,7 @@ public class GameController : MonoBehaviour {
                 continue;
             PublicResource.gameState.NowPlayer = id;
         }
+
         // todo: 初始化myID
 
         // 读取存档
@@ -57,9 +67,6 @@ public class GameController : MonoBehaviour {
         // 销毁MapChooseState
         Destroy(PublicResource.mapChooseState.gameObject);
         PublicResource.mapChooseState = null;
-
-        // 初始化完成后，操作权交给玩家
-        StartOperating();
     }
 
     /// <summary>
