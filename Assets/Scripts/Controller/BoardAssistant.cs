@@ -7,7 +7,7 @@ using System.Linq;
 ///   <para> 提供地图辅助功能，例如寻路 </para>
 ///   <para> 本类不直接修改数据！ </para>
 /// </summary>
-public class BoardAssistant {
+public class BoardAssistant : MonoBehaviour {
 
     /// <summary>
     ///   <para> 获取所有从pos出发前进step步可到达的格子 </para>

@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 ///   <para> 所有棋子 </para>
 /// </summary>
-public class TokenSet {
+public class TokenSet : MonoBehaviour {
 
     // 数据存储，id对应棋子
     private Dictionary<int, Token> tokenList;

@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 ///   <para> 棋盘数据 </para>
 /// </summary>
-public class Board {
+public class Board : MonoBehaviour {
 
     /// <summary>
     ///   <para> 存储坐标和格子 </para>

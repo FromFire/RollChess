@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class CameraController : MonoBehaviour {
     //本摄像头
-    private Camera mcamera;
+    [SerializeField] private Camera mcamera;
 
     /// <summary>
     ///   <para> 视角缩进灵敏度 </para>

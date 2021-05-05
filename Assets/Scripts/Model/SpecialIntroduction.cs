@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 ///   <para> 提供特殊格子的信息介绍 </para>
 /// </summary>
-public class SpecialIntroduction {
+public class SpecialIntroduction : MonoBehaviour {
     /// <summary>
     ///   <para> 特殊格子信息 </para>
     /// </summary>

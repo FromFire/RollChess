@@ -6,7 +6,7 @@ using System.Linq;
 /// <summary>
 ///   <para> 对棋子数据（TokenSet + Token）的操作和处理 </para>
 /// </summary>
-public class TokenController {
+public class TokenController : MonoBehaviour  {
     /// <summary>
     ///   <para> 移动棋子，处理吃子 </para>
     /// </summary>

@@ -6,7 +6,7 @@ using UnityEngine;
 ///   <para> 游戏状态 </para>
 ///   <para> 只用于Game场景 </para>
 /// </summary>
-public class GameState {
+public class GameState : MonoBehaviour {
 
     // 回合数
     // 游戏开始时是第1回合
