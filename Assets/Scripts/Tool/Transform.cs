@@ -56,7 +56,7 @@ public class Transform {
         {TileType.Player_Yellow, "Tiles/token-yellowAlien"},
         {TileType.Highlight_Blue, "Tiles/highlight-blue"},
         {TileType.Highlight_Yellow, "Tiles/highlight-yellow"},
-        {TileType.HexGrid, "Tiles/token-hexGrid"}
+        {TileType.HexGrid, "Tiles/hex-grid-2x"}
     };
 
     /// <summary>

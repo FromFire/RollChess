@@ -83,7 +83,8 @@ public class BoardAssistant : MonoBehaviour {
 
         //筛选出可到达的格子
         foreach(Vector2Int offset in offsets) {
-            if(PublicResource.board.Get(pos+offset).Walkable) {
+            Board board = PublicResource.board;
+            if(board.Contains(pos+offset) && board.Get(pos+offset).Walkable) {
                 ret.Add(pos+offset);
             }
         }

@@ -18,6 +18,10 @@ public class HexGridDisplay : MonoBehaviour
     // 已填充的地图边界
     int borderUp, borderDown, borderLeft, borderRight;
 
+    void Start() {
+        ShowGrid();
+    }
+
     // 显示格子
     void ShowGrid() {
         // 记录填充的边界，余量20

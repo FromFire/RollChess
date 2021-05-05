@@ -61,14 +61,11 @@ public class MapChooseState : MonoBehaviour {
         // 设置地图路径
         mapChooseState.mapName = "MapSample";
 
-        // 使用样例地图：Texts/MapSample.json
-        // 若地图文件夹中没有MapSample，则将其复制到要读取的文件中
+        // 使用样例地图：Texts/MapSample.json，将其复制到要读取的文件中
         string filepath = SaveManager.MapNameToPath(mapChooseState.mapName);
-        if(!File.Exists(filepath) ) {
-            TextAsset t = Resources.Load<TextAsset>("Texts/MapSample");
-            byte[] bytes = t.bytes;
-            SaveManager.WriteFile(filepath, bytes);
-        }
+        TextAsset t = Resources.Load<TextAsset>("Texts/MapSample");
+        byte[] bytes = t.bytes;
+        SaveManager.WriteFile(filepath, bytes);
 
         return mapChooseState;
     }

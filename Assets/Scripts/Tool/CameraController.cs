@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour {
     /// <summary>
     ///   <para> 视角缩进最远距离 </para>
     /// </summary>
-    public const float zoomMax = 10;
+    public const float zoomMax = 8;
 
     /// <summary>
     ///   <para> 视角缩进最近距离 </para>
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour {
     public void ZoomIn() {
         if (mcamera.orthographicSize >= zoomMin) {
             mcamera.orthographicSize -= zoomSensitivity;
-        }
+        }Debug.Log(mcamera.orthographicSize);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour {
     public void ZoomOut() {
         if (mcamera.orthographicSize <= zoomMax) {
             mcamera.orthographicSize += zoomSensitivity;
-        }
+        }Debug.Log(mcamera.orthographicSize);
     }
 
     /// <summary>
