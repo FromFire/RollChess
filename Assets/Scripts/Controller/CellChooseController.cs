@@ -50,12 +50,13 @@ public class CellChooseController : MonoBehaviour {
         // 获取点击的点在tilemap上的坐标
         Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
         Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
+        //PublicResource.tilemapManager.SetTile(pos, TileType.Land);
 
         // 1. 判定是否可走的格子
         //      否：取消所有选中，清除高亮，退出
         //      是：继续
         Board board = PublicResource.board;
-        if(!board.Get(pos).Walkable) {
+        if(!board.Contains(pos) || !board.Get(pos).Walkable) {
             ClearTokenChoose();
             return;
         }

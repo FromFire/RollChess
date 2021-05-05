@@ -29,6 +29,7 @@ public class Popup : MonoBehaviour {
     public void Show() {
         //SetPosition(position);
         gameObject.SetActive(true);
+        content.SetActive(true);
     }
 
     /// <summary>
@@ -37,6 +38,7 @@ public class Popup : MonoBehaviour {
     public void Hide() {
         //SetPosition(FAR_AWAY);
         gameObject.SetActive(false);
+        content.SetActive(false);
     }
 
     /// <summary>

@@ -117,6 +117,16 @@ PrefabInstance:
       propertyPath: _pallette.Array.data[0]
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 7137389173872955264, guid: 3c03cb46980489f48a41b013a6007a61,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -2115481885
+      objectReference: {fileID: 0}
+    - target: {fileID: 7137389173872955264, guid: 3c03cb46980489f48a41b013a6007a61,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 7811907047327229953, guid: 3c03cb46980489f48a41b013a6007a61,
         type: 3}
       propertyPath: m_Name

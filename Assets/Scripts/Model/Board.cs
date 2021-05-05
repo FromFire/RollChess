@@ -85,6 +85,8 @@ public class Board : MonoBehaviour {
     ///   <para> 获取数据 </para>
     /// </summary>
     public Cell Get(Vector2Int pos) {
+        if(!Contains(pos))
+            return null;
         return map[pos];
     }
 

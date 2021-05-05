@@ -13,6 +13,10 @@ public class UnwalkableDisplay : MonoBehaviour
     // 由于海和陆地有相互遮挡关系，本类的tilemap和BoardDisplay中的tilemap是同一个
     [SerializeField] private TilemapManager tilemap;
 
+    void Start() {
+        Display();
+    }
+
     /// <summary>
     ///   <para> 显示自身 </para>
     /// </summary>

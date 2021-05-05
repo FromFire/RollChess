@@ -16,7 +16,7 @@ public class TilemapManager : MonoBehaviour {
     private Dictionary<TileType, Tile> pallette = new Dictionary<TileType, Tile>();
 
     // 已填充的坐标，只读
-    private HashSet<Vector2Int> cellSet;
+    private HashSet<Vector2Int> cellSet = new HashSet<Vector2Int>();
 
     // 仅用于在Unity中初始化pallette
     [SerializeField] private List<TileType> _pallette;
@@ -34,6 +34,7 @@ public class TilemapManager : MonoBehaviour {
     public void SetTile(Vector2Int position, TileType tileType) {
         // tileType必须在pallette允许范围内
         Debug.Assert(TileTypeAvailable(tileType));
+        if(!TileTypeAvailable(tileType)) Debug.Log(tileType);
         // 设置并显示
         cellSet.Add(position);
         tilemap.SetTile((Vector3Int) position, pallette[tileType]);

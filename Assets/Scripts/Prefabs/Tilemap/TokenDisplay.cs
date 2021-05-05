@@ -8,6 +8,10 @@ public class TokenDisplay : MonoBehaviour {
     // Tilemap棋子层
     [SerializeField] private TilemapManager tilemap;
 
+    void Start() {
+        Display();
+    }
+
     /// <summary>
     ///   <para> 显示自身 </para>
     /// </summary>

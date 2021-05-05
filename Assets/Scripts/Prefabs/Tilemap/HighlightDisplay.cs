@@ -38,7 +38,8 @@ public class HighlightDisplay : MonoBehaviour {
     /// </summary>
     public void CancelHighlight() {
         // 清空ReachableHighlight层
-        foreach(Vector2Int pos in tilemapReachableHighlight.CellSet) {
+        List<Vector2Int> poses = new List<Vector2Int>(tilemapReachableHighlight.CellSet);
+        foreach(Vector2Int pos in poses) {
             tilemapReachableHighlight.RemoveTile(pos);
         }
         // 清空RouteHighlight层

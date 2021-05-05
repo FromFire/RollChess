@@ -31,7 +31,6 @@ public class PausePanel : MonoBehaviour
     {
         // 默认隐藏
         Hide();
-        //switchHexGridVisible.onValueChanged.AddListener(SwitchHexGridVisiblity);
     }
 
     /// <summary>

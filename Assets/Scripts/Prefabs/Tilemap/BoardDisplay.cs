@@ -22,6 +22,10 @@ public class BoardDisplay : MonoBehaviour {
     // 弹窗
     [SerializeField] private Popup popup;
 
+    void Start() {
+        Display();
+    }
+
     /// <summary>
     ///   <para> 显示自身 </para>
     /// </summary>
@@ -42,7 +46,9 @@ public class BoardDisplay : MonoBehaviour {
 
         // 显示TilemapSpecial层，特殊格子效果
         foreach (Vector2Int pos in walkablePos) {
-            tilemapManagerSpecial.SetTile(pos, Transform.tileTypeOfSpecialEffect[board.Get(pos).Effect]);
+            SpecialEffect specialEffect = board.Get(pos).Effect;
+            if(specialEffect != SpecialEffect.None)
+                tilemapManagerSpecial.SetTile(pos, Transform.tileTypeOfSpecialEffect[specialEffect]);
         }
 
         // 显示传送门之间的箭头

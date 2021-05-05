@@ -35,8 +35,8 @@ public class CameraController : MonoBehaviour {
     ///   <para> 视角拉近 </para>
     /// </summary>
     public void ZoomIn() {
-        if (mcamera.orthographicSize <= zoomMax) {
-            mcamera.orthographicSize += zoomSensitivity;
+        if (mcamera.orthographicSize >= zoomMin) {
+            mcamera.orthographicSize -= zoomSensitivity;
         }
     }
 
@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour {
     ///   <para> 视角拉远 </para>
     /// </summary>
     public void ZoomOut() {
-        if (mcamera.orthographicSize >= zoomMin) {
+        if (mcamera.orthographicSize <= zoomMax) {
             mcamera.orthographicSize += zoomSensitivity;
         }
     }

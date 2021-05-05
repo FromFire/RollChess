@@ -16,9 +16,6 @@ public class GameController : MonoBehaviour {
         // 调试时无Entrance，则现场构造mapChooseState
         if(PublicResource.mapChooseState is null) {
             PublicResource.mapChooseState = MapChooseState.CreateSample();
-            Debug.Log(MapChooseState.CreateSample());
-            Debug.Log("yes");
-            Debug.Log(PublicResource.mapChooseState);
         }
 
         // 初始化
