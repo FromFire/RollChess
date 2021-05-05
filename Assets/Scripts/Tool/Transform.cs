@@ -82,4 +82,31 @@ public class Transform {
         {PlayerID.Yellow, TileType.Player_Yellow},
         {PlayerID.Green, TileType.Player_Green}
     };
+
+    /// <summary>
+    ///   <para> 根据棋子颜色着色文本 </para>
+    /// </summary>
+    public static Dictionary<PlayerID, string> PlayerNameOfID = new Dictionary<PlayerID, string>() {
+        {PlayerID.Red, "红棋"},
+        {PlayerID.Blue, "蓝棋"},
+        {PlayerID.Yellow, "黄棋"},
+        {PlayerID.Green, "绿棋"}
+    };
+
+    /// <summary>
+    ///   <para> 根据棋子颜色着色文本 </para>
+    /// </summary>
+    static public string ColorString(PlayerID color, string content) {
+        switch (color) {
+            case PlayerID.Red:
+                return "<color=#DD0000FF>" + content + "</color>";
+            case PlayerID.Blue:
+                return "<color=#0000DDFF>" + content + "</color>";
+            case PlayerID.Yellow:
+                return "<color=#FFDD00FF>" + content + "</color>";
+            case PlayerID.Green:
+                return "<color=#00DD00FF>" + content + "</color>";
+        }
+        return content;
+    }
 }
