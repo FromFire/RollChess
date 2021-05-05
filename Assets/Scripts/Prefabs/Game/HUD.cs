@@ -22,33 +22,46 @@ public class HUD : MonoBehaviour {
 
     /// <summary>
     ///   <para> 显示roll点按钮，隐藏步数 </para>
+    ///   <para> 是gameStage修改的响应函数，仅当该本机操作时生效 </para>
     /// </summary>
     public void ShowRollButton() {
+        if(PublicResource.gameState.Stage != GameStage.Self_Operating)
+            return;
         rollButton.gameObject.SetActive(true);
         rollNumber.text = "";
     }
 
     /// <summary>
     ///   <para> 隐藏roll点按钮，显示步数 </para>
+    ///   <para> 是RollResult修改的响应函数，仅当RollResult不为0时生效 </para>
     /// </summary>
-    public void ShowRollStep(int step) {
+    public void ShowRollStep() {
+        if(PublicResource.gameState.RollResult == 0)
+            return;
         rollButton.gameObject.SetActive(false);
-        rollNumber.text = step + "步";
+        rollNumber.text = PublicResource.gameState.RollResult + "步";
     }
 
     /// <summary>
     ///   <para> 更新回合数 </para>
+    ///   <para> 是Turn修改的响应函数 </para>
     /// </summary>
-    public void UpdateTurn(int turn) {
-        turnCount.text = "第 " + turn + " 回合";
+    public void UpdateTurn() {
+        turnCount.text = "第 " + PublicResource.gameState.Turn + " 回合";
     }
 
     /// <summary>
     ///   <para> 更新正在行动提示 </para>
+    ///   <para> 是gameStage修改的响应函数，仅当该某玩家操作时生效 </para>
     /// </summary>
-    public void UpdateActionPlayer(int player) {
-        string str = GetColorfulTokenString((PlayerColor) player);
-        str += "行动中";
+    public void PlayerOperating() {
+        // 判断是否是Operating状态
+        if(PublicResource.gameState.Stage != GameStage.Other_Player_Operating 
+            || PublicResource.gameState.Stage != GameStage.Self_Operating)
+            return;
+        // 显示正在行动的玩家
+        PlayerID nowPlayer = PublicResource.gameState.NowPlayer;
+        string str = Transform.ColorString(nowPlayer, Transform.PlayerNameOfID[nowPlayer]) + " 行动中";
         actionPlayer.text = str;
     }
 }

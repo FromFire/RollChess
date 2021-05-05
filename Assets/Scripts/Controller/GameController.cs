@@ -101,9 +101,6 @@ public class GameController : MonoBehaviour {
 
         // 回合结束，切换至下一位玩家
         NextPlayer();
-        
-        //显示roll点按钮，隐藏步数按钮
-        //hud.ShowRollButton();
     }
 
     /// <summary>
@@ -113,9 +110,6 @@ public class GameController : MonoBehaviour {
         //生成随机数
         PublicResource.gameState.RollResult = new System.Random().Next(6)+1;
         Debug.Log("roll点结果: " + PublicResource.gameState.RollResult);
-
-        //隐藏按钮
-        //hud.ShowRollStep(step);
     }
 
     /// <summary>
@@ -167,7 +161,6 @@ public class GameController : MonoBehaviour {
     /// </summary>
     void GameOver() {
         PublicResource.gameState.Stage = GameStage.Game_Over;
-        // hud.ShowGameReview(winner);
     }
 
     /// <summary>
@@ -202,7 +195,6 @@ public class GameController : MonoBehaviour {
         
         // 通知棋盘更新
         PublicResource.boardController.NewTurnUpdate();
-        // hud.UpdateTurn(turnCount);
     }
 
     /// <summary>

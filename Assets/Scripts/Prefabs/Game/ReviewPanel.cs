@@ -21,12 +21,12 @@ public class ReviewPanel : MonoBehaviour {
 
     /// <summary>
     ///   <para> 显示自身 </para>
-    ///   <para> 是Winner变化时的响应函数 </para>
+    ///   <para> 是Winner变化时 + GameStage变化时 的响应函数 </para>
     /// </summary>
     public void Show() {
-        // 仅当Winner出现时弹出
+        // 仅当游戏结束时弹出
         PlayerID winner = PublicResource.gameState.Winner;
-        if(winner != PlayerID.None)
+        if(winner != PlayerID.None && PublicResource.gameState.Stage == GameStage.Game_Over)
             return;
         // 显示自身
         reviewPanel.gameObject.SetActive(true);
