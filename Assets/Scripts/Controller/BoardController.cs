@@ -7,6 +7,12 @@ using System.Linq;
 ///   <para> 对棋盘数据（Board + Cell）的操作和处理 </para>
 /// </summary>
 public class BoardController {
+    void Start() {
+        // 注册响应更新
+        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, RemoveBrokenBridge);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Turn, NewTurnUpdate);
+    }
+
     /// <summary>
     ///   <para> 处理经过路径时地图的变化 </para>
     ///   <para> 例如：危桥 </para>
@@ -29,6 +35,7 @@ public class BoardController {
 
     /// <summary>
     ///   <para> 移除一座危桥 </para>
+    ///   <para> 是Board更新时的响应函数 </para>
     /// </summary>
     public void RemoveBrokenBridge(Vector2Int position) {
         Board board = PublicResource.board;

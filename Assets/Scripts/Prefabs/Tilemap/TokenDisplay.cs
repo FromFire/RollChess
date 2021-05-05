@@ -24,7 +24,7 @@ public class TokenDisplay : MonoBehaviour {
     /// <summary>
     ///   <para> 响应TokenSet更新 </para>
     /// </summary>
-    public void Update(Vector2Int pos) {
+    public void UpdateSelf(Vector2Int pos) {
         // 获取被修改处的所有棋子
         Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
             {TokenSet.QueryParam.PositionX, pos.x},

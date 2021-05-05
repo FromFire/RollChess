@@ -17,6 +17,10 @@ public class ReviewPanel : MonoBehaviour {
     void Start() {
         // 默认隐藏面板
         reviewPanel.gameObject.SetActive(false);
+
+        // 注册响应更新
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Stage, Show);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Winner, Show);
     }
 
     /// <summary>

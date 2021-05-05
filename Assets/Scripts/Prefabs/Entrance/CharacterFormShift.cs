@@ -39,7 +39,6 @@ public class CharacterFormShift : MonoBehaviour
 
     // 创建时绑定响应函数
     void Start() {
-        button.onClick.AddListener(OnClick);
     }
 
     /// <summary>

@@ -20,6 +20,14 @@ public class HUD : MonoBehaviour {
     // 正在行动提示
     [SerializeField] private Text actionPlayer;
 
+    void Start() {
+        // 注册响应更新
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Stage, ShowRollButton);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Roll_Result, ShowRollStep);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Turn, UpdateTurn);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Stage, PlayerOperating);
+    }
+
     /// <summary>
     ///   <para> 显示roll点按钮，隐藏步数 </para>
     ///   <para> 是gameStage修改的响应函数，仅当该本机操作时生效 </para>

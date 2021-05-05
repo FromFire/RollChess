@@ -115,7 +115,7 @@ public class GameState {
         get {return gameStage;}
         set {
             gameStage = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Operation_State);
+            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Stage);
         }
     }
 

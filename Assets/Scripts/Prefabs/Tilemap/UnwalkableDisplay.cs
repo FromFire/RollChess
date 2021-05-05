@@ -32,7 +32,7 @@ public class UnwalkableDisplay : MonoBehaviour
     /// <summary>
     ///   <para> 响应Board更新</para>
     /// </summary>
-    public void Update(Vector2Int position) {
+    public void UpdateSelf(Vector2Int position) {
         Cell cell = PublicResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，填充为海洋

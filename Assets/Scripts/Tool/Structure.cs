@@ -51,10 +51,10 @@ public enum ModelModifyEvent {
     Roll_Result,    //掷骰子结果
     Player_Form,    //玩家操作形式
     Now_Player,     //当前操作的玩家
-    Operation_State,//当前操作状态
+    Stage,          //当前操作状态
     Is_Game_Over,   //游戏是否结束
     Winner,         //赢家
-    Loser           //输家
+    Loser,          //输家
 }
 
 
