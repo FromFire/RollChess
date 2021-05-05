@@ -82,7 +82,7 @@ public class PositionSubject {
     /// <summary>
     ///   <para> 观察者列表 </para>
     /// </summary>
-    private Dictionary<ModelModifyEvent, List<PositionObserver>> observers;
+    private Dictionary<ModelModifyEvent, List<PositionObserver>> observers = new Dictionary<ModelModifyEvent, List<PositionObserver>>();
 
     /// <summary>
     ///   <para> 添加观察者 </para>

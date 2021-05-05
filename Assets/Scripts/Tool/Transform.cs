@@ -49,11 +49,13 @@ public class Transform {
         {TileType.Special_Stop, "Tiles/special-stop"},
         {TileType.Special_Magical_Circle, "Tiles/special-ritual"},
         {TileType.Special_Roll_Again, "Tiles/special-rollAgain"},
+        {TileType.Special_Neutral_Player, "Tiles/token-neutralAlien"},
         {TileType.Player_Red, "Tiles/token-blueAlien"},
         {TileType.Player_Blue, "Tiles/token-redAlien"},
         {TileType.Player_Green, "Tiles/token-greenAlien"},
         {TileType.Player_Yellow, "Tiles/token-yellowAlien"},
-        {TileType.Player_Neutral, "Tiles/token-neutralAlien"},
+        {TileType.Highlight_Blue, "Tiles/highlight-blue"},
+        {TileType.Highlight_Yellow, "Tiles/highlight-yellow"},
         {TileType.HexGrid, "Tiles/token-hexGrid"}
     };
 

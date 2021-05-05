@@ -82,7 +82,12 @@ public class BoardDisplay : MonoBehaviour {
     void Update() {
         // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
         Board board = PublicResource.board;
-        SpecialEffect pointedEffect = board.Get(tilemapManagerSpecial.CursorPointingCell()).Effect;
+        Vector2Int pointedCell = tilemapManagerSpecial.CursorPointingCell();
+        // 避免空格子
+        if(!board.Contains(pointedCell))
+            return;
+        // 获取内容，弹出Popup
+        SpecialEffect pointedEffect = board.Get(pointedCell).Effect;
         if(pointedEffect != SpecialEffect.None) {
             // 设置SpecialPopupContent的内容
             SpecialIntroductionItem item = PublicResource.specialIntroduction.introduction[pointedEffect];

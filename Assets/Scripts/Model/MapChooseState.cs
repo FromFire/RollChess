@@ -32,14 +32,9 @@ public class MapChooseState : MonoBehaviour {
     public int MinPlayer;
 
     /// <summary>
-    ///   <para> 当前选中的地图的路径 </para>
+    ///   <para> 当前选中的地图的文件名 </para>
     /// </summary>
-    public string mapPath;
-
-    /// <summary>
-    ///   <para> 地图略缩图的路径 </para>
-    /// </summary>
-    public string mapThumbPath;
+    public string mapName;
 
     /// <summary>
     ///   <para> 地图略缩图 </para>
@@ -55,22 +50,25 @@ public class MapChooseState : MonoBehaviour {
     ///   <para> 构造一个MapChooseState，仅用于调试时 </para>
     /// </summary>
     static public MapChooseState CreateSample() {
-        MapChooseState mapChooseState = new MapChooseState();
+        // 不能用new()创建，因为MapChooseState继承于MonoBehaviour
+        GameObject gameObject = new GameObject ("MapChooseState");
+        MapChooseState mapChooseState = gameObject.AddComponent<MapChooseState>();
 
         // 默认2玩家，一定不会出错
         mapChooseState.playerForm[PlayerID.Green] = PlayerForm.Banned;
         mapChooseState.playerForm[PlayerID.Yellow] = PlayerForm.Banned;
 
+        // 设置地图路径
+        mapChooseState.mapName = "MapSample";
+
         // 使用样例地图：Texts/MapSample.json
         // 若地图文件夹中没有MapSample，则将其复制到要读取的文件中
-        string filepath = SaveManager.MapNameToPath("MapSample.json");
+        string filepath = SaveManager.MapNameToPath(mapChooseState.mapName);
         if(!File.Exists(filepath) ) {
-            TextAsset t = Resources.Load<TextAsset>("Texts/MapSample.json");
+            TextAsset t = Resources.Load<TextAsset>("Texts/MapSample");
             byte[] bytes = t.bytes;
             SaveManager.WriteFile(filepath, bytes);
         }
-        // 设置地图路径
-        mapChooseState.mapPath = filepath;
 
         return mapChooseState;
     }

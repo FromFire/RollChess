@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour {
         // 调试时无Entrance，则现场构造mapChooseState
         if(PublicResource.mapChooseState is null) {
             PublicResource.mapChooseState = MapChooseState.CreateSample();
+            Debug.Log(MapChooseState.CreateSample());
+            Debug.Log("yes");
+            Debug.Log(PublicResource.mapChooseState);
         }
 
         // 初始化
@@ -43,7 +46,7 @@ public class GameController : MonoBehaviour {
         // todo: 初始化myID
 
         // 读取存档
-        string filename = PublicResource.mapChooseState.mapPath;
+        string filename = PublicResource.mapChooseState.mapName;
         SaveEntity saveEntity = SaveManager.LoadMap(filename);
 
         // 初始化所有Model
@@ -64,8 +67,10 @@ public class GameController : MonoBehaviour {
             PublicResource.tokenSet.Remove(tokenId);
         }
 
-        // 销毁MapChooseState
-        Destroy(PublicResource.mapChooseState.gameObject);
+        // 销毁MapChooseState（若存在）
+        Debug.Log(PublicResource.mapChooseState);
+        if(PublicResource.mapChooseState.gameObject)
+            Destroy(PublicResource.mapChooseState.gameObject);
         PublicResource.mapChooseState = null;
     }
 

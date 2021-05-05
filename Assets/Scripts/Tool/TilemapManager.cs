@@ -13,10 +13,20 @@ public class TilemapManager : MonoBehaviour {
     [SerializeField] private Tilemap tilemap;
 
     // key为接受的有效Tile范围，value为对应的Tile
-    [SerializeField] private Dictionary<TileType, Tile> pallette;
+    private Dictionary<TileType, Tile> pallette = new Dictionary<TileType, Tile>();
 
     // 已填充的坐标，只读
     private HashSet<Vector2Int> cellSet;
+
+    // 仅用于在Unity中初始化pallette
+    [SerializeField] private List<TileType> _pallette;
+
+    void Start() {
+        // 初始化pallette
+        foreach(TileType type in _pallette) {
+            pallette[type] = Resources.Load<Tile>(Transform.resourceOfTileType[type]);
+        }
+    }
 
     /// <summary>
     ///   <para> 增改Tile </para>

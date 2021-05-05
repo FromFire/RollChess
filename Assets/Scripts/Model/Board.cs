@@ -64,7 +64,7 @@ public class Board : MonoBehaviour {
     ///   <para> 设置和增加Cell </para>
     /// </summary>
     public void Add(Vector2Int pos, Cell cell) {
-        map.Add(pos, cell);
+        map[pos] = cell;
         UpdateBorder(pos);
 
         // 推送修改
@@ -85,7 +85,7 @@ public class Board : MonoBehaviour {
     ///   <para> 获取数据 </para>
     /// </summary>
     public Cell Get(Vector2Int pos) {
-        return null;
+        return map[pos];
     }
 
     /// <summary>

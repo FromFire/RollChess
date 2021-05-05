@@ -8,12 +8,13 @@ public class SpecialIntroduction : MonoBehaviour {
     /// <summary>
     ///   <para> 特殊格子信息 </para>
     /// </summary>
-    public readonly Dictionary<SpecialEffect, SpecialIntroductionItem> introduction;
+    public readonly Dictionary<SpecialEffect, SpecialIntroductionItem> introduction 
+        = new Dictionary<SpecialEffect, SpecialIntroductionItem>();
 
     /// <summary>
     ///   <para> 从文件中读取介绍，完成初始化 </para>
     /// </summary>
-    public SpecialIntroduction() {
+    void Start() {
         // 读取文件
         TextAsset text = Resources.Load<TextAsset>("Texts/SpecialIntroductions");
         string json = text.text;

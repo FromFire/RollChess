@@ -35,13 +35,19 @@ public class SaveManager {
         // 初始化路径
         savePathMap = Path.Combine(savePath, "Maps");
         savePathThumb = Path.Combine(savePath, "Thumbs");
+
+        // 判断路径是否存在，如果不存在，则新建文件夹
+        if(!Directory.Exists(savePathMap))
+            Directory.CreateDirectory(savePathMap);
+        if(!Directory.Exists(savePathThumb))
+            Directory.CreateDirectory(savePathThumb);
     }
 
     /// <summary>
     ///   <para> 已知地图名，返回完整路径 </para>
     /// </summary>
     static public string MapNameToPath(string name) {
-        return Path.Combine(savePathMap, name); 
+        return Path.Combine(savePathMap, name) + ".json"; 
     }
 
     /// <summary>
@@ -65,11 +71,11 @@ public class SaveManager {
     /// </summary>  
     static public SaveEntity LoadMap(string filename){
         // 若已有存储，直接返回
-        if(!(saveEntities[filename] is null))
+        if(saveEntities.ContainsKey(filename) && !(saveEntities[filename] is null))
             return saveEntities[filename];
 
         // 读取文件内容
-        byte[] bytes = ReadFile(Path.Combine(savePathThumb, filename) + ".json");
+        byte[] bytes = ReadFile(Path.Combine(savePathMap, filename) + ".json");
         string json = System.Text.Encoding.Default.GetString(bytes);
 
         // 将json字符串转换为SaveEntity类

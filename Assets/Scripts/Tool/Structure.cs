@@ -22,7 +22,7 @@ public enum SpecialEffect {
     Pulse,          //脉冲
     Stop,           //到此止步
     Magical_Circle, //魔法阵
-    Roll_Again      //再掷一次
+    Roll_Again,     //再掷一次
 }
 
 /// <summary>
@@ -79,13 +79,13 @@ public enum TileType {
     Special_Stop,           //到此止步
     Special_Magical_Circle, //魔法阵
     Special_Roll_Again,     //再掷一次
+    Special_Neutral_Player, //中立玩家
 
     // 玩家
     Player_Red,
     Player_Blue,
     Player_Yellow,
     Player_Green,
-    Player_Neutral,
 
     // 高亮
     Highlight_Blue,

@@ -31,13 +31,13 @@
             "effectText": "棋子经过此格时，剩余步数强制归零。"
         },
         {
-            "name": "ritual", 
+            "name": "magicalCircle", 
             "introTitle": "法阵", 
             "introText": "由古代最杰出的法师所设计，威力极大的武器。", 
             "effectText": "若己方有至少2个棋子停在此格，则随机消灭1个敌方棋子。"
         },
         {
-            "name": "pause", 
+            "name": "pulse", 
             "introTitle": "脉冲", 
             "introText": "不稳定的器械，看起来像是某项研究的失败品。", 
             "effectText": "奇数回合开启，偶数回合关闭。关闭时棋子既不能经过也无法离开。"

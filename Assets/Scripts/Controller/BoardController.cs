@@ -9,7 +9,6 @@ using System.Linq;
 public class BoardController: MonoBehaviour  {
     void Start() {
         // 注册响应更新
-        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, RemoveBrokenBridge);
         PublicResource.gameStateSubject.Attach(ModelModifyEvent.Turn, NewTurnUpdate);
     }
 
@@ -35,7 +34,6 @@ public class BoardController: MonoBehaviour  {
 
     /// <summary>
     ///   <para> 移除一座危桥 </para>
-    ///   <para> 是Board更新时的响应函数 </para>
     /// </summary>
     public void RemoveBrokenBridge(Vector2Int position) {
         Board board = PublicResource.board;
