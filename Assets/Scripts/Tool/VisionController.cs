@@ -60,14 +60,14 @@ public class VisionController : MonoBehaviour {
         Vector3 dragDistance = CursorMonitor.MouseScreenPositionNow - CursorMonitor.MouseScreenPositionLastFrame;
 
         // 根据allowMove四方向，修正移动距离
-        if( (!allowMoveUp && dragDistance.y > 0) || (!allowMoveDown && dragDistance.y < 0) ) {
+        if( (!allowMoveUp && dragDistance.y < 0) || (!allowMoveDown && dragDistance.y > 0) ) {
             dragDistance.y = 0;
         }
-        if( (!allowMoveLeft && dragDistance.x < 0) || (!allowMoveRight && dragDistance.x > 0) ) {
+        if( (!allowMoveLeft && dragDistance.x > 0) || (!allowMoveRight && dragDistance.x < 0) ) {
             dragDistance.x = 0;
         }
         
         // 以像素为单位做转换
-        PublicResource.cameraController.TranslateByPixel(dragDistance);
+        PublicResource.cameraController.TranslateByPixel(-dragDistance);
     }
 }

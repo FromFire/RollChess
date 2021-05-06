@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour {
     ///   <para> 摄像头平移（z轴不变），单位为Unit </para>
     /// </summary>
     public void Translate(Vector3 translation) {
-        transform.Translate(translation, Space.Self);
+        mcamera.transform.Translate(translation, Space.Self);
     }
 
     /// <summary>
@@ -67,10 +67,5 @@ public class CameraController : MonoBehaviour {
         // 以Unit为单位转换
         Vector3 trans = translation * unitPerPixel;
         Translate(trans);
-
-        //旧算法：
-        //摄像头离地图越近，移动幅度越小
-        //200是试出来的参数，防止拖动速度太快，但鼠标和地图移动速度仍有一点差异
-        //Vector3 trans = (mousePosPre - mousePosNow) * mcamera.orthographicSize / 200;
     }
 }
