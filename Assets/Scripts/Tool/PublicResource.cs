@@ -24,6 +24,7 @@ public class PublicResource : MonoBehaviour  {
     static public BoardController boardController;
     static public TokenController tokenController;
     static public GameController gameController;
+    static public MoveProcessor moveProcessor;
 
     /// <summary>
     ///   <para> 棋盘更新的推送 </para>
@@ -63,6 +64,7 @@ public class PublicResource : MonoBehaviour  {
     [SerializeField] private BoardController _boardController;
     [SerializeField] private TokenController _tokenController;
     [SerializeField] private GameController _gameController;
+    [SerializeField] private MoveProcessor _moveProcessor;
 
     // tilemap
     [SerializeField] private TilemapManager _tilemapManager;
@@ -86,6 +88,7 @@ public class PublicResource : MonoBehaviour  {
         boardController = _boardController;
         tokenController = _tokenController;
         gameController = _gameController;
+        moveProcessor = _moveProcessor;
 
         // tilemap
         tilemapManager = _tilemapManager;

@@ -78,21 +78,8 @@ public class GameController : MonoBehaviour {
         // 修改状态为处理中，这个状态将会持续到下一回合某一玩家获得操控权
         StartProcessing();
 
-        // 开始处理移动棋子相关工作
-        Vector2Int to = route.Last();
-        Debug.Log("走子: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
-
-        // 若目的点是传送门，将传送门的目的地加在route最后
-        Cell toCell = PublicResource.board.Get(to);
-        if(toCell.Effect == SpecialEffect.Portal) {
-            Vector2Int target = ((PortalCell)toCell).Target;
-            route.Add(target);
-        }
-
-        // 通知棋盘（处理危桥等）
-        PublicResource.boardController.PassRoute(route);
-        // 通知棋子（改坐标、吃子等）
-        PublicResource.tokenController.Move(from, route.Last());
+        // 走子过程交给moveProcessor处理
+        PublicResource.moveProcessor.Move(from, route);
 
         // 更新Loser和Winner，Loser必须在前
         UpdateLoser();

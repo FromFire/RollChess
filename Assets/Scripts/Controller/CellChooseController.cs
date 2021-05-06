@@ -109,17 +109,20 @@ public class CellChooseController : MonoBehaviour {
         if(isRouteHighlighted && highlightedRouteEnd == pos)
             return;
 
+        // 剩余2种情况：
+        // 1. 不可走格子：直接取消路径高亮
+        // 2. 可走，但不是正在高亮的那个，取消路径高亮后再重新高亮
+
+        // 取消高亮
+        highlightDisplay.CancelRouteHighlight();
+        isRouteHighlighted = false;
+
         // 是否在可走的格子上，若在，高亮此路径
         if(route.ContainsKey(pos)) {
             highlightDisplay.HighlightRoute(route[pos]);
             // 维护数据
             isRouteHighlighted = true;
             highlightedRouteEnd = pos;
-        }
-        // 若不在，取消路径高亮
-        else if(isRouteHighlighted){
-            highlightDisplay.CancelRouteHighlight();
-            isRouteHighlighted = false;
         }
     }
     

@@ -21,4 +21,19 @@ public class TokenController : MonoBehaviour  {
         // 移动
         PublicResource.tokenSet.Move(token, to);
     }
+
+    /// <summary>
+    ///   <para> 杀死棋子 </para>
+    /// </summary>
+    public void Kill(Vector2Int pos) {
+        // 寻找pos处的棋子
+        Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
+            {TokenSet.QueryParam.PositionX, pos.x},
+            {TokenSet.QueryParam.PositionY, pos.y}
+        };
+        int token = PublicResource.tokenSet.Query(param)[0];
+
+        // 移除
+        PublicResource.tokenSet.Remove(new List<int>(){token} );
+    }
 }

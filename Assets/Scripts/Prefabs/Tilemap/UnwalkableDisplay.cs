@@ -15,6 +15,8 @@ public class UnwalkableDisplay : MonoBehaviour
 
     void Start() {
         Display();
+        // 注册更新
+        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
     }
 
     /// <summary>

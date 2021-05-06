@@ -24,6 +24,8 @@ public class BoardDisplay : MonoBehaviour {
 
     void Start() {
         Display();
+        // 注册更新
+        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
     }
 
     /// <summary>
@@ -112,7 +114,7 @@ public class BoardDisplay : MonoBehaviour {
     /// <summary>
     ///   <para> Board更新时调用 </para>
     /// </summary>
-    public void Update(Vector2Int position) {
+    public void UpdateSelf(Vector2Int position) {
         Cell cell = PublicResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，

@@ -4,7 +4,7 @@
             "name": "brokenBridge", 
             "introTitle": "危桥", 
             "introText": "年久失修的危桥，小心不要掉下去了。", 
-            "effectText": "棋子通过危桥格一次后，该格变为不可通过。"
+            "effectText": "棋子通过危桥后或停在上面时，危桥会坍塌，不能再通过。"
         },
         {
             "name": "doubleStep", 
