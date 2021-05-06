@@ -13,7 +13,7 @@ public class BoardDisplay : MonoBehaviour {
     // 显示特殊格子贴图
     [SerializeField] private TilemapManager tilemapManagerSpecial;
 
-    // 显示传送门的箭头
+    // 所有传送门箭头的父对象
     [SerializeField] private GameObject portalArrows;
 
     // 传送门的样式案例

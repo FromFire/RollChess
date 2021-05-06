@@ -70,10 +70,24 @@ public class TilemapManager : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 世界坐标转换Tilemap坐标 </para>
+    ///   <para> Tilemap坐标转换世界坐标 </para>
+    /// </summary>
+    public Vector3 CellToWorld(Vector2Int pos) {
+        return tilemap.CellToWorld(new Vector3Int(pos.x, pos.y, 0));
+    }
+
+    /// <summary>
+    ///   <para> Tilemap坐标转换local坐标 </para>
     /// </summary>
     public Vector3 CellToLocal(Vector3Int pos) {
         return tilemap.CellToLocal(pos);
+    }
+
+    /// <summary>
+    ///   <para> 格子大小 </para>
+    /// </summary>
+    public Vector3 CellSize() {
+        return tilemap.cellSize;
     }
 
     /// <summary>
