@@ -23,41 +23,41 @@ public class CellChooseController : MonoBehaviour {
     // 当前高光的路径终点
     private Vector2Int highlightedRouteEnd;
 
-    // 检测鼠标点击
+    // 检测鼠标点击和停留
     void Update()
     {
-        // 点击判断：鼠标左键点击 + 点击的不是UI
-        if( !Input.GetMouseButtonDown(0) || CursorMonitor.CursorIsOverUI())
+        // 避免与UI按键冲突
+        if (CursorMonitor.CursorIsOverUI())
             return;
 
-        // 用户权限判断：游戏未结束 + 不是正在处理自己的操作
-        if(PublicResource.gameState.Stage == GameStage.Game_Over
-            || PublicResource.gameState.Stage == GameStage.Self_Operation_Processing)
-            return;
-
-        // 获取点击坐标（世界坐标）
+        // 获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
+        Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
 
-        // 触发选中
-        CellClicked(loc);
+        // 若已有己方棋子被选中，则预览路线
+        if(isTokenChoosed)
+            PreviewRoute(pos);
+
+        // 若鼠标左键有点击 + 游戏未结束 + 不是正在处理自己的操作
+        // 则触发选中
+        if(Input.GetMouseButtonDown(0) && PublicResource.gameState.Stage != GameStage.Game_Over 
+            && PublicResource.gameState.Stage != GameStage.Self_Operation_Processing)
+            CellClicked(pos);
     }
 
     /// <summary>
     ///   <para> 格子点击时触发，识别玩家操作权限，分发事件 </para>
     /// </summary>
-    public void CellClicked(Vector3 loc) {
-        // 获取点击的点在tilemap上的坐标
-        Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
+    public void CellClicked(Vector2Int pos) {
         Debug.Log("choose: ("+ pos.x + "." + pos.y + ")");
-        //PublicResource.tilemapManager.SetTile(pos, TileType.Land);
 
         // 1. 判定是否可走的格子
         //      否：取消所有选中，清除高亮，退出
         //      是：继续
         Board board = PublicResource.board;
         if(!board.Contains(pos) || !board.Get(pos).Walkable) {
-            ClearTokenChoose();
+            ClearTokenChoose(); 
             return;
         }
 
@@ -93,8 +93,8 @@ public class CellChooseController : MonoBehaviour {
         if( !(tokenId is null) && tokenId.Count != 0 
             && PublicResource.tokenSet.GetToken(tokenId[0]).Player == PublicResource.gameState.NowPlayer
             && opeartingAvailable ) {
-                // 选中该棋子，获取可走位置
-                ChooseToken(pos);
+            // 选中该棋子，获取可走位置
+            ChooseToken(pos);
         }
 
         // 4. 选中该格子
@@ -104,17 +104,7 @@ public class CellChooseController : MonoBehaviour {
     /// <summary>
     ///   <para> 判断和预览到此格的路线 </para>
     /// </summary>
-    void PreviewRoute() {
-        // 避免与UI按键冲突
-        if (CursorMonitor.CursorIsOverUI()) {
-            return;
-        }
-        // 获取鼠标所在点的点在tilemap上的坐标
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
-        Vector3Int pos3 = new Vector3Int(pos.x, pos.y, 0);
-
+    void PreviewRoute(Vector2Int pos) {
         // 若鼠标已在正高亮中的格子上，直接返回
         if(isRouteHighlighted && highlightedRouteEnd == pos)
             return;
@@ -127,13 +117,12 @@ public class CellChooseController : MonoBehaviour {
             highlightedRouteEnd = pos;
         }
         // 若不在，取消路径高亮
-        else {
-            highlightDisplay.CancelRouteHightlight();
+        else if(isRouteHighlighted){
+            highlightDisplay.CancelRouteHighlight();
             isRouteHighlighted = false;
         }
     }
     
-
     // 取消选中棋子
     void ClearTokenChoose() {
         //维护选中信息

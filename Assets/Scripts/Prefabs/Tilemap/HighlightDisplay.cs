@@ -43,7 +43,7 @@ public class HighlightDisplay : MonoBehaviour {
             tilemapReachableHighlight.RemoveTile(pos);
         }
         // 清空RouteHighlight层
-        CancelRouteHightlight();
+        CancelRouteHighlight();
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class HighlightDisplay : MonoBehaviour {
     /// </summary>
     public void HighlightRoute(List<Vector2Int> route) {
         foreach(Vector2Int pos in route) {
-            tilemapReachableHighlight.SetTile(pos, TileType.Highlight_Blue);
+            tilemapRouteHighlight.SetTile(pos, TileType.Highlight_Blue);
         }
         highlightRouteEnd = new Vector3Int(route.Last().x, route.Last().y, 0);
     }
@@ -59,8 +59,9 @@ public class HighlightDisplay : MonoBehaviour {
     /// <summary>
     ///   <para> 取消高亮路径 </para>
     /// </summary>
-    public void CancelRouteHightlight() {
-        foreach(Vector2Int pos in tilemapRouteHighlight.CellSet) {
+    public void CancelRouteHighlight() {
+        List<Vector2Int> poses = new List<Vector2Int>(tilemapRouteHighlight.CellSet);
+        foreach(Vector2Int pos in poses) {
             tilemapRouteHighlight.RemoveTile(pos);
         }
         highlightRouteEnd = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);

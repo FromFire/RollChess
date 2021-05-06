@@ -59,6 +59,7 @@ public class TokenSet : MonoBehaviour {
         foreach(int id in idList) {
             // 记录被修改的坐标
             modified.Add(tokenList[id].Position);
+            Debug.Log("移除棋子：" + tokenList[id].Player);
             // 移除
             tokenList.Remove(id);
         }
@@ -119,9 +120,9 @@ public class TokenSet : MonoBehaviour {
         // 查询
         foreach(KeyValuePair<int, Token> kvp in tokenList) {
             if(
-                (playerAvailable && kvp.Value.Player == player)
-                || (playerIgnoreAvailable && kvp.Value.Player != playerIgnore)
-                || (positionAvailable && kvp.Value.Position == position)
+                (playerAvailable ? kvp.Value.Player == player : true)
+                && (playerIgnoreAvailable ? kvp.Value.Player != playerIgnore : true)
+                && (positionAvailable ? kvp.Value.Position == position : true)
             )
             ret.Add(kvp.Key);
         }

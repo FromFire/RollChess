@@ -10,6 +10,8 @@ public class TokenDisplay : MonoBehaviour {
 
     void Start() {
         Display();
+        // 注册更新
+        PublicResource.tokenSubject.Attach(ModelModifyEvent.Token, UpdateSelf);
     }
 
     /// <summary>

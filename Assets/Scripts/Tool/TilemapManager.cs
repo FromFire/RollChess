@@ -34,7 +34,6 @@ public class TilemapManager : MonoBehaviour {
     public void SetTile(Vector2Int position, TileType tileType) {
         // tileType必须在pallette允许范围内
         Debug.Assert(TileTypeAvailable(tileType));
-        if(!TileTypeAvailable(tileType)) Debug.Log(tileType);
         // 设置并显示
         cellSet.Add(position);
         tilemap.SetTile((Vector3Int) position, pallette[tileType]);
@@ -56,14 +55,10 @@ public class TilemapManager : MonoBehaviour {
 
     /// <summary>
     ///   <para> 移除该坐标的Tile </para>
-    ///   <para> 成功移除返回true，坐标处无Tile返回false </para>
     /// </summary>
-    public bool RemoveTile(Vector2Int position) {
-        if(tilemap.GetTile((Vector3Int) position) is null)
-            return false;
+    public void RemoveTile(Vector2Int position) {
         tilemap.SetTile((Vector3Int) position, null);
-        cellSet.Remove(position);
-        return true;
+        cellSet.Remove(position); 
     }
 
     /// <summary>

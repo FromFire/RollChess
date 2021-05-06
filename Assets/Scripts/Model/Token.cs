@@ -40,9 +40,11 @@ public class Token {
     public Vector2Int Position {
         get {return position;}
         set {
+            Vector2Int valueOld = position;
             position = value;
             //推送修改
-            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position); 
+            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, valueOld);
+            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position);
         }
     }
 }

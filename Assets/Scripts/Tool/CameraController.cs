@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour {
     public void ZoomIn() {
         if (mcamera.orthographicSize >= zoomMin) {
             mcamera.orthographicSize -= zoomSensitivity;
-        }Debug.Log(mcamera.orthographicSize);
+        }
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour {
     public void ZoomOut() {
         if (mcamera.orthographicSize <= zoomMax) {
             mcamera.orthographicSize += zoomSensitivity;
-        }Debug.Log(mcamera.orthographicSize);
+        }
     }
 
     /// <summary>

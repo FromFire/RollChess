@@ -32,6 +32,7 @@ public class BoardAssistant : MonoBehaviour {
 
             //若step足够，不进行操作，直接加入返回列表
             if(thisTuple.step == step) {
+                thisTuple.pre.Add(thisTuple.now);
                 ret[thisTuple.now] = thisTuple.pre;
                 continue;
             }
