@@ -35,9 +35,10 @@ public class GameController : MonoBehaviour {
         // nowPlayer是第一个不是Banned的玩家
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
             // 排除PlayerID.None，排除PlayerForm.Banned
-            if(id == PlayerID.None || PublicResource.gameState.GetPlayerForm(id) == PlayerForm.Banned)
-                continue;
-            PublicResource.gameState.NowPlayer = id;
+            if(id != PlayerID.None || PublicResource.gameState.GetPlayerForm(id) != PlayerForm.Banned) {
+                PublicResource.gameState.NowPlayer = id;
+                break;
+            }
         }
 
         // todo: 初始化myID
@@ -65,7 +66,6 @@ public class GameController : MonoBehaviour {
         }
 
         // 销毁MapChooseState（若存在）
-        Debug.Log(PublicResource.mapChooseState);
         if(PublicResource.mapChooseState.gameObject)
             Destroy(PublicResource.mapChooseState.gameObject);
         PublicResource.mapChooseState = null;
@@ -178,7 +178,7 @@ public class GameController : MonoBehaviour {
             if((int)nowPlayer > (int)nextPlayer)
                 NextTurn();
             nowPlayer = nextPlayer;
-        } while(gameState.GetPlayerForm(nowPlayer) == PlayerForm.Banned || gameState.IsLoser(nowPlayer));
+        } while(gameState.GetPlayerForm(nowPlayer) == PlayerForm.Banned || gameState.IsLoser(nowPlayer) || nowPlayer == PlayerID.None);
         gameState.NowPlayer = nowPlayer;
 
         // 将rollResult还原为-1

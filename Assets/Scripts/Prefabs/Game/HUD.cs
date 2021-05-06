@@ -25,7 +25,7 @@ public class HUD : MonoBehaviour {
         PublicResource.gameStateSubject.Attach(ModelModifyEvent.Stage, ShowRollButton);
         PublicResource.gameStateSubject.Attach(ModelModifyEvent.Roll_Result, ShowRollStep);
         PublicResource.gameStateSubject.Attach(ModelModifyEvent.Turn, UpdateTurn);
-        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Stage, PlayerOperating);
+        PublicResource.gameStateSubject.Attach(ModelModifyEvent.Now_Player, PlayerOperating);
     }
 
     /// <summary>
@@ -60,12 +60,11 @@ public class HUD : MonoBehaviour {
 
     /// <summary>
     ///   <para> 更新正在行动提示 </para>
-    ///   <para> 是gameStage修改的响应函数，仅当该某玩家操作时生效 </para>
+    ///   <para> 是nowPlayer修改的响应函数，仅当该某玩家操作时生效 </para>
     /// </summary>
     public void PlayerOperating() {
-        // 判断是否是Operating状态
-        if(PublicResource.gameState.Stage != GameStage.Other_Player_Operating 
-            || PublicResource.gameState.Stage != GameStage.Self_Operating)
+        // 排除游戏结束
+        if(PublicResource.gameState.Stage == GameStage.Game_Over)
             return;
         // 显示正在行动的玩家
         PlayerID nowPlayer = PublicResource.gameState.NowPlayer;

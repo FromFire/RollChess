@@ -95,6 +95,7 @@ public class GameState : MonoBehaviour {
         set {
             nowPlayer = value;
             PublicResource.gameStateSubject.Notify(ModelModifyEvent.Now_Player);
+            Debug.Log("开始行动：" + nowPlayer);
         }
     }
 
