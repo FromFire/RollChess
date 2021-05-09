@@ -91,7 +91,7 @@ public class CellChooseController : MonoBehaviour {
         List<int> tokenId = PublicResource.tokenSet.Query(param);
         // 判断己方棋子 + 可操作
         if( !(tokenId is null) && tokenId.Count != 0 
-            && PublicResource.tokenSet.GetToken(tokenId[0]).Player == PublicResource.gameState.NowPlayer
+            && PublicResource.tokenSet.Get(tokenId[0]).Player == PublicResource.gameState.NowPlayer
             && opeartingAvailable ) {
             // 选中该棋子，获取可走位置
             ChooseToken(pos);

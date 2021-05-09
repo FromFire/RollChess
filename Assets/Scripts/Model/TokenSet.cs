@@ -22,7 +22,7 @@ public class TokenSet : MonoBehaviour {
     /// <summary>
     ///   <para> 通过id获取棋子 </para>
     /// </summary>
-    public Token GetToken(int id) {
+    public Token Get(int id) {
         return tokenList[id];
     }
 
