@@ -25,7 +25,7 @@ public class BoardDisplay : MonoBehaviour {
     void Start() {
         Display();
         // 注册更新
-        ModelResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
+        ModelResource.boardSubject.Attach(ModelModifyEvent.Cell, Draw);
     }
 
     /// <summary>
@@ -35,39 +35,49 @@ public class BoardDisplay : MonoBehaviour {
         // 获取有效数据列表
         Board board = ModelResource.board;
         HashSet<Vector2Int> keyInfo = board.ToPositionSet();
-        HashSet<Vector2Int> walkablePos = new HashSet<Vector2Int>();
         foreach (Vector2Int pos in keyInfo) {
-            //去除不可走的坐标
-            if (board.Get(pos).Walkable)
-                walkablePos.Add(pos);
+            Draw(pos);
+        }
+    }
+
+    /// <summary>
+    ///   <para> 绘制此坐标 </para>
+    /// </summary>
+    public void Draw(Vector2Int position) {
+        Board board = ModelResource.board;
+        Cell cell = board.Get(position);
+
+        // 若不可走且无特效，则抹去它
+        if(!cell.Walkable && cell.Effect == SpecialEffect.None) {
+            // 判定格子原Tile是因为防止抹去Unwalkable填充的海洋
+            if(tilemapManagerBoard.GetTile(position) != TileType.Ocean)
+                tilemapManagerBoard.RemoveTile(position);
+            tilemapManagerSpecial.RemoveTile(position);
+            // todo：抹去传送门
+            return;
         }
 
         // 显示TilemapBoard层，地图格子
-        foreach (Vector2Int pos in walkablePos)
-            tilemapManagerBoard.SetTile(pos, TileType.Land);
-
+        tilemapManagerBoard.SetTile(position, TileType.Land);
+            
         // 显示TilemapSpecial层，特殊格子效果
-        foreach (Vector2Int pos in walkablePos) {
-            SpecialEffect specialEffect = board.Get(pos).Effect;
-            if(specialEffect != SpecialEffect.None)
-                tilemapManagerSpecial.SetTile(pos, Transform.tileTypeOfSpecialEffect[specialEffect]);
-        }
+        SpecialEffect specialEffect = board.Get(position).Effect;
+        if(specialEffect != SpecialEffect.None)
+            tilemapManagerSpecial.SetTile(position, Transform.tileTypeOfSpecialEffect[specialEffect]);
 
         // 显示传送门之间的箭头
-        foreach (Vector2Int pos in walkablePos) {
-            if (board.Get(pos).Effect == SpecialEffect.Portal) {
-                // 由于箭头和Grid相对位置绑定，箭头起止点均为Grid的local坐标
-                Vector2Int from = new Vector2Int(pos.x, pos.y);
-                Vector2Int to = ((PortalCell)board.Get(pos)).Target;
-                Vector3 from3 = tilemapManagerSpecial.CellToLocal((Vector3Int)from);
-                Vector3 to3 = tilemapManagerSpecial.CellToLocal((Vector3Int)to);
+        if (board.Get(position).Effect == SpecialEffect.Portal) {
+            // 由于箭头和Grid相对位置绑定，箭头起止点均为Grid的local坐标
+            Vector2Int from = new Vector2Int(position.x, position.y);
+            Vector2Int to = ((PortalCell)board.Get(position)).Target;
+            Vector3 from3 = tilemapManagerSpecial.CellToLocal((Vector3Int)from);
+            Vector3 to3 = tilemapManagerSpecial.CellToLocal((Vector3Int)to);
 
-                //绘制箭头
-                GameObject obj = Object.Instantiate(arrowSample);
-                obj.transform.parent = portalArrows.transform;
-                LineRenderer line = obj.GetComponent<LineRenderer>();
-                DrawCurve(from3, (from3+to3)/2 + 2*Vector3.up, to3, line);
-            }
+            //绘制箭头
+            GameObject obj = Object.Instantiate(arrowSample);
+            obj.transform.parent = portalArrows.transform;
+            LineRenderer line = obj.GetComponent<LineRenderer>();
+            DrawCurve(from3, (from3+to3)/2 + 2*Vector3.up, to3, line);
         }
     }
 
@@ -108,22 +118,6 @@ public class BoardDisplay : MonoBehaviour {
             popup.Show();
         } else {
             popup.Hide();
-        }
-    }
-
-    /// <summary>
-    ///   <para> Board更新时调用 </para>
-    /// </summary>
-    public void UpdateSelf(Vector2Int position) {
-        Cell cell = ModelResource.board.Get(position);
-
-        // 不可走 + 无特效：代表该格子已被移除
-        // 例如：经过危桥后
-        if(!cell.Walkable && cell.Effect == SpecialEffect.None) {
-            // 判定格子原Tile是因为防止抹去Unwalkable填充的海洋
-            if(tilemapManagerBoard.GetTile(position) != TileType.Ocean)
-                tilemapManagerBoard.RemoveTile(position);
-            tilemapManagerSpecial.RemoveTile(position);
         }
     }
 }
