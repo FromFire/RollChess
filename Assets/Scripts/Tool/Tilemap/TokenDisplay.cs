@@ -9,14 +9,14 @@ public class TokenDisplay : MonoBehaviour {
     // Tilemap棋子层
     [SerializeField] private TilemapManager tilemap;
 
-    // 数字的样式案例
-    [SerializeField] private GameObject numberSample;
+    // // 数字的样式案例
+    // [SerializeField] private GameObject numberSample;
 
-    // 数字所在父对象
-    [SerializeField] private GameObject canvas;
+    // // 数字所在父对象
+    // [SerializeField] private GameObject canvas;
 
-    // 所有数字对象
-    private Dictionary<Vector2Int, Text> numberTexts = new Dictionary<Vector2Int, Text>();
+    // // 所有数字对象
+    // private Dictionary<Vector2Int, Text> numberTexts = new Dictionary<Vector2Int, Text>();
 
     void Start() {
         Display();

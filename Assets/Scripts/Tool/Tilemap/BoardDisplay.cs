@@ -22,6 +22,9 @@ public class BoardDisplay : MonoBehaviour {
     // 弹窗
     [SerializeField] private Popup popup;
 
+    // 所有传送门对象，key是起始坐标
+    private Dictionary<Vector2Int, GameObject> arrows = new Dictionary<Vector2Int, GameObject>();
+
     void Start() {
         Display();
         // 注册更新
@@ -53,7 +56,11 @@ public class BoardDisplay : MonoBehaviour {
             if(tilemapManagerBoard.GetTile(position) != TileType.Ocean)
                 tilemapManagerBoard.RemoveTile(position);
             tilemapManagerSpecial.RemoveTile(position);
-            // todo：抹去传送门
+            // 抹去传送门
+            if(arrows.ContainsKey(position)) {
+                Destroy(arrows[position]);
+                arrows.Remove(position);
+            }
             return;
         }
 
@@ -78,6 +85,9 @@ public class BoardDisplay : MonoBehaviour {
             obj.transform.parent = portalArrows.transform;
             LineRenderer line = obj.GetComponent<LineRenderer>();
             DrawCurve(from3, (from3+to3)/2 + 2*Vector3.up, to3, line);
+
+            //维护arrows
+            arrows.Add(position, obj);
         }
     }
 
