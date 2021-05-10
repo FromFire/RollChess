@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 2834654946156559363}
   - component: {fileID: 2834654946156559421}
   - component: {fileID: 2834654946156559420}
-  - component: {fileID: 2834654946156559422}
   m_Layer: 5
   m_Name: PausePanel
   m_TagString: Untagged
@@ -156,24 +155,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2834654946156559422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2834654946156559362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f18716dcaecbd4c9d2c67440f017c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseButton: {fileID: 2834654946317967126}
-  pausePanel: {fileID: 2834654946156559420}
-  exitGameButton: {fileID: 2834654946581702941}
-  backGameButton: {fileID: 2834654946677081296}
-  switchHexGridVisible: {fileID: 2834654947193601013}
-  hexGridDisplay: {fileID: 0}
 --- !u!1 &2834654946317967124
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +273,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2834654946156559422}
+      - m_Target: {fileID: 2360147535879859416}
         m_MethodName: Show
         m_Mode: 1
         m_Arguments:
@@ -422,7 +403,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2834654946156559422}
+      - m_Target: {fileID: 2360147535879859416}
         m_MethodName: BackMainMenu
         m_Mode: 1
         m_Arguments:
@@ -552,7 +533,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2834654946156559422}
+      - m_Target: {fileID: 2360147535879859416}
         m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
@@ -891,9 +872,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2834654946156559422}
-        m_MethodName: ShowHexGrid
-        m_Mode: 6
+      - m_Target: {fileID: 2360147535879859416}
+        m_MethodName: SwitchHexGridVisible
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -901,17 +882,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
-      - m_Target: {fileID: 2834654946156559422}
-        m_MethodName: HideHexGrid
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 1
   m_IsOn: 1
 --- !u!95 &2834654947197044713
@@ -1020,8 +990,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1872459505898331788}
+  - component: {fileID: 2360147535879859416}
   m_Layer: 5
-  m_Name: PausePanel 1
+  m_Name: PausePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1048,3 +1019,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2360147535879859416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4674379833908730554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62d9e3c11683c945a4cd0572d0f966f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseButton: {fileID: 2834654946317967126}
+  pausePanel: {fileID: 2834654946156559420}
+  exitGameButton: {fileID: 2834654946581702941}
+  backGameButton: {fileID: 2834654946677081296}
+  switchHexGridVisible: {fileID: 2834654947193601013}
+  hexGridDisplay: {fileID: 0}

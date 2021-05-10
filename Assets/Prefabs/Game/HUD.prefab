@@ -272,7 +272,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: RollDice
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3238090887150131982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8dd07ce92a8a2d4bb48021aa93f0d85, type: 3}
+  m_Script: {fileID: 11500000, guid: 64d2e3ecacd04b84292904a6a37d3bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rollButton: {fileID: 3238090885644992611}

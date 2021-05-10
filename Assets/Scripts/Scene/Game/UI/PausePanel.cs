@@ -37,16 +37,8 @@ public class PausePanel : MonoBehaviour
     ///   <para> 显示网格 </para>
     ///   <para> 是switchHexGridVisible的响应函数 </para>
     /// </summary>
-    public void ShowHexGrid(bool isOn) {
-        hexGridDisplay.Visible = isOn;
-    }
-
-    /// <summary>
-    ///   <para> 隐藏网格 </para>
-    ///   <para> 是switchHexGridVisible的响应函数 </para>
-    /// </summary>
-    public void HideHexGrid(bool isOn) {
-        hexGridDisplay.Visible = isOn;
+    public void SwitchHexGridVisible() {
+        hexGridDisplay.Visible = switchHexGridVisible.isOn;
     }
 
     /// <summary>
