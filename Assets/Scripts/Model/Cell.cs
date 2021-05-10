@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 ///   <para> 棋盘的一个格子 </para>
 /// </summary>
-public class Cell {
+public class Cell : Object{
     // 所在坐标
     // 可以获取，不能修改，只能在初始化时指定
     protected Vector2Int position;

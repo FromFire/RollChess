@@ -117,10 +117,12 @@ public class BoardDisplay : MonoBehaviour {
     public void UpdateSelf(Vector2Int position) {
         Cell cell = ModelResource.board.Get(position);
 
-        // 不可走 + 无特效：代表该格子已被移除，
-        // 由UnwalkableDisplay覆盖该格为海洋，所以不需要Board层处理，清除特殊层即可
+        // 不可走 + 无特效：代表该格子已被移除
         // 例如：经过危桥后
         if(!cell.Walkable && cell.Effect == SpecialEffect.None) {
+            // 判定格子原Tile是因为防止抹去Unwalkable填充的海洋
+            if(tilemapManagerBoard.GetTile(position) != TileType.Ocean)
+                tilemapManagerBoard.RemoveTile(position);
             tilemapManagerSpecial.RemoveTile(position);
         }
     }

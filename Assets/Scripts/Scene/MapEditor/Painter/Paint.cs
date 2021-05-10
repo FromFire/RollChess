@@ -14,11 +14,6 @@ public interface Paint {
     EditMomento Paint(Vector2Int position);
 
     /// <summary>
-    ///   <para> 擦除块 </para>
-    /// </summary>
-    EditMomento Erase(Vector2Int position);
-
-    /// <summary>
     ///   <para> 撤销操作 </para>
     /// </summary>
     void Undo(EditMomento momento);
@@ -35,12 +30,12 @@ public interface Paint {
 public interface BlockPaint {
     
     /// <summary>
-    ///   <para> 绘制块 </para>
+    ///   <para> 向正在画的一笔中加入新格子，然后预览已经绘制的部分 </para>
     /// </summary>
-    EditMomento PaintBlock(Vector2Int position);
+    void Preview(Vector2Int position);
 
     /// <summary>
-    ///   <para> 擦除块 </para>
+    ///   <para> 绘制当前的块 </para>
     /// </summary>
-    EditMomento EraseBlock(Vector2Int position);
+    EditMomento PaintBlock();
 }

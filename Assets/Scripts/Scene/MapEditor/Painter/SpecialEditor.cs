@@ -39,14 +39,14 @@ public class SpecialEditor : MonoBehaviour, Paint, BlockPaint {
     /// <summary>
     ///   <para> 绘制块 </para>
     /// </summary>
-    public EditMomento PaintBlock(Vector2Int position) {
+    public EditMomento Preview(Vector2Int position) {
         return new EditMomento();
     }
 
     /// <summary>
     ///   <para> 擦除块 </para>
     /// </summary>
-    public EditMomento EraseBlock(Vector2Int position) {
+    public EditMomento PaintBlock(Vector2Int position) {
         return new EditMomento();
     }
 }
