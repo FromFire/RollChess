@@ -68,7 +68,7 @@ public class Board : MonoBehaviour {
         UpdateBorder(pos);
 
         // 推送修改
-        PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
+        ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public class Board : MonoBehaviour {
         if(Contains(pos)) map.Remove(pos);
 
         // 推送修改
-        PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
+        ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, pos);
     }
 
     /// <summary>

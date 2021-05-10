@@ -58,7 +58,7 @@ public class GameState : MonoBehaviour {
         get{return turn;}
         set{
             turn = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Turn);
+            GameResource.gameStateSubject.Notify(ModelModifyEvent.Turn);
         }
     }
 
@@ -69,7 +69,7 @@ public class GameState : MonoBehaviour {
         get{return rollResult;}
         set{
             rollResult = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Roll_Result);
+            GameResource.gameStateSubject.Notify(ModelModifyEvent.Roll_Result);
         }
     }
 
@@ -94,7 +94,7 @@ public class GameState : MonoBehaviour {
         get {return nowPlayer;}
         set {
             nowPlayer = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Now_Player);
+            GameResource.gameStateSubject.Notify(ModelModifyEvent.Now_Player);
             Debug.Log("开始行动：" + nowPlayer);
         }
     }
@@ -116,7 +116,7 @@ public class GameState : MonoBehaviour {
         get {return gameStage;}
         set {
             gameStage = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Stage);
+            GameResource.gameStateSubject.Notify(ModelModifyEvent.Stage);
         }
     }
 
@@ -127,7 +127,7 @@ public class GameState : MonoBehaviour {
         get {return winner;}
         set {
             winner = value;
-            PublicResource.gameStateSubject.Notify(ModelModifyEvent.Winner);
+            GameResource.gameStateSubject.Notify(ModelModifyEvent.Winner);
         }
     }
 
@@ -136,7 +136,7 @@ public class GameState : MonoBehaviour {
     /// </summary>
     public void AddLoser(PlayerID loser) {
         losers.Add(loser);
-        PublicResource.gameStateSubject.Notify(ModelModifyEvent.Loser);
+        GameResource.gameStateSubject.Notify(ModelModifyEvent.Loser);
     }
 
     /// <summary>

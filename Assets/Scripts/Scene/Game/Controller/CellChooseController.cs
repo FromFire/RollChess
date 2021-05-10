@@ -33,7 +33,7 @@ public class CellChooseController : MonoBehaviour {
         // 获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        Vector2Int pos = PublicResource.tilemapManager.WorldToCell(loc);
+        Vector2Int pos = GameResource.tilemapManager.WorldToCell(loc);
 
         // 若已有己方棋子被选中，则预览路线
         if(isTokenChoosed)
@@ -41,8 +41,8 @@ public class CellChooseController : MonoBehaviour {
 
         // 若鼠标左键有点击 + 游戏未结束 + 不是正在处理自己的操作
         // 则触发选中
-        if(Input.GetMouseButtonDown(0) && PublicResource.gameState.Stage != GameStage.Game_Over 
-            && PublicResource.gameState.Stage != GameStage.Self_Operation_Processing)
+        if(Input.GetMouseButtonDown(0) && GameResource.gameState.Stage != GameStage.Game_Over 
+            && GameResource.gameState.Stage != GameStage.Self_Operation_Processing)
             CellClicked(pos);
     }
 
@@ -55,7 +55,7 @@ public class CellChooseController : MonoBehaviour {
         // 1. 判定是否可走的格子
         //      否：取消所有选中，清除高亮，退出
         //      是：继续
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         if(!board.Contains(pos) || !board.Get(pos).Walkable) {
             ClearTokenChoose(); 
             return;
@@ -63,15 +63,15 @@ public class CellChooseController : MonoBehaviour {
 
         // 1.5 判断己方是否出于可走子，或可预览的状态（简称可操作）
         // 须满足条件：是本机控制的回合 + 已roll点
-        bool opeartingAvailable = ( PublicResource.gameState.Stage == GameStage.Self_Operating 
-            && PublicResource.gameState.RollResult != -1 );
+        bool opeartingAvailable = ( GameResource.gameState.Stage == GameStage.Self_Operating 
+            && GameResource.gameState.RollResult != -1 );
 
         // 2. 判定是否是走子（已有棋子被选中 + 此次点击的格子能走 + 可操作）
         //      是：移动棋子，退出
         //      否：继续
         if(isTokenChoosed && route.ContainsKey(pos) && opeartingAvailable) {
             // 触发走子
-            PublicResource.gameController.Move(choosedTokenPos, route[pos]);
+            GameResource.gameController.Move(choosedTokenPos, route[pos]);
             // 取消所有选中
             ClearTokenChoose();
             return;
@@ -88,10 +88,10 @@ public class CellChooseController : MonoBehaviour {
             {TokenSet.QueryParam.PositionX, pos.x},
             {TokenSet.QueryParam.PositionY, pos.y}
         };
-        List<int> tokenId = PublicResource.tokenSet.Query(param);
+        List<int> tokenId = ModelResource.tokenSet.Query(param);
         // 判断己方棋子 + 可操作
         if( !(tokenId is null) && tokenId.Count != 0 
-            && PublicResource.tokenSet.Get(tokenId[0]).Player == PublicResource.gameState.NowPlayer
+            && ModelResource.tokenSet.Get(tokenId[0]).Player == GameResource.gameState.NowPlayer
             && opeartingAvailable ) {
             // 选中该棋子，获取可走位置
             ChooseToken(pos);
@@ -140,7 +140,7 @@ public class CellChooseController : MonoBehaviour {
     void ChooseToken(Vector2Int pos) {
         //获取该棋子它所有可达位置
         Dictionary<Vector2Int, List<Vector2Int>> route = 
-            PublicResource.boardAssistant.GetRoute(pos, PublicResource.gameState.RollResult);
+            GameResource.boardAssistant.GetRoute(pos, GameResource.gameState.RollResult);
 
         //维护选中信息
         isTokenChoosed = true;

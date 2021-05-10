@@ -49,7 +49,7 @@ public class Cell {
         set {
             walkable = value;
             //推送修改
-            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
+            ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 
@@ -61,7 +61,7 @@ public class Cell {
         set {
             effect = value;
             //推送修改
-            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
+            ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 }
@@ -87,7 +87,7 @@ public class PortalCell : Cell {
         set {
             target = value;
             //推送修改
-            PublicResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
+            ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
 }

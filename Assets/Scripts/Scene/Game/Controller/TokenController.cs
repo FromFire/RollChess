@@ -16,10 +16,10 @@ public class TokenController : MonoBehaviour  {
             {TokenSet.QueryParam.PositionX, from.x},
             {TokenSet.QueryParam.PositionY, from.y}
         };
-        int token = PublicResource.tokenSet.Query(param)[0];
+        int token = ModelResource.tokenSet.Query(param)[0];
 
         // 移动
-        PublicResource.tokenSet.Move(token, to);
+        ModelResource.tokenSet.Move(token, to);
     }
 
     /// <summary>
@@ -31,9 +31,9 @@ public class TokenController : MonoBehaviour  {
             {TokenSet.QueryParam.PositionX, pos.x},
             {TokenSet.QueryParam.PositionY, pos.y}
         };
-        int token = PublicResource.tokenSet.Query(param)[0];
+        int token = ModelResource.tokenSet.Query(param)[0];
 
         // 移除
-        PublicResource.tokenSet.Remove(new List<int>(){token} );
+        ModelResource.tokenSet.Remove(new List<int>(){token} );
     }
 }

@@ -14,8 +14,8 @@ public class GameController : MonoBehaviour {
     void Start()
     {
         // 调试时无Entrance，则现场构造mapChooseState
-        if(PublicResource.mapChooseState is null) {
-            PublicResource.mapChooseState = MapChooseState.CreateSample();
+        if(GameResource.mapChooseState is null) {
+            GameResource.mapChooseState = MapChooseState.CreateSample();
         }
 
         // 初始化
@@ -30,13 +30,13 @@ public class GameController : MonoBehaviour {
     /// </summary>
     void Init() {
         // 初始化GameState，其数据来自于MapChooseState
-        foreach(KeyValuePair<PlayerID, PlayerForm> kvp in PublicResource.mapChooseState.playerForm)
-            PublicResource.gameState.SetPlayerForm(kvp.Key, kvp.Value);
+        foreach(KeyValuePair<PlayerID, PlayerForm> kvp in GameResource.mapChooseState.playerForm)
+            GameResource.gameState.SetPlayerForm(kvp.Key, kvp.Value);
         // nowPlayer是第一个不是Banned的玩家
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
             // 排除PlayerID.None，排除PlayerForm.Banned
-            if(id != PlayerID.None || PublicResource.gameState.GetPlayerForm(id) != PlayerForm.Banned) {
-                PublicResource.gameState.NowPlayer = id;
+            if(id != PlayerID.None || GameResource.gameState.GetPlayerForm(id) != PlayerForm.Banned) {
+                GameResource.gameState.NowPlayer = id;
                 break;
             }
         }
@@ -44,31 +44,31 @@ public class GameController : MonoBehaviour {
         // todo: 初始化myID
 
         // 读取存档
-        string filename = PublicResource.mapChooseState.mapName;
+        string filename = GameResource.mapChooseState.mapName;
         SaveEntity saveEntity = SaveManager.LoadMap(filename);
 
         // 初始化所有Model
-        PublicResource.board.Load(saveEntity);
-        PublicResource.tokenSet.Load(saveEntity);
+        ModelResource.board.Load(saveEntity);
+        ModelResource.tokenSet.Load(saveEntity);
 
         // 删除Banned玩家的所有棋子
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
             // 排除PlayerID.None，不是Banned则忽略
-            if(id == PlayerID.None || PublicResource.gameState.GetPlayerForm(id) != PlayerForm.Banned)
+            if(id == PlayerID.None || GameResource.gameState.GetPlayerForm(id) != PlayerForm.Banned)
                 continue;
             // 获取该玩家的所有棋子
             Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
                 {TokenSet.QueryParam.Player, (int)id}
             };
-            List<int> tokenId = PublicResource.tokenSet.Query(param);
+            List<int> tokenId = ModelResource.tokenSet.Query(param);
             // 移除
-            PublicResource.tokenSet.Remove(tokenId);
+            ModelResource.tokenSet.Remove(tokenId);
         }
 
         // 销毁MapChooseState（若存在）
-        if(PublicResource.mapChooseState.gameObject)
-            Destroy(PublicResource.mapChooseState.gameObject);
-        PublicResource.mapChooseState = null;
+        if(GameResource.mapChooseState.gameObject)
+            Destroy(GameResource.mapChooseState.gameObject);
+        GameResource.mapChooseState = null;
     }
 
     /// <summary>
@@ -79,13 +79,13 @@ public class GameController : MonoBehaviour {
         StartProcessing();
 
         // 走子过程交给moveProcessor处理
-        PublicResource.moveProcessor.Move(from, route);
+        GameResource.moveProcessor.Move(from, route);
 
         // 更新Loser和Winner，Loser必须在前
         UpdateLoser();
         UpdateWinner();
         // 判断游戏是否结束
-        if(PublicResource.gameState.Winner != PlayerID.None)
+        if(GameResource.gameState.Winner != PlayerID.None)
             GameOver();
 
         // 回合结束，切换至下一位玩家
@@ -97,8 +97,8 @@ public class GameController : MonoBehaviour {
     /// </summary>
     public void RollDice() {
         //生成随机数
-        PublicResource.gameState.RollResult = new System.Random().Next(6)+1;
-        Debug.Log("roll点结果: " + PublicResource.gameState.RollResult);
+        GameResource.gameState.RollResult = new System.Random().Next(6)+1;
+        Debug.Log("roll点结果: " + GameResource.gameState.RollResult);
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class GameController : MonoBehaviour {
                 continue;
 
             // 若只有一个玩家不属于loser，则该玩家获胜
-            if(!PublicResource.gameState.IsLoser(id)) {
+            if(!GameResource.gameState.IsLoser(id)) {
                 //若暂无胜利候选者，此玩家就是胜利候选者
                 if(winnerCandidate == PlayerID.None)
                     winnerCandidate = id;
@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour {
             }
         }
         // 更新Winner
-        PublicResource.gameState.Winner = winnerCandidate;
+        GameResource.gameState.Winner = winnerCandidate;
     }
 
     /// <summary>
@@ -130,18 +130,18 @@ public class GameController : MonoBehaviour {
     void UpdateLoser() {
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
             // 排除PlayerID.None，和已经是Loser的
-            if(id == PlayerID.None || PublicResource.gameState.IsLoser(id))
+            if(id == PlayerID.None || GameResource.gameState.IsLoser(id))
                 continue;
                 
             // 查询非Loser玩家控制的棋子数量
             Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
                 {TokenSet.QueryParam.Player, (int)id}
             };
-            List<int> tokenId = PublicResource.tokenSet.Query(param);
+            List<int> tokenId = ModelResource.tokenSet.Query(param);
 
             // 若棋子数量为0就标记为Loser
             if(tokenId is null || tokenId.Count == 0)
-                PublicResource.gameState.AddLoser(id);
+                GameResource.gameState.AddLoser(id);
         }
     }
 
@@ -149,14 +149,14 @@ public class GameController : MonoBehaviour {
     ///   <para> 游戏结束 </para>
     /// </summary>
     void GameOver() {
-        PublicResource.gameState.Stage = GameStage.Game_Over;
+        GameResource.gameState.Stage = GameStage.Game_Over;
     }
 
     /// <summary>
     ///   <para> 切换至下一位玩家 </para>
     /// </summary>
     void NextPlayer() {
-        GameState gameState = PublicResource.gameState;
+        GameState gameState = GameResource.gameState;
         PlayerID nowPlayer = gameState.NowPlayer;
         // 轮换，直到该玩家不是Banned或Loser
         do {
@@ -180,17 +180,17 @@ public class GameController : MonoBehaviour {
     /// </summary>
     void NextTurn() {
         // 更新gameState
-        PublicResource.gameState.Turn += 1;
+        GameResource.gameState.Turn += 1;
         
         // 通知棋盘更新
-        PublicResource.boardController.NewTurnUpdate();
+        GameResource.boardController.NewTurnUpdate();
     }
 
     /// <summary>
     ///   <para> 切换至玩家可操作状态 </para>
     /// </summary>
     void StartOperating() {
-        GameState gameState = PublicResource.gameState;
+        GameState gameState = GameResource.gameState;
         // 联机模式：轮到自己，或轮到其他玩家
         if(gameState.MyID != PlayerID.None)
             gameState.Stage = gameState.NowPlayer == gameState.MyID ?
@@ -205,7 +205,7 @@ public class GameController : MonoBehaviour {
     ///   <para> 切换至系统处理状态 </para>
     /// </summary>
     void StartProcessing() {
-        GameState gameState = PublicResource.gameState;
+        GameState gameState = GameResource.gameState;
         // 联机模式：自己处理中，或其他玩家处理中
         if(gameState.MyID != PlayerID.None)
             gameState.Stage = gameState.NowPlayer == gameState.MyID ?

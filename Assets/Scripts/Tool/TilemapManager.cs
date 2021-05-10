@@ -96,7 +96,7 @@ public class TilemapManager : MonoBehaviour {
     public Vector2Int CursorPointingCell() {
         // 获取屏幕坐标，转换为世界坐标，再转换为Tilemap的坐标
         Vector3 cursorPositionScreen = CursorMonitor.MouseScreenPositionNow;
-        Vector3 cursorPositionWorld = PublicResource.cameraController.ScreenToWorld(cursorPositionScreen);
+        Vector3 cursorPositionWorld = GameResource.cameraController.ScreenToWorld(cursorPositionScreen);
         return (Vector2Int)tilemap.WorldToCell(cursorPositionWorld);
     }
 

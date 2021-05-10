@@ -12,7 +12,7 @@ public class MoveProcessor: MonoBehaviour  {
     ///   <para> 移动棋子 </para>
     /// </summary>
     public void Move(Vector2Int from, List<Vector2Int> route) {
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         Vector2Int to = route.Last();
         Debug.Log("走子: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 
@@ -27,17 +27,17 @@ public class MoveProcessor: MonoBehaviour  {
         bool isKilled = false;
         if(board.Get(route.Last()).Effect == SpecialEffect.Broken_Bridge) {
             isKilled = true;
-            PublicResource.tokenController.Kill(from);
+            GameResource.tokenController.Kill(from);
         }
 
         // 销毁路上的危桥
         foreach(Vector2Int cell in route)
             if(board.Get(cell).Effect == SpecialEffect.Broken_Bridge)
-                PublicResource.boardController.RemoveBrokenBridge(cell);
+                GameResource.boardController.RemoveBrokenBridge(cell);
         
         // 如果本棋子还活着，就移动到目的地
         if(!isKilled) {
-            PublicResource.tokenController.Move(from, route.Last());
+            GameResource.tokenController.Move(from, route.Last());
         }
     }
 }

@@ -14,7 +14,7 @@ public class BoardAssistant : MonoBehaviour {
     /// </summary>
     public Dictionary<Vector2Int, List<Vector2Int>> GetRoute(Vector2Int pos, int step) {
         //若开始的格子是doubleStep，步数翻倍
-        if(PublicResource.board.Get(pos).Effect == SpecialEffect.Double_Step) {
+        if(ModelResource.board.Get(pos).Effect == SpecialEffect.Double_Step) {
             step *= 2;
             Debug.Log("doubleStep: " + step);
         }
@@ -27,12 +27,12 @@ public class BoardAssistant : MonoBehaviour {
 
         //获取本阵营棋子的位置，己方棋子不允许重叠
         Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-            {TokenSet.QueryParam.Player, (int)PublicResource.gameState.NowPlayer}
+            {TokenSet.QueryParam.Player, (int)GameResource.gameState.NowPlayer}
         };
-        List<int> tokens = PublicResource.tokenSet.Query(param);
+        List<int> tokens = ModelResource.tokenSet.Query(param);
         HashSet<Vector2Int> selfPositions = new HashSet<Vector2Int>();
         foreach(int id in tokens)
-            selfPositions.Add(PublicResource.tokenSet.Get(id).Position);
+            selfPositions.Add(ModelResource.tokenSet.Get(id).Position);
 
         //BFS
         queue.Enqueue( (pos, new List<Vector2Int>{pos}, 0) );
@@ -96,7 +96,7 @@ public class BoardAssistant : MonoBehaviour {
 
         //筛选出可到达的格子
         foreach(Vector2Int offset in offsets) {
-            Board board = PublicResource.board;
+            Board board = ModelResource.board;
             if(board.Contains(pos+offset) && board.Get(pos+offset).Walkable) {
                 ret.Add(pos+offset);
             }

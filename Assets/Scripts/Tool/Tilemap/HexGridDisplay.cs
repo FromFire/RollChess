@@ -25,7 +25,7 @@ public class HexGridDisplay : MonoBehaviour
     // 显示格子
     void ShowGrid() {
         // 记录填充的边界，余量20
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         borderUp = board.BorderUp + 20;
         borderDown = board.BorderDown - 20;
         borderLeft = board.BorderLeft - 20;

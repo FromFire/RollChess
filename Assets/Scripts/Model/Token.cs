@@ -30,7 +30,7 @@ public class Token {
         set {
             player = value;
             //推送修改
-            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position); 
+            ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, position); 
         }
     }
 
@@ -43,8 +43,8 @@ public class Token {
             Vector2Int valueOld = position;
             position = value;
             //推送修改
-            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, valueOld);
-            PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, position);
+            ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, valueOld);
+            ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, position);
         }
     }
 }

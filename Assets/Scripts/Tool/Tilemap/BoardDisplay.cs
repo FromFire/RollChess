@@ -25,7 +25,7 @@ public class BoardDisplay : MonoBehaviour {
     void Start() {
         Display();
         // 注册更新
-        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
+        ModelResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ public class BoardDisplay : MonoBehaviour {
     /// </summary>
     public void Display() {
         // 获取有效数据列表
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         HashSet<Vector2Int> keyInfo = board.ToPositionSet();
         HashSet<Vector2Int> walkablePos = new HashSet<Vector2Int>();
         foreach (Vector2Int pos in keyInfo) {
@@ -89,7 +89,7 @@ public class BoardDisplay : MonoBehaviour {
 
     void Update() {
         // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         Vector2Int pointedCell = tilemapManagerSpecial.CursorPointingCell();
         // 避免空格子
         if(!board.Contains(pointedCell))
@@ -98,7 +98,7 @@ public class BoardDisplay : MonoBehaviour {
         SpecialEffect pointedEffect = board.Get(pointedCell).Effect;
         if(pointedEffect != SpecialEffect.None) {
             // 设置SpecialPopupContent的内容
-            SpecialIntroductionItem item = PublicResource.specialIntroduction.introduction[pointedEffect];
+            SpecialIntroductionItem item = GameResource.specialIntroduction.introduction[pointedEffect];
             SpecialPopupContent content = popup.Content.GetComponent<SpecialPopupContent>();
             content.Title = item.introTitle;
             content.Describe = item.introText;
@@ -115,7 +115,7 @@ public class BoardDisplay : MonoBehaviour {
     ///   <para> Board更新时调用 </para>
     /// </summary>
     public void UpdateSelf(Vector2Int position) {
-        Cell cell = PublicResource.board.Get(position);
+        Cell cell = ModelResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，
         // 由UnwalkableDisplay覆盖该格为海洋，所以不需要Board层处理，清除特殊层即可

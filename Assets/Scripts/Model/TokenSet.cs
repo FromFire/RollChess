@@ -48,7 +48,7 @@ public class TokenSet : MonoBehaviour {
         nextId ++;
 
         // 推送修改
-        PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, token.Position);
+        ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, token.Position);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class TokenSet : MonoBehaviour {
         }
 
         // 推送修改
-        PublicResource.tokenSubject.Notify(ModelModifyEvent.Token, modified);
+        ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, modified);
     }
 
     /// <summary>

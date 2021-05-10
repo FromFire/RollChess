@@ -5,10 +5,8 @@ using UnityEngine;
 /// <summary>
 ///   <para> 获取公有资源 </para>
 /// </summary>
-public class PublicResource : MonoBehaviour  {
+public class GameResource : MonoBehaviour  {
     // Model
-    static public Board board;
-    static public TokenSet tokenSet;
     static public GameState gameState;
     static public SpecialIntroduction specialIntroduction;
     static public MapChooseState mapChooseState;
@@ -27,16 +25,6 @@ public class PublicResource : MonoBehaviour  {
     static public MoveProcessor moveProcessor;
 
     /// <summary>
-    ///   <para> 棋盘更新的推送 </para>
-    /// </summary>
-    static public PositionSubject boardSubject = new PositionSubject();
-
-    /// <summary>
-    ///   <para> 棋子更新的推送 </para>
-    /// </summary>
-    static public PositionSubject tokenSubject = new PositionSubject();
-
-    /// <summary>
     ///   <para> 游戏状态的推送 </para>
     /// </summary>
     static public Subject gameStateSubject = new Subject();
@@ -48,8 +36,6 @@ public class PublicResource : MonoBehaviour  {
 
     // 下面是用来实例化的
     // Model
-    [SerializeField] private Board _board;
-    [SerializeField] private TokenSet _tokenSet;
     [SerializeField] private GameState _gameState;
     [SerializeField] private SpecialIntroduction _specialIntroduction;
 
@@ -72,8 +58,6 @@ public class PublicResource : MonoBehaviour  {
     // 实例化
     void Start() {
         // Model
-        board = _board;
-        tokenSet = _tokenSet;
         gameState = _gameState;
         specialIntroduction = _specialIntroduction;
 

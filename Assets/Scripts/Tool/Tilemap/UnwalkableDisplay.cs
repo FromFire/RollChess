@@ -16,7 +16,7 @@ public class UnwalkableDisplay : MonoBehaviour
     void Start() {
         Display();
         // 注册更新
-        PublicResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
+        ModelResource.boardSubject.Attach(ModelModifyEvent.Cell, UpdateSelf);
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class UnwalkableDisplay : MonoBehaviour
     /// </summary>
     public void Display() {
         // 记录填充的边界，余量20
-        Board board = PublicResource.board;
+        Board board = ModelResource.board;
         for(int i=board.BorderLeft - 20; i<board.BorderRight + 20; i++) {
             for(int j=board.BorderDown - 20; j<board.BorderUp + 20; j++) {
                 // 避免和陆地冲突
@@ -39,7 +39,7 @@ public class UnwalkableDisplay : MonoBehaviour
     ///   <para> 响应Board更新</para>
     /// </summary>
     public void UpdateSelf(Vector2Int position) {
-        Cell cell = PublicResource.board.Get(position);
+        Cell cell = ModelResource.board.Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，填充为海洋
         if(!cell.Walkable && cell.Effect == SpecialEffect.None) {
