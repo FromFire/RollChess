@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 ///   <para> 陆地绘制 </para>
@@ -82,6 +83,10 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     ///   <para> 注意：Model会被修改！ </para>
     /// </summary>
     public void Preview(Vector2Int position) {
+        // 若这一格已经画过了，则无视之
+        if(blockMomento.position.Contains(position))
+            return;
+
         // 调用Paint进行绘制
         EditMomento momento = Paint(position);
 
@@ -102,5 +107,20 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
         blockMomento.editObject = MapEditObject.Land;
 
         return ret;
+    }
+
+    /// <summary>
+    ///   <para> 获取正在画的一笔中有多少格 </para>
+    /// </summary>
+    public int BlockCount() {
+        return blockMomento.position.Count;
+    }
+
+    /// <summary>
+    ///   <para> 获取上一格的坐标 </para>
+    ///   <para> 若无上一格，返回xy均为int.MaxValue </para>
+    /// </summary>
+    public Vector2Int LastPosition() {
+        return blockMomento.position.Count == 0 ? new Vector2Int(int.MaxValue, int.MaxValue) : blockMomento.position.Last();
     }
 }

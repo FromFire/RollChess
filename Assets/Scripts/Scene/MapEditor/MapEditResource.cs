@@ -19,6 +19,9 @@ public class MapEditResource : MonoBehaviour  {
     static public BoardDisplay boardDisplay;
     static public TokenDisplay tokenDisplay;
 
+    // Momento
+    static public EditCareTaker editCareTaker;
+
     /// <summary>
     ///   <para> 游戏状态的推送 </para>
     /// </summary>

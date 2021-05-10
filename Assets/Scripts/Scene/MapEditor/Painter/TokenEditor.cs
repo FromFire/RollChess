@@ -47,4 +47,19 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
 
         return new EditMomento();
     }
+
+    /// <summary>
+    ///   <para> 获取正在画的一笔中有多少格 </para>
+    /// </summary>
+    public int BlockCount() {
+        return 0;
+    }
+
+    /// <summary>
+    ///   <para> 获取上一格的坐标 </para>
+    ///   <para> 若无上一格，返回xy均为int.MaxValue </para>
+    /// </summary>
+    public Vector2Int LastPosition() {
+        return new Vector2Int(int.MaxValue, int.MaxValue);
+    }
 }

@@ -30,9 +30,18 @@ public class PaintController : MonoBehaviour {
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
         Vector2Int pos = GameResource.tilemapManager.WorldToCell(loc); //warning
 
-        // 若鼠标左键有点击，则触发选中
-        if(Input.GetMouseButtonDown(0))
-            CellClicked(pos);
+        // 若左键是按住的状态，则通知BlockPainter（Portal除外）
+        // BlockPainter自带去重，不需要额外筛选
+        if(Input.GetMouseButton(0) && editObject != MapEditObject.Portal) {
+            blockPainter.Preview(pos);
+            return;
+        }
+
+        // 左键释放时，若有格子已经在这一笔中画出来了，则完成这一笔，并记录之
+        if(Input.GetMouseButtonUp(0) && blockPainter.BlockCount() != 0) {
+            MapEditResource.editCareTaker.Push(blockPainter.PaintBlock());
+            return;
+        }
     }
 
     /// <summary>

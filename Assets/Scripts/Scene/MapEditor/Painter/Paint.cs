@@ -35,6 +35,17 @@ public interface BlockPaint {
     void Preview(Vector2Int position);
 
     /// <summary>
+    ///   <para> 获取正在画的一笔中有多少格 </para>
+    /// </summary>
+    int BlockCount();
+
+    /// <summary>
+    ///   <para> 获取上一格的坐标 </para>
+    ///   <para> 若无上一格，返回xy均为int.MaxValue </para>
+    /// </summary>
+    Vector2Int LastPosition();
+
+    /// <summary>
     ///   <para> 绘制当前的块 </para>
     /// </summary>
     EditMomento PaintBlock();
