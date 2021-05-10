@@ -105,3 +105,13 @@ public enum GameStage {
     Other_Player_Processing,    // 系统正在处理其他玩家的操作，不可以操作，可以查看消息
     Game_Over,                  // 游戏结束，所有玩家均不能操作
 }
+
+/// <summary>
+///   <para> 玩家操作状态，用处是限制玩家操作 </para>
+/// </summary>
+public enum MapEditObject {
+    Land,   // 陆地
+    Token,  // 棋子
+    Special,// 特殊块
+    Portal, // 传送门
+}
