@@ -20,7 +20,12 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
         // 把对应坐标上的都改成after
         TokenSet tokenSet = ModelResource.tokenSet;
         for(int i=0; i<momento.position.Count; i++) {
-            tokenSet.Add((Token)momento.after[i]);
+            Token after = (Token)(momento.after[i]);
+            // 若after的player为none，则移除此棋子
+            if(after.Player == PlayerID.None)
+                tokenSet.Remove(after.Position);
+            else
+                tokenSet.Add((Token)momento.after[i]);
         }
     }
 

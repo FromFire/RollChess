@@ -13,6 +13,7 @@ public class TokenMenu : MonoBehaviour {
     [SerializeField] private Button blueButton;
     [SerializeField] private Button yellowButton;
     [SerializeField] private Button greenButton;
+    [SerializeField] private Button eraseButton;
 
     void Start() {}
 
@@ -33,6 +34,10 @@ public class TokenMenu : MonoBehaviour {
     }
     public void SwitchToGreen() {
         MapEditResource.tokenEditor.Player = PlayerID.Green;
+        MapEditResource.paintController.EditObject = MapEditObject.Token;
+    }
+    public void SwitchToErase() {
+        MapEditResource.tokenEditor.Player = PlayerID.None;
         MapEditResource.paintController.EditObject = MapEditObject.Token;
     }
 }
