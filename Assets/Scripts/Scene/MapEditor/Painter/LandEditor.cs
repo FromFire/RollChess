@@ -15,6 +15,11 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     // 块绘制的Momento
     EditMomento blockMomento = new EditMomento();
 
+    // 初始化
+    void Start() {
+        blockMomento.editObject = MapEditObject.Land;
+    }
+
     // 执行momento上的操作
     void Execute(EditMomento momento) {
         // 把对应坐标上的都改成after
