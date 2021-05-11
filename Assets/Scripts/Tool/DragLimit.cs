@@ -9,10 +9,10 @@ public class DragLimit : MonoBehaviour {
     void Update() {
         // 获取屏幕中心的Tilemap坐标
         Vector3 screenCenterWorld = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width/2,Screen.height/2,0));
-        Vector2Int screenCenter = GameResource.tilemapManager.WorldToCell(screenCenterWorld);
+        Vector2Int screenCenter = ToolResource.tilemapManager.WorldToCell(screenCenterWorld);
         
         // 判定是否已超过地图边界，若越界，则不允许向那个方向继续滑动
-        VisionController visionController = GameResource.visionController;
+        VisionController visionController = ToolResource.visionController;
         Board board = ModelResource.board;
         visionController.allowMoveLeft = screenCenter.x > board.BorderLeft;
         visionController.allowMoveRight = screenCenter.x < board.BorderRight;

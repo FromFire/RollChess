@@ -42,6 +42,13 @@ public class MapEditResource : MonoBehaviour  {
     [SerializeField] private SpecialEditor _specialEditor;
     [SerializeField] private PortalEditor _portalEditor;
 
+    // Display
+    [SerializeField] private BoardDisplay _boardDisplay;
+    [SerializeField] private TokenDisplay _tokenDisplay;
+
+    // Momento
+    [SerializeField] private EditCareTaker _editCareTaker;
+
     // tilemap
     [SerializeField] private TilemapManager _tilemapManager;
 
@@ -55,6 +62,13 @@ public class MapEditResource : MonoBehaviour  {
         tokenEditor = _tokenEditor;
         specialEditor = _specialEditor;
         portalEditor = _portalEditor;
+
+        // Display
+        boardDisplay = _boardDisplay;
+        tokenDisplay = _tokenDisplay;
+
+        // Momento
+        editCareTaker = _editCareTaker;
 
         // tilemap
         tilemapManager = _tilemapManager;

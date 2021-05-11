@@ -28,7 +28,7 @@ public class PaintController : MonoBehaviour {
         // 获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        Vector2Int pos = GameResource.tilemapManager.WorldToCell(loc); //warning
+        Vector2Int pos = ToolResource.tilemapManager.WorldToCell(loc); //warning
 
         // 若左键是按住的状态，则通知BlockPainter（Portal除外）
         // BlockPainter自带去重，不需要额外筛选

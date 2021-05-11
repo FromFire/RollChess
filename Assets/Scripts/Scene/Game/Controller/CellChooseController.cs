@@ -33,7 +33,7 @@ public class CellChooseController : MonoBehaviour {
         // 获取鼠标所在点的点在tilemap上的坐标
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
-        Vector2Int pos = GameResource.tilemapManager.WorldToCell(loc);
+        Vector2Int pos = ToolResource.tilemapManager.WorldToCell(loc);
 
         // 若已有己方棋子被选中，则预览路线
         if(isTokenChoosed)

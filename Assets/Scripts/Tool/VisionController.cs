@@ -41,12 +41,12 @@ public class VisionController : MonoBehaviour {
     void Zoom() {
         //鼠标滚轮向下，视角拉远
         if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-            GameResource.cameraController.ZoomOut();
+            ToolResource.cameraController.ZoomOut();
         }
 
         //鼠标滚轮向上，视角拉近
         if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-            GameResource.cameraController.ZoomIn();
+            ToolResource.cameraController.ZoomIn();
         }
     }
 
@@ -68,6 +68,6 @@ public class VisionController : MonoBehaviour {
         }
         
         // 以像素为单位做转换
-        GameResource.cameraController.TranslateByPixel(-dragDistance);
+        ToolResource.cameraController.TranslateByPixel(-dragDistance);
     }
 }
