@@ -6,24 +6,12 @@ using UnityEngine;
 ///   <para> 所有棋子 </para>
 /// </summary>
 public class TokenSet : MonoBehaviour {
-
-    // 数据存储，id对应棋子
-    private Dictionary<int, Token> tokenList;
-
-    // 下一个使用的棋子id
-    // 随棋子增加而增加，棋子减少时不影响
-    private int nextId = 0;
+    // 数据存储，坐标到棋子
+    private Dictionary<Vector2Int, Token> tokens;
 
     // 构造函数
     public TokenSet() {
-        tokenList = new Dictionary<int, Token> ();
-    }
-
-    /// <summary>
-    ///   <para> 通过id获取棋子 </para>
-    /// </summary>
-    public Token Get(int id) {
-        return tokenList[id];
+        tokens = new Dictionary<Vector2Int, Token> ();
     }
 
     /// <summary>
@@ -41,12 +29,17 @@ public class TokenSet : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 增加棋子 </para>
+    ///   <para> 包含性检查 </para>
+    /// </summary>
+    public bool Contains(Vector2Int pos) {
+        return tokens.ContainsKey(pos);
+    }
+
+    /// <summary>
+    ///   <para> 增加和设置棋子 </para>
     /// </summary>
     public void Add(Token token) {
-        tokenList[nextId] = token;
-        nextId ++;
-
+        tokens[token.Position] = token;
         // 推送修改
         ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, token.Position);
     }
@@ -54,39 +47,34 @@ public class TokenSet : MonoBehaviour {
     /// <summary>
     ///   <para> 移除棋子 </para>
     /// </summary>
-    public void Remove(List<int> idList) {
+    public void Remove(Vector2Int position) {
         List<Vector2Int> modified = new List<Vector2Int>();
-        foreach(int id in idList) {
-            // 记录被修改的坐标
-            modified.Add(tokenList[id].Position);
-            Debug.Log("移除棋子：" + tokenList[id].Player);
-            // 移除
-            tokenList.Remove(id);
-        }
-
+        tokens.Remove(position);
         // 推送修改
-        ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, modified);
+        ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, position);
+    }
+
+    /// <summary>
+    ///   <para> 通过id获取棋子 </para>
+    /// </summary>
+    public Token Get(Vector2Int position) {
+        if(!tokens.ContainsKey(position))
+            return null;
+        return tokens[position];
     }
 
     /// <summary>
     ///   <para> 移动棋子位置，自动吃子 </para>
     /// </summary>
-    public void Move(int id, Vector2Int target) {
-        // 查询target处其他玩家的棋子，即被吃的棋子
-        Token token = tokenList[id];
-        Dictionary<QueryParam, int> param = new Dictionary<QueryParam, int>() {
-            {QueryParam.Player_Ignore, (int)token.Player},
-            {QueryParam.PositionX, target.x},
-            {QueryParam.PositionY, target.y}
-        };
-        List<int> toEat = Query(param);
-
-        // 移除target处其他玩家的棋子
-        Remove(toEat);
+    public void Move(Vector2Int source, Vector2Int target) {
+        // 吃子
+        Token sourceToken = Get(source);
+        Token targetToken = Get(target);
+        if(target != null && targetToken.Player != sourceToken.Player)
+            Remove(target);
 
         // 修改该棋子位置
-        Vector2Int from = token.Position;
-        token.Position = target;
+        sourceToken.Position = target;
 
         // 无须推送修改，因为Token内部修改和Remove已有推送
     }
@@ -94,48 +82,24 @@ public class TokenSet : MonoBehaviour {
     /// <summary>
     ///   <para> 查询棋子 </para>
     /// </summary>
-    public List<int> Query(Dictionary<QueryParam, int> param) {
-        List<int> ret = new List<int>();
+    public List<Vector2Int> Query(PlayerID player, PlayerID ignore) {
+        List<Vector2Int> ret = new List<Vector2Int>();
 
         // 特殊情况：无参数，返回所有id
-        if(param == null || param.Count == 0) {
-            foreach(KeyValuePair<int, Token> kvp in tokenList) {
+        if(player == PlayerID.None || ignore == PlayerID.None) {
+            foreach(KeyValuePair<Vector2Int, Token> kvp in tokens)
                 ret.Add(kvp.Key);
-            }
             return ret;
         }
 
-        // 解析参数：Player
-        bool playerAvailable = param.ContainsKey(QueryParam.Player) ? true : false;
-        PlayerID player = playerAvailable ? (PlayerID)param[QueryParam.Player] : 0;
-
-        // 解析参数：IgnorePlayer
-        bool playerIgnoreAvailable = param.ContainsKey(QueryParam.Player_Ignore) ? true : false;
-        PlayerID playerIgnore = playerIgnoreAvailable ? (PlayerID)param[QueryParam.Player_Ignore] : 0;
-
-        // 解析参数：PositionX, PositionY
-        bool positionAvailable = param.ContainsKey(QueryParam.PositionX) ? true : false;
-        Vector2Int position = positionAvailable ? new Vector2Int(param[QueryParam.PositionX], param[QueryParam.PositionY]): Vector2Int.zero;
-
         // 查询
-        foreach(KeyValuePair<int, Token> kvp in tokenList) {
+        foreach(KeyValuePair<Vector2Int, Token> kvp in tokens) {
             if(
-                (playerAvailable ? kvp.Value.Player == player : true)
-                && (playerIgnoreAvailable ? kvp.Value.Player != playerIgnore : true)
-                && (positionAvailable ? kvp.Value.Position == position : true)
+                (player == PlayerID.None ? true : kvp.Value.Player == player)
+                && (ignore == PlayerID.None ? true : kvp.Value.Player != ignore)
             )
             ret.Add(kvp.Key);
         }
         return ret;
-    }
-
-    /// <summary>
-    ///   <para> 棋子查询参数 </para>
-    /// </summary>
-    public enum QueryParam {
-        Player,         //玩家
-        Player_Ignore,  //排除该玩家
-        PositionX,      //棋子位置
-        PositionY       //棋子位置
     }
 }

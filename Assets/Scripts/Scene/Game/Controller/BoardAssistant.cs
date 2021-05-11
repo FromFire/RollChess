@@ -26,13 +26,7 @@ public class BoardAssistant : MonoBehaviour {
         Queue<(Vector2Int now, List<Vector2Int> pre, int step)> queue = new Queue<(Vector2Int now, List<Vector2Int> pre, int step)>();
 
         //获取本阵营棋子的位置，己方棋子不允许重叠
-        Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-            {TokenSet.QueryParam.Player, (int)GameResource.gameState.NowPlayer}
-        };
-        List<int> tokens = ModelResource.tokenSet.Query(param);
-        HashSet<Vector2Int> selfPositions = new HashSet<Vector2Int>();
-        foreach(int id in tokens)
-            selfPositions.Add(ModelResource.tokenSet.Get(id).Position);
+        List<Vector2Int> tokens = ModelResource.tokenSet.Query(GameResource.gameState.NowPlayer, PlayerID.None);
 
         //BFS
         queue.Enqueue( (pos, new List<Vector2Int>{pos}, 0) );
@@ -42,7 +36,7 @@ public class BoardAssistant : MonoBehaviour {
             //若step足够且不与其他棋子重叠，不进行操作，直接加入返回列表
             //若step足够但与其他棋子重叠，结果无效，与自己重叠（走回原点）可以
             if(thisTuple.step == step) {
-                if(selfPositions.Contains(thisTuple.now) && !thisTuple.now.Equals(pos))
+                if(tokens.Contains(thisTuple.now) && !thisTuple.now.Equals(pos))
                     continue;
                 thisTuple.pre.Add(thisTuple.now);
                 ret[thisTuple.now] = thisTuple.pre;

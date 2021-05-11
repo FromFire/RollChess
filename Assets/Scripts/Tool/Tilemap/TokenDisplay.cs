@@ -29,10 +29,10 @@ public class TokenDisplay : MonoBehaviour {
     /// </summary>
     public void Display() {
         // 获取所有棋子
-        List<int> tokenId = ModelResource.tokenSet.Query(null);
+        List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, PlayerID.None);
         // 按阵营显示棋子
-        foreach (int id in tokenId) {
-            Token token = ModelResource.tokenSet.Get(id);
+        foreach (Vector2Int tokenPos in tokens) {
+            Token token = ModelResource.tokenSet.Get(tokenPos);
             tilemap.SetTile(token.Position, Transform.tileTypeOfPlayerId[token.Player]);
         }
     }
@@ -41,21 +41,14 @@ public class TokenDisplay : MonoBehaviour {
     ///   <para> 响应TokenSet更新 </para>
     /// </summary>
     public void UpdateSelf(Vector2Int pos) {
-        // 获取被修改处的所有棋子
-        Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-            {TokenSet.QueryParam.PositionX, pos.x},
-            {TokenSet.QueryParam.PositionY, pos.y}
-        };
-        List<int> tokenId = ModelResource.tokenSet.Query(param);
-
         // 若此处已无棋子，则清空此格
-        if(tokenId is null || tokenId.Count == 0)
+        if(!ModelResource.tokenSet.Contains(pos))
             tilemap.RemoveTile(pos);
 
         // 若此处有棋子，更新阵营
         else {
             // 由于一个位置上的棋子都是同一阵营的，所以用第一个为代表
-            Token token = ModelResource.tokenSet.Get(tokenId[0]);
+            Token token = ModelResource.tokenSet.Get(pos);
             // 重新显示此格
             tilemap.SetTile(token.Position, Transform.tileTypeOfPlayerId[token.Player]);
         }

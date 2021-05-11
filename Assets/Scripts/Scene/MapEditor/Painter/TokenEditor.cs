@@ -31,18 +31,11 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
         // 无需调用Display，因为修改Model后显示会自动更新
         TokenSet tokenSet = ModelResource.tokenSet;
 
-        // 查找该位置是否已有棋子
-        Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-            {TokenSet.QueryParam.PositionX, position.x},
-            {TokenSet.QueryParam.PositionY, position.y}
-        };
-        List<int> tokenId = ModelResource.tokenSet.Query(param);
-
         // 记录修改前后的状态
         Token pre, after;
         // 若已有记录，只需把player改为当前的player
-        if(tokenId != null && tokenId.Count != 0) {
-            pre = tokenSet.Get(tokenId[0]);
+        if(ModelResource.tokenSet.Contains(position)) {
+            pre = tokenSet.Get(position);
             after = new Token(pre);
             after.Player = player;
         }

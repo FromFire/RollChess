@@ -57,12 +57,10 @@ public class GameController : MonoBehaviour {
             if(id == PlayerID.None || GameResource.gameState.GetPlayerForm(id) != PlayerForm.Banned)
                 continue;
             // 获取该玩家的所有棋子
-            Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-                {TokenSet.QueryParam.Player, (int)id}
-            };
-            List<int> tokenId = ModelResource.tokenSet.Query(param);
+            List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, id);
             // 移除
-            ModelResource.tokenSet.Remove(tokenId);
+            foreach(Vector2Int token in tokens)
+                ModelResource.tokenSet.Remove(token);
         }
 
         // 销毁MapChooseState（若存在）
@@ -134,13 +132,10 @@ public class GameController : MonoBehaviour {
                 continue;
                 
             // 查询非Loser玩家控制的棋子数量
-            Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-                {TokenSet.QueryParam.Player, (int)id}
-            };
-            List<int> tokenId = ModelResource.tokenSet.Query(param);
+            List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, id);
 
             // 若棋子数量为0就标记为Loser
-            if(tokenId is null || tokenId.Count == 0)
+            if(tokens is null || tokens.Count == 0)
                 GameResource.gameState.AddLoser(id);
         }
     }

@@ -83,16 +83,9 @@ public class CellChooseController : MonoBehaviour {
         // 3. 判定是否选中己方棋子（点击的是己方棋子 + 可操作）
         //      是：选中该棋子，预览可走位置（高亮它可以到达的所有格子）
         //      否：继续
-        // 查找此格的所有棋子
-        Dictionary<TokenSet.QueryParam, int> param = new Dictionary<TokenSet.QueryParam, int> {
-            {TokenSet.QueryParam.PositionX, pos.x},
-            {TokenSet.QueryParam.PositionY, pos.y}
-        };
-        List<int> tokenId = ModelResource.tokenSet.Query(param);
+        Token token = ModelResource.tokenSet.Get(pos);
         // 判断己方棋子 + 可操作
-        if( !(tokenId is null) && tokenId.Count != 0 
-            && ModelResource.tokenSet.Get(tokenId[0]).Player == GameResource.gameState.NowPlayer
-            && opeartingAvailable ) {
+        if( ModelResource.tokenSet.Contains(pos) && opeartingAvailable && token.Player == GameResource.gameState.NowPlayer) {
             // 选中该棋子，获取可走位置
             ChooseToken(pos);
         }
