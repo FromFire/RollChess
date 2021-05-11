@@ -42,7 +42,7 @@ public class PaintController : MonoBehaviour {
 
         // 左键释放时，若有格子已经在这一笔中画出来了，则完成这一笔，并记录之
         if(Input.GetMouseButtonUp(0) && blockPainter.BlockCount() != 0) {
-            MapEditResource.editCareTaker.Push(blockPainter.PaintBlock());
+            MapEditResource.momentoController.Record(blockPainter.PaintBlock());
             return;
         }
         //todo：判断无效绘制
@@ -55,24 +55,9 @@ public class PaintController : MonoBehaviour {
         get { return editObject; }
         set {
             editObject = value;
-
-            // 设定Painter
-            Dictionary<MapEditObject, Paint> paintDic = new Dictionary<MapEditObject, Paint>() {
-                {MapEditObject.Land, MapEditResource.landEditor},
-                {MapEditObject.Token, MapEditResource.tokenEditor},
-                {MapEditObject.Special, MapEditResource.specialEditor},
-                {MapEditObject.Portal, MapEditResource.portalEditor}
-            };
-            painter = paintDic[editObject];
-
-            // 设定blockPainter
-            Dictionary<MapEditObject, BlockPaint> blockPaintDic = new Dictionary<MapEditObject, BlockPaint>() {
-                {MapEditObject.Land, MapEditResource.landEditor},
-                {MapEditObject.Token, MapEditResource.tokenEditor},
-                {MapEditObject.Special, MapEditResource.specialEditor},
-                {MapEditObject.Portal, null}
-            };
-            blockPainter = blockPaintDic[editObject];
+            // 设定Painter和blockPainter
+            painter = MapEditResource.EditObjectToPaint[editObject];
+            blockPainter = MapEditResource.EditObjectToBlockPaint[editObject];
         }
     }
 }

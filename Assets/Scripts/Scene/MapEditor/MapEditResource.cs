@@ -18,7 +18,7 @@ public class MapEditResource : MonoBehaviour  {
     static public TokenDisplay tokenDisplay;
 
     // Momento
-    static public EditCareTaker editCareTaker;
+    static public MomentoController momentoController;
 
     /// <summary>
     ///   <para> 游戏状态的推送 </para>
@@ -43,7 +43,7 @@ public class MapEditResource : MonoBehaviour  {
     [SerializeField] private TokenDisplay _tokenDisplay;
 
     // Momento
-    [SerializeField] private EditCareTaker _editCareTaker;
+    [SerializeField] private MomentoController _momentoController;
 
     // tilemap
     [SerializeField] private TilemapManager _tilemapManager;
@@ -62,9 +62,29 @@ public class MapEditResource : MonoBehaviour  {
         tokenDisplay = _tokenDisplay;
 
         // Momento
-        editCareTaker = _editCareTaker;
+        momentoController = _momentoController;
 
         // tilemap
         tilemapManager = _tilemapManager;
     }
+
+    /// <summary>
+    ///   <para> 绘制类型转换为Painter </para>
+    /// </summary>
+    static public Dictionary<MapEditObject, Paint> EditObjectToPaint = new Dictionary<MapEditObject, Paint>() {
+        {MapEditObject.Land, landEditor},
+        {MapEditObject.Token, tokenEditor},
+        {MapEditObject.Special, specialEditor},
+        {MapEditObject.Portal, portalEditor}
+    };
+
+    /// <summary>
+    ///   <para> 绘制类型转换为BlockPainter </para>
+    /// </summary>
+    static public Dictionary<MapEditObject, BlockPaint> EditObjectToBlockPaint = new Dictionary<MapEditObject, BlockPaint>() {
+        {MapEditObject.Land, landEditor},
+        {MapEditObject.Token, tokenEditor},
+        {MapEditObject.Special, specialEditor},
+        {MapEditObject.Portal, null}
+    };
 }

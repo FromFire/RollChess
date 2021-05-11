@@ -687,8 +687,9 @@ GameObject:
   m_Component:
   - component: {fileID: 694223983}
   - component: {fileID: 694223984}
+  - component: {fileID: 694223985}
   m_Layer: 0
-  m_Name: CareTaker
+  m_Name: MomentoController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -718,6 +719,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3565480bcf2c081459d1d8d80dbebf05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMomento: 0
+--- !u!114 &694223985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694223982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f74aab07c73bb04aa1b73285a72b9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &720038091
@@ -1720,7 +1734,7 @@ MonoBehaviour:
   _portalEditor: {fileID: 1151240035}
   _boardDisplay: {fileID: 66212700}
   _tokenDisplay: {fileID: 577914280}
-  _editCareTaker: {fileID: 694223984}
+  _momentoController: {fileID: 694223985}
   _tilemapManager: {fileID: 66212698}
 --- !u!1 &1894567048
 GameObject:
