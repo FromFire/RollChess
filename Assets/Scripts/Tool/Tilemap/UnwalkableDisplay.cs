@@ -23,10 +23,16 @@ public class UnwalkableDisplay : MonoBehaviour
     ///   <para> 显示自身 </para>
     /// </summary>
     public void Display() {
-        // 记录填充的边界，余量20
+        // 获取地图的边界，若没有边界（地图为空），则认为地图边界是(0,0)
         Board board = ModelResource.board;
-        for(int i=board.BorderLeft - 20; i<board.BorderRight + 20; i++) {
-            for(int j=board.BorderDown - 20; j<board.BorderUp + 20; j++) {
+        int boardUp = (board.BorderUp == int.MinValue) ? 0 : board.BorderUp;
+        int boardRight = (board.BorderRight == int.MinValue) ? 0 : board.BorderRight;
+        int boardLeft = (board.BorderLeft == int.MaxValue) ? 0 : board.BorderLeft;
+        int borderDown = (board.BorderDown == int.MaxValue) ? 0 : board.BorderDown;
+
+        // 绘制，边界余量20
+        for(int i=boardLeft - 20; i<boardRight + 20; i++) {
+            for(int j=borderDown - 20; j<boardUp + 20; j++) {
                 // 避免和陆地冲突
                 HashSet<Vector2Int> cellSet = tilemap.CellSet;
                 if(!cellSet.Contains(new Vector2Int(i,j)))
