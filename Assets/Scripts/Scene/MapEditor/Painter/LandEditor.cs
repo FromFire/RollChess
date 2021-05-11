@@ -10,7 +10,7 @@ using System.Linq;
 public class LandEditor : MonoBehaviour, Paint, BlockPaint {
 
     // 是否正在绘制（false表示正在擦除）
-    private bool isPainting;
+    private bool isPainting = true;
 
     // 块绘制的Momento
     EditMomento blockMomento = new EditMomento();
@@ -122,5 +122,13 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     /// </summary>
     public Vector2Int LastPosition() {
         return blockMomento.position.Count == 0 ? new Vector2Int(int.MaxValue, int.MaxValue) : blockMomento.position.Last();
+    }
+
+    /// <summary>
+    ///   <para> 是否正在绘制（false表示正在擦除） </para>
+    /// </summary>
+    public bool IsPainting {
+        get {return isPainting;}
+        set {isPainting = value;}
     }
 }
