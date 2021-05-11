@@ -18,10 +18,10 @@ public class MomentoController : MonoBehaviour {
     ///   <para> 撤销操作 </para>
     /// </summary>
     public void Undo() {
-        Debug.Log("undo");
         // 无操作可撤销
         if(done.Count == 0)
             return;
+        Debug.Log("undo");
 
         // 让相应类型的Paint执行
         EditMomento momento = done.Pop();
@@ -36,10 +36,10 @@ public class MomentoController : MonoBehaviour {
     ///   <para> 重做操作 </para>
     /// </summary>
     public void Redo() {
-        Debug.Log("redo");
         // 无操作可重做
         if(undone.Count == 0)
             return;
+        Debug.Log("redo");
 
         // 让相应类型的Paint执行
         EditMomento momento = undone.Pop();

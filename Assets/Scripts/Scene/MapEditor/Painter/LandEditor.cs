@@ -36,15 +36,20 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
         // 无需调用Display，因为修改Model后显示会自动更新
         Board board = ModelResource.board;
 
+        // 不允许在有棋子、特殊块或传送门的地方擦除
+        if(board.Contains(position) 
+            && ( ModelResource.tokenSet.Contains(position) || ModelResource.board.Get(position).Effect != SpecialEffect.None) ) 
+            return null;
+
         // 记录修改前后的状态
         Cell pre, after;
-        // 若已有记录，只需把walkable改为true
+        // 若已有记录，只需把walkable改为isPainting
         if(board.Contains(position)) {
             pre = new Cell(board.Get(position));
             after = new Cell(board.Get(position));
             after.Walkable = isPainting;
         }
-        // 若无记录，则修改后是walkable=true的默认Cell
+        // 若无记录，则修改后是walkable=isPainting的默认Cell
         else {
             pre = new Cell(position, false, SpecialEffect.None);
             after = new Cell(position, isPainting, SpecialEffect.None);
@@ -93,6 +98,9 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
         
         // 调用Paint进行绘制
         EditMomento momento = Paint(position);
+        // 绘制不合法的情况
+        if(momento is null)
+            return;
 
         // 维护blockMomento
         blockMomento.position.Add(position);

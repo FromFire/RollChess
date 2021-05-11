@@ -41,6 +41,11 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
         // 无需调用Display，因为修改Model后显示会自动更新
         TokenSet tokenSet = ModelResource.tokenSet;
 
+        // 不允许在没有实体块的格子上加人
+        Board board = ModelResource.board;
+        if(!board.Contains(position) || board.Get(position).Walkable == false)
+            return null;
+
         // 记录修改前后的状态
         Token pre, after;
         // 若已有记录，只需把player改为当前的player
@@ -98,6 +103,9 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
         
         // 调用Paint进行绘制
         EditMomento momento = Paint(position);
+        // 绘制不合法的情况
+        if(momento is null)
+            return;
 
         // 维护blockMomento
         blockMomento.position.Add(position);
