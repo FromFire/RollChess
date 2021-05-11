@@ -17,8 +17,9 @@ public class MapEditResource : MonoBehaviour  {
     static public BoardDisplay boardDisplay;
     static public TokenDisplay tokenDisplay;
 
-    // Momento
+    // Controller
     static public MomentoController momentoController;
+    static public PaintController paintController;
 
     /// <summary>
     ///   <para> 游戏状态的推送 </para>
@@ -42,8 +43,9 @@ public class MapEditResource : MonoBehaviour  {
     [SerializeField] private BoardDisplay _boardDisplay;
     [SerializeField] private TokenDisplay _tokenDisplay;
 
-    // Momento
+    // Controller
     [SerializeField] private MomentoController _momentoController;
+    [SerializeField] private PaintController _paintController;
 
     // tilemap
     [SerializeField] private TilemapManager _tilemapManager;
@@ -61,8 +63,9 @@ public class MapEditResource : MonoBehaviour  {
         boardDisplay = _boardDisplay;
         tokenDisplay = _tokenDisplay;
 
-        // Momento
+        // Controller
         momentoController = _momentoController;
+        paintController = _paintController;
 
         // tilemap
         tilemapManager = _tilemapManager;

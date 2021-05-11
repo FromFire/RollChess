@@ -21,5 +21,6 @@ public class LandMenu : MonoBehaviour {
     /// </summary>
     public void SwitchLand(bool isPainting) {
         MapEditResource.landEditor.IsPainting = isPainting;
+        MapEditResource.paintController.EditObject = MapEditObject.Land;
     }
 }

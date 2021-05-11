@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 ///   <para> 单个棋子 </para>
 /// </summary>
-public class Token {
+public class Token : Object {
 
     // 属于哪个玩家
     private PlayerID player;
@@ -17,6 +17,12 @@ public class Token {
     public Token(Vector2Int position, PlayerID player) {
         this.position = position;
         this.player = player;
+    }
+
+    // 复制
+    public Token(Token token) {
+        position = token.position;
+        player = token.player;
     }
 
     // 不能构造空的Token
