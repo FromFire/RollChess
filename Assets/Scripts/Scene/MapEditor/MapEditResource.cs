@@ -66,25 +66,30 @@ public class MapEditResource : MonoBehaviour  {
 
         // tilemap
         tilemapManager = _tilemapManager;
+
+        // 初始化Dictionary
+        EditObjectToPaint = new Dictionary<MapEditObject, Paint>() {
+            {MapEditObject.Land, landEditor},
+            {MapEditObject.Token, tokenEditor},
+            {MapEditObject.Special, specialEditor},
+            {MapEditObject.Portal, portalEditor}
+        };
+
+        EditObjectToBlockPaint = new Dictionary<MapEditObject, BlockPaint>() {
+            {MapEditObject.Land, landEditor},
+            {MapEditObject.Token, tokenEditor},
+            {MapEditObject.Special, specialEditor},
+            {MapEditObject.Portal, null}
+        };
     }
 
     /// <summary>
     ///   <para> 绘制类型转换为Painter </para>
     /// </summary>
-    static public Dictionary<MapEditObject, Paint> EditObjectToPaint = new Dictionary<MapEditObject, Paint>() {
-        {MapEditObject.Land, landEditor},
-        {MapEditObject.Token, tokenEditor},
-        {MapEditObject.Special, specialEditor},
-        {MapEditObject.Portal, portalEditor}
-    };
+    static public Dictionary<MapEditObject, Paint> EditObjectToPaint;
 
     /// <summary>
     ///   <para> 绘制类型转换为BlockPainter </para>
     /// </summary>
-    static public Dictionary<MapEditObject, BlockPaint> EditObjectToBlockPaint = new Dictionary<MapEditObject, BlockPaint>() {
-        {MapEditObject.Land, landEditor},
-        {MapEditObject.Token, tokenEditor},
-        {MapEditObject.Special, specialEditor},
-        {MapEditObject.Portal, null}
-    };
+    static public Dictionary<MapEditObject, BlockPaint> EditObjectToBlockPaint;
 }

@@ -18,6 +18,7 @@ public class MomentoController : MonoBehaviour {
     ///   <para> 撤销操作 </para>
     /// </summary>
     public void Undo() {
+        Debug.Log("undo");
         // 无操作可撤销
         if(done.Count == 0)
             return;
@@ -35,16 +36,17 @@ public class MomentoController : MonoBehaviour {
     ///   <para> 重做操作 </para>
     /// </summary>
     public void Redo() {
+        Debug.Log("redo");
         // 无操作可重做
         if(undone.Count == 0)
             return;
 
         // 让相应类型的Paint执行
-        EditMomento momento = done.Pop();
+        EditMomento momento = undone.Pop();
         Paint paint = MapEditResource.EditObjectToPaint[momento.editObject];
         paint.Redo(momento);
 
-        // 更新undone
+        // 更新done
         done.Push(momento);
     }
 

@@ -34,7 +34,7 @@ public class EditMomento {
     ///   <para> 复制 </para>
     /// </summary>
     public EditMomento(EditMomento momento) {
-        for(int i=0; i<position.Count; i++) {
+        for(int i=0; i<momento.position.Count; i++) {
             position.Add(momento.position[i]);
             pre.Add(momento.pre[i]);
             after.Add(momento.after[i]);

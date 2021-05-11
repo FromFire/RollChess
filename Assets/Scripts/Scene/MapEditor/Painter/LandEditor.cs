@@ -15,6 +15,15 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     // 块绘制的Momento
     EditMomento blockMomento = new EditMomento();
 
+    // 执行momento上的操作
+    void Execute(EditMomento momento) {
+        // 把对应坐标上的都改成after
+        Board board = ModelResource.board;
+        for(int i=0; i<momento.position.Count; i++) {
+            board.Add(momento.position[i], (Cell)momento.after[i]);
+        }
+    }
+
     /// <summary>
     ///   <para> 绘制块 </para>
     /// </summary>
@@ -53,11 +62,12 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     /// </summary>
     public void Undo(EditMomento momento) {
         // 交换pre和after
-        EditMomento revertMoment = new EditMomento(momento);
-        revertMoment.pre = new List<Object>(momento.after.ToArray());
-        revertMoment.after = new List<Object>(momento.pre.ToArray());
+        EditMomento revertMomento = new EditMomento(momento);
+        revertMomento.pre = new List<Object>(momento.after.ToArray());
+        revertMomento.after = new List<Object>(momento.pre.ToArray());
+
         // 执行新momento
-        Execute(revertMoment);
+        Execute(revertMomento);
     }
 
     /// <summary>
@@ -68,17 +78,6 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
     }
 
     /// <summary>
-    ///   <para> 执行momento上的操作 </para>
-    /// </summary>
-    void Execute(EditMomento momento) {
-        // 把对应坐标上的都改成after
-        Board board = ModelResource.board;
-        for(int i=0; i<momento.position.Count; i++) {
-            board.Add(momento.position[i], (Cell)momento.after[i]);
-        }
-    }
-
-    /// <summary>
     ///   <para> 向正在画的一笔中加入新格子，然后预览已经绘制的部分 </para>
     ///   <para> 注意：Model会被修改！ </para>
     /// </summary>
@@ -86,7 +85,7 @@ public class LandEditor : MonoBehaviour, Paint, BlockPaint {
         // 若这一格已经画过了，则无视之
         if(blockMomento.position.Contains(position))
             return;
-
+        
         // 调用Paint进行绘制
         EditMomento momento = Paint(position);
 
