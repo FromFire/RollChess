@@ -6,8 +6,6 @@ using UnityEngine;
 ///   <para> 获取公有资源 </para>
 /// </summary>
 public class MapEditResource : MonoBehaviour  {
-    // Model
-    static public GameState gameState;
 
     // 绘制器
     static public LandEditor landEditor;
@@ -33,8 +31,6 @@ public class MapEditResource : MonoBehaviour  {
     static public TilemapManager tilemapManager;
 
     // 下面是用来实例化的
-    // Model
-    [SerializeField] private GameState _gameState;
 
     // 绘制器
     [SerializeField] private LandEditor _landEditor;
@@ -54,8 +50,6 @@ public class MapEditResource : MonoBehaviour  {
 
     // 实例化
     void Start() {
-        // Model
-        gameState = _gameState;
 
         // 绘制器
         landEditor = _landEditor;

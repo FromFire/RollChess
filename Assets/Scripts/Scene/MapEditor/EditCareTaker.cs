@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 ///   <para> 绘制记录管理 </para>
 /// </summary>
-public class EditCareTaker {
+public class EditCareTaker : MonoBehaviour {
 
     // 操作记录
     private Stack<EditMomento> momentos = new Stack<EditMomento>();

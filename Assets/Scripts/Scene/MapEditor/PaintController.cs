@@ -17,9 +17,12 @@ public class PaintController : MonoBehaviour {
     // 当前的块绘制器
     private BlockPaint blockPainter;
 
-    /// <summary>
-    ///   <para> 分析用户输入 </para>
-    /// </summary>
+    // 初始化
+    void Start() {
+        EditObject = MapEditObject.Land;
+    }
+
+    // 分析用户输入
     void Update() {
         // 避免与UI按键冲突
         if (CursorMonitor.CursorIsOverUI())
@@ -42,6 +45,7 @@ public class PaintController : MonoBehaviour {
             MapEditResource.editCareTaker.Push(blockPainter.PaintBlock());
             return;
         }
+        //todo：判断无效绘制
     }
 
     /// <summary>

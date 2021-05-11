@@ -11,7 +11,7 @@ public class EditMomento {
     /// <summary>
     ///   <para> 操作的坐标 </para>
     /// </summary>
-    public List<Vector2Int> position;
+    public List<Vector2Int> position = new List<Vector2Int>();
 
     /// <summary>
     ///   <para> 操作的类型 </para>
@@ -28,7 +28,7 @@ public class EditMomento {
     /// </summary>
     public List<Object> after = new List<Object>();
 
-    public EditMomento() {}
+    public EditMomento() { }
 
     /// <summary>
     ///   <para> 复制 </para>

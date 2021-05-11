@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///   <para> 显示实体格子、特殊块、传送门箭头、特殊格子浮窗介绍 </para>
+///   <para> 显示实体格子、特殊块、传送门箭头 </para>
 ///   <para> 使用时和TilemapManager挂在同一个Object下 </para>
 /// </summary>
 // todo：三个显示部分关系不大，考虑拆分
@@ -18,9 +18,6 @@ public class BoardDisplay : MonoBehaviour {
 
     // 传送门的样式案例
     [SerializeField] private GameObject arrowSample;
-
-    // 弹窗
-    [SerializeField] private Popup popup;
 
     // 所有传送门对象，key是起始坐标
     private Dictionary<Vector2Int, GameObject> arrows = new Dictionary<Vector2Int, GameObject>();
@@ -105,29 +102,5 @@ public class BoardDisplay : MonoBehaviour {
         }
         MyL.positionCount = pointList.Count;
         MyL.SetPositions (pointList.ToArray());
-    }
-
-    void Update() {
-        // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
-        Board board = ModelResource.board;
-        Vector2Int pointedCell = tilemapManagerSpecial.CursorPointingCell();
-        // 避免空格子
-        if(!board.Contains(pointedCell))
-            return;
-        // 获取内容，弹出Popup
-        SpecialEffect pointedEffect = board.Get(pointedCell).Effect;
-        if(pointedEffect != SpecialEffect.None) {
-            // 设置SpecialPopupContent的内容
-            SpecialIntroductionItem item = GameResource.specialIntroduction.introduction[pointedEffect];
-            SpecialPopupContent content = popup.Content.GetComponent<SpecialPopupContent>();
-            content.Title = item.introTitle;
-            content.Describe = item.introText;
-            content.EffectIntro = item.effectText;
-
-            //设置PopUp显示
-            popup.Show();
-        } else {
-            popup.Hide();
-        }
     }
 }
