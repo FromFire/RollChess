@@ -8,4 +8,10 @@ using UnityEngine.UI;
 /// </summary>
 public class OperateMenu : MonoBehaviour {
     void Start() {}
+    public void Undo() {
+        MapEditResource.momentoController.Undo();
+    }
+    public void Redo() {
+        MapEditResource.momentoController.Redo();
+    }
 }

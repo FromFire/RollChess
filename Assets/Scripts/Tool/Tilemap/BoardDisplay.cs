@@ -68,6 +68,8 @@ public class BoardDisplay : MonoBehaviour {
         SpecialEffect specialEffect = board.Get(position).Effect;
         if(specialEffect != SpecialEffect.None)
             tilemapManagerSpecial.SetTile(position, Transform.tileTypeOfSpecialEffect[specialEffect]);
+        else
+            tilemapManagerSpecial.RemoveTile(position);
 
         // 显示传送门之间的箭头
         if (board.Get(position).Effect == SpecialEffect.Portal) {
