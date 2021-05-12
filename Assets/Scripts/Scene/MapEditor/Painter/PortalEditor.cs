@@ -7,6 +7,7 @@ using System.Linq;
 /// <summary>
 ///   <para> 传送门绘制 </para>
 ///   <para> 绘制方法：鼠标按下的格子是source，松开的格子是target </para>
+///   <para> 主要负责在绘制时保持合法性和限制操作，一旦绘制完成，erase/undo/redo都可以由SpecialEditor完成 </para>
 /// </summary>
 public class PortalEditor : MonoBehaviour, Paint {
 

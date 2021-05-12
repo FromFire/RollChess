@@ -27,6 +27,7 @@ public class Cell : Object{
         position = cell.position;
         walkable = cell.walkable;
         effect = cell.effect;
+        target = cell.target;
     }
 
     // 构造函数
