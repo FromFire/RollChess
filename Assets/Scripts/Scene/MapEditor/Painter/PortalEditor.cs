@@ -34,10 +34,6 @@ public class PortalEditor : MonoBehaviour, Paint {
         if(!board.Contains(position) || board.Get(position).Walkable == false)
             return;
 
-        // 若position和source是同一格，则无视之
-        if(blockMomento.position.Contains(position))
-            return;
-
         // 如果momento一条记录都无，说明这是第一次点击，position就是source
         if(blockMomento.position.Count == 0) {
             blockMomento.position.Add(position);

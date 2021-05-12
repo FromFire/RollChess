@@ -37,8 +37,8 @@ public class SpecialEditor : MonoBehaviour, Paint {
         // 不允许在没有陆地的格子添加
         if( !board.Contains(position) || board.Get(position).Walkable == false) 
             return null;
-        // 不允许在传送门上添加
-        if( board.Get(position).Effect == SpecialEffect.Portal)
+        // 不允许在传送门上添加，可以擦除
+        if( board.Get(position).Effect == SpecialEffect.Portal && effect != SpecialEffect.None)
             return null;
 
         // 记录修改前后的状态，修改specialEffect即可
