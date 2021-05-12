@@ -7,12 +7,6 @@ using UnityEngine.UI;
 ///   <para> 切换特殊块和传送门笔刷 </para>
 /// </summary>
 public class SpecialMenu : MonoBehaviour {
-
-    // 切换玩家
-    [SerializeField] private Button brokenBridge;
-    [SerializeField] private Button doubleStep;
-    [SerializeField] private Button erase;
-
     void Start() {}
 
     /// <summary>

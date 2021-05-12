@@ -7,14 +7,6 @@ using UnityEngine.UI;
 ///   <para> 切换棋子笔刷 </para>
 /// </summary>
 public class TokenMenu : MonoBehaviour {
-
-    // 切换玩家
-    [SerializeField] private Button redButton;
-    [SerializeField] private Button blueButton;
-    [SerializeField] private Button yellowButton;
-    [SerializeField] private Button greenButton;
-    [SerializeField] private Button eraseButton;
-
     void Start() {}
 
     /// <summary>

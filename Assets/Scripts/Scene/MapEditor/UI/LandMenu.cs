@@ -7,13 +7,6 @@ using UnityEngine.UI;
 ///   <para> 切换地图笔刷 </para>
 /// </summary>
 public class LandMenu : MonoBehaviour {
-
-    // 绘制地块
-    [SerializeField] private Button landButton;
-
-    // 擦除
-    [SerializeField] private Button eraseButton;
-
     void Start() {}
 
     /// <summary>
