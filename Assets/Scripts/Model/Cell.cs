@@ -77,6 +77,7 @@ public class PortalCell : Cell {
     // 构造函数
     public PortalCell(Cell cell, Vector2Int target) : base(cell) {
         this.target = target;
+        this.Effect = SpecialEffect.Portal;
     }
 
     /// <summary>

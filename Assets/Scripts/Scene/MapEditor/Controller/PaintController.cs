@@ -11,11 +11,8 @@ public class PaintController : MonoBehaviour {
     // 当前绘制的类型
     private MapEditObject editObject;
 
-    // 当前的绘制器
-    private Paint painter;
-
     // 当前的块绘制器
-    private BlockPaint blockPainter;
+    private Paint painter;
 
     // 初始化
     void Start() {
@@ -33,16 +30,21 @@ public class PaintController : MonoBehaviour {
         Vector3 loc = ray.GetPoint(-ray.origin.z / ray.direction.z);
         Vector2Int pos = ToolResource.tilemapManager.WorldToCell(loc); //warning
 
-        // 若左键是按住的状态，则通知BlockPainter（Portal除外）
+        // 若左键是按住的状态，则通知BlockPainter
         // BlockPainter自带去重，不需要额外筛选
-        if(Input.GetMouseButton(0) && editObject != MapEditObject.Portal) {
-            blockPainter.Preview(pos);
+        if(Input.GetMouseButton(0)) {
+            painter.Preview(pos);
             return;
         }
 
         // 左键释放时，若有格子已经在这一笔中画出来了，则完成这一笔，并记录之
-        if(Input.GetMouseButtonUp(0) && blockPainter.BlockCount() != 0) {
-            MapEditResource.momentoController.Record(blockPainter.PaintBlock());
+        if(Input.GetMouseButtonUp(0) && painter.Count() != 0) {
+            EditMomento momento = painter.Paint();
+            // 若momento是null，说明这一步无效，直接返回
+            if(momento is null)
+                return;
+            // 记录这一笔
+            MapEditResource.momentoController.Record(momento);
             return;
         }
         //todo：判断无效绘制
@@ -55,9 +57,8 @@ public class PaintController : MonoBehaviour {
         get { return editObject; }
         set {
             editObject = value;
-            // 设定Painter和blockPainter
+            // 设定Painter
             painter = MapEditResource.EditObjectToPaint[editObject];
-            blockPainter = MapEditResource.EditObjectToBlockPaint[editObject];
         }
     }
 }

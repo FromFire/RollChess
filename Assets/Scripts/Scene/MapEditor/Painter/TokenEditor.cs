@@ -7,7 +7,7 @@ using System.Linq;
 /// <summary>
 ///   <para> 棋子绘制 </para>
 /// </summary>
-public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
+public class TokenEditor : MonoBehaviour, Paint {
     
     // 正在绘制的玩家
     private PlayerID player = PlayerID.Red;
@@ -34,9 +34,7 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
         }
     }
 
-    /// <summary>
-    ///   <para> 绘制块 </para>
-    /// </summary>
+    // 绘制块
     public EditMomento Paint(Vector2Int position) {
         // 无需调用Display，因为修改Model后显示会自动更新
         TokenSet tokenSet = ModelResource.tokenSet;
@@ -116,7 +114,7 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
     /// <summary>
     ///   <para> 完成这一笔 </para>
     /// </summary>
-    public EditMomento PaintBlock() {
+    public EditMomento Paint() {
         EditMomento ret = new EditMomento(blockMomento);
         
         // 维护blockMomento
@@ -129,7 +127,7 @@ public class TokenEditor : MonoBehaviour, Paint, BlockPaint {
     /// <summary>
     ///   <para> 获取正在画的一笔中有多少格 </para>
     /// </summary>
-    public int BlockCount() {
+    public int Count() {
         return blockMomento.position.Count;
     }
 

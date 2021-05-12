@@ -7,7 +7,7 @@ using System.Linq;
 /// <summary>
 ///   <para> 特殊块绘制 </para>
 /// </summary>
-public class SpecialEditor : MonoBehaviour, Paint, BlockPaint {
+public class SpecialEditor : MonoBehaviour, Paint {
 
     // 正在绘制的块
     private SpecialEffect effect = SpecialEffect.Double_Step;
@@ -29,10 +29,8 @@ public class SpecialEditor : MonoBehaviour, Paint, BlockPaint {
         }
     }
 
-    /// <summary>
-    ///   <para> 绘制块 </para>
-    /// </summary>
-    public EditMomento Paint(Vector2Int position) {
+    // 绘制块
+    EditMomento Paint(Vector2Int position) {
         // 无需调用Display，因为修改Model后显示会自动更新
         Board board = ModelResource.board;
 
@@ -104,7 +102,7 @@ public class SpecialEditor : MonoBehaviour, Paint, BlockPaint {
     /// <summary>
     ///   <para> 完成这一笔 </para>
     /// </summary>
-    public EditMomento PaintBlock() {
+    public EditMomento Paint() {
         EditMomento ret = new EditMomento(blockMomento);
         
         // 维护blockMomento
@@ -117,7 +115,7 @@ public class SpecialEditor : MonoBehaviour, Paint, BlockPaint {
     /// <summary>
     ///   <para> 获取正在画的一笔中有多少格 </para>
     /// </summary>
-    public int BlockCount() {
+    public int Count() {
         return blockMomento.position.Count;
     }
 

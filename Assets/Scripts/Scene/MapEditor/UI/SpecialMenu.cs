@@ -24,4 +24,7 @@ public class SpecialMenu : MonoBehaviour {
         MapEditResource.specialEditor.Effect = SpecialEffect.None;
         MapEditResource.paintController.EditObject = MapEditObject.Special;
     }
+    public void SwitchToPortal() {
+        MapEditResource.paintController.EditObject = MapEditObject.Portal;
+    }
 }

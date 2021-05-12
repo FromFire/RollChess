@@ -27,11 +27,6 @@ public class MapEditResource : MonoBehaviour  {
     static public Color defaultColor;
 
     /// <summary>
-    ///   <para> 游戏状态的推送 </para>
-    /// </summary>
-    static public Subject gameStateSubject = new Subject();
-
-    /// <summary>
     ///   <para> 不能显示任何Tile，仅用于获取坐标等 </para>
     /// </summary>
     static public TilemapManager tilemapManager;
@@ -87,22 +82,10 @@ public class MapEditResource : MonoBehaviour  {
             {MapEditObject.Special, specialEditor},
             {MapEditObject.Portal, portalEditor}
         };
-
-        EditObjectToBlockPaint = new Dictionary<MapEditObject, BlockPaint>() {
-            {MapEditObject.Land, landEditor},
-            {MapEditObject.Token, tokenEditor},
-            {MapEditObject.Special, specialEditor},
-            {MapEditObject.Portal, null}
-        };
     }
 
     /// <summary>
     ///   <para> 绘制类型转换为Painter </para>
     /// </summary>
     static public Dictionary<MapEditObject, Paint> EditObjectToPaint;
-
-    /// <summary>
-    ///   <para> 绘制类型转换为BlockPainter </para>
-    /// </summary>
-    static public Dictionary<MapEditObject, BlockPaint> EditObjectToBlockPaint;
 }

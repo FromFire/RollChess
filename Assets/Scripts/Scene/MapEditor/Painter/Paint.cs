@@ -4,30 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-///   <para> 绘制器 </para>
-/// </summary>
-public interface Paint {
-
-    /// <summary>
-    ///   <para> 绘制块 </para>
-    /// </summary>
-    EditMomento Paint(Vector2Int position);
-
-    /// <summary>
-    ///   <para> 撤销操作 </para>
-    /// </summary>
-    void Undo(EditMomento momento);
-
-    /// <summary>
-    ///   <para> 重做操作 </para>
-    /// </summary>
-    void Redo(EditMomento momento);
-}
-
-/// <summary>
 ///   <para> 批量绘制器 </para>
 /// </summary>
-public interface BlockPaint {
+public interface Paint {
     
     /// <summary>
     ///   <para> 向正在画的一笔中加入新格子，然后预览已经绘制的部分 </para>
@@ -37,7 +16,7 @@ public interface BlockPaint {
     /// <summary>
     ///   <para> 获取正在画的一笔中有多少格 </para>
     /// </summary>
-    int BlockCount();
+    int Count();
 
     /// <summary>
     ///   <para> 获取上一格的坐标 </para>
@@ -48,5 +27,15 @@ public interface BlockPaint {
     /// <summary>
     ///   <para> 绘制当前的块 </para>
     /// </summary>
-    EditMomento PaintBlock();
+    EditMomento Paint();
+
+    /// <summary>
+    ///   <para> 撤销操作 </para>
+    /// </summary>
+    void Undo(EditMomento momento);
+
+    /// <summary>
+    ///   <para> 重做操作 </para>
+    /// </summary>
+    void Redo(EditMomento momento);
 }

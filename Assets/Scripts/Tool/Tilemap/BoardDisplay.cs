@@ -71,11 +71,19 @@ public class BoardDisplay : MonoBehaviour {
         else
             tilemapManagerSpecial.RemoveTile(position);
 
+        // 绘制传送门之前，无论什么情况，先将它擦除
+        RemoveArrow(position);
+
         // 显示传送门之间的箭头
         if (board.Get(position).Effect == SpecialEffect.Portal) {
-            // 由于箭头和Grid相对位置绑定，箭头起止点均为Grid的local坐标
             Vector2Int from = new Vector2Int(position.x, position.y);
             Vector2Int to = ((PortalCell)board.Get(position)).Target;
+
+            // 若from=to，则此传送门无效
+            if(from == to)
+                return;
+                
+            // 由于箭头和Grid相对位置绑定，箭头起止点均为Grid的local坐标
             Vector3 from3 = tilemapManagerSpecial.CellToLocal((Vector3Int)from);
             Vector3 to3 = tilemapManagerSpecial.CellToLocal((Vector3Int)to);
 
@@ -87,7 +95,7 @@ public class BoardDisplay : MonoBehaviour {
 
             //维护arrows
             arrows.Add(position, obj);
-        }
+        } 
     }
 
     // 画贝塞尔曲线
@@ -104,5 +112,14 @@ public class BoardDisplay : MonoBehaviour {
         }
         MyL.positionCount = pointList.Count;
         MyL.SetPositions (pointList.ToArray());
+    } 
+    
+    // 擦除箭头
+    void RemoveArrow (Vector2Int position) {
+        if(!arrows.ContainsKey(position))
+            return;
+        // 擦除
+        Destroy(arrows[position]);
+        arrows.Remove(position);
     }
 }
