@@ -15,6 +15,9 @@ public class Cell : Object{
 
     // 格子的特殊效果
     protected SpecialEffect effect;
+    
+    // 传送目的地，仅当effect = portal时有效
+    private Vector2Int target;
 
     // 不能构造空的Cell
     private Cell() {}
@@ -64,21 +67,6 @@ public class Cell : Object{
             ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
-}
-
-/// <summary>
-///   <para> 传送门型格子 </para>
-/// </summary>
-public class PortalCell : Cell {
-
-    // 传送目的地
-    private Vector2Int target;
-
-    // 构造函数
-    public PortalCell(Cell cell, Vector2Int target) : base(cell) {
-        this.target = target;
-        this.Effect = SpecialEffect.Portal;
-    }
 
     /// <summary>
     ///   <para> 传送目的地 </para>
@@ -87,8 +75,10 @@ public class PortalCell : Cell {
         get {return target;}
         set {
             target = value;
+            effect = SpecialEffect.Portal;
             //推送修改
             ModelResource.boardSubject.Notify(ModelModifyEvent.Cell, position); 
         }
     }
+    
 }

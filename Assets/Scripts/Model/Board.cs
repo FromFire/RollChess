@@ -46,7 +46,7 @@ public class Board : MonoBehaviour {
         List<PortalSaveEntity> portalEntity = saveEntity.portal;
         foreach(PortalSaveEntity cell in portalEntity) {
             Vector2Int pos = new Vector2Int(cell.fromX, cell.fromY);
-            Add(pos, new PortalCell( Get(pos), new Vector2Int(cell.toX, cell.toY) ));
+            Get(pos).Target = new Vector2Int(cell.toX, cell.toY);
         }
 
         // 初始化时在Add()中推送修改，但此时Subject中无observer，所以推送无效

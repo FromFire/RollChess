@@ -18,10 +18,8 @@ public class MoveProcessor: MonoBehaviour  {
 
         // 若目的点是传送门，将传送门的目的地加在route最后
         Cell toCell = board.Get(to);
-        if(toCell.Effect == SpecialEffect.Portal) {
-            Vector2Int target = ((PortalCell)toCell).Target;
-            route.Add(target);
-        }
+        if(toCell.Effect == SpecialEffect.Portal)
+            route.Add(toCell.Target);
 
         // 如果危桥是该棋子的终点，则该棋子直接去世
         bool isKilled = false;

@@ -38,16 +38,17 @@ public class PortalEditor : MonoBehaviour, Paint {
         if(blockMomento.position.Count == 0) {
             blockMomento.position.Add(position);
             blockMomento.pre.Add(new Cell(board.Get(position)));
-            blockMomento.after.Add(new PortalCell((Cell)blockMomento.pre[0], position));
+            blockMomento.after.Add(new Cell((Cell)blockMomento.pre[0]));
+            ((Cell)blockMomento.after[0]).Target = position;
             Execute(blockMomento);
             return;
         }
         
         // 不是同一格的话，修改source.target（和原本不同才改）
-        Vector2Int targetNow = ((PortalCell)board.Get(blockMomento.position[0])).Target;
+        Vector2Int targetNow = board.Get(blockMomento.position[0]).Target;
         if(position != targetNow) {
             // 修改board和after的target
-            ((PortalCell)board.Get(blockMomento.position[0])).Target = position;
+            board.Get(blockMomento.position[0]).Target = position;
             Execute(blockMomento);
         }
     }
@@ -57,7 +58,7 @@ public class PortalEditor : MonoBehaviour, Paint {
     /// </summary>
     public EditMomento Paint() {
         // 如果source和target在同一格，则恢复board，返回null
-        if( ((PortalCell)blockMomento.after[0]).Target == blockMomento.position[0] ) {
+        if( ((Cell)blockMomento.after[0]).Target == blockMomento.position[0] ) {
             Undo(blockMomento);
             Debug.Log("null");
             return null;

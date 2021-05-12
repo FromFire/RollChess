@@ -77,7 +77,7 @@ public class BoardDisplay : MonoBehaviour {
         // 显示传送门之间的箭头
         if (board.Get(position).Effect == SpecialEffect.Portal) {
             Vector2Int from = new Vector2Int(position.x, position.y);
-            Vector2Int to = ((PortalCell)board.Get(position)).Target;
+            Vector2Int to = board.Get(position).Target;
 
             // 若from=to，则此传送门无效
             if(from == to)
