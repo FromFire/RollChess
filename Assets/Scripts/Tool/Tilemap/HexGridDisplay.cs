@@ -24,16 +24,16 @@ public class HexGridDisplay : MonoBehaviour
 
     // 显示格子
     void ShowGrid() {
-        // 记录填充的边界，余量20
+        // 获取地图的边界，若没有边界（地图为空），则认为地图边界是(0,0)
         Board board = ModelResource.board;
-        borderUp = board.BorderUp + 20;
-        borderDown = board.BorderDown - 20;
-        borderLeft = board.BorderLeft - 20;
-        borderRight = board.BorderRight + 20;
+        int boardUp = (board.BorderUp == int.MinValue) ? 0 : board.BorderUp;
+        int boardRight = (board.BorderRight == int.MinValue) ? 0 : board.BorderRight;
+        int boardLeft = (board.BorderLeft == int.MaxValue) ? 0 : board.BorderLeft;
+        int borderDown = (board.BorderDown == int.MaxValue) ? 0 : board.BorderDown;
 
-        // 填充
-        for(int i=borderLeft; i<borderRight; i++) {
-            for(int j=borderDown; j<borderUp; j++) {
+        // 绘制，边界余量20
+        for(int i=boardLeft - 20; i<boardRight + 20; i++) {
+            for(int j=borderDown - 20; j<boardUp + 20; j++) {
                 tilemap.SetTile(new Vector2Int(i,j), TileType.HexGrid);
             }
         }
