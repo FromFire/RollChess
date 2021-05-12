@@ -21,6 +21,11 @@ public class MapEditResource : MonoBehaviour  {
     static public MomentoController momentoController;
     static public PaintController paintController;
 
+    // 高亮颜色
+    static public Color highlightColor;
+    // 默认颜色
+    static public Color defaultColor;
+
     /// <summary>
     ///   <para> 游戏状态的推送 </para>
     /// </summary>
@@ -69,6 +74,11 @@ public class MapEditResource : MonoBehaviour  {
 
         // tilemap
         tilemapManager = _tilemapManager;
+
+        // 高亮颜色是浅绿色
+        ColorUtility.TryParseHtmlString("#66FF55", out highlightColor);
+        // 默认颜色是白色
+        ColorUtility.TryParseHtmlString("#FFFFFF", out defaultColor);
 
         // 初始化Dictionary
         EditObjectToPaint = new Dictionary<MapEditObject, Paint>() {
