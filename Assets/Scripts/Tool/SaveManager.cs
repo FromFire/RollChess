@@ -44,6 +44,49 @@ public class SaveManager {
     }
 
     /// <summary>
+    ///   <para> 将saveEntity加载到内存，即初始化model </para>
+    /// </summary>
+    static public void Load(SaveEntity entity) {
+        ModelResource.board.Load(entity);
+        ModelResource.tokenSet.Load(entity);
+    }
+
+    /// <summary>
+    ///   <para> 将内存存储到saveEntity中，即输出model </para>
+    /// </summary>
+    static public SaveEntity Save() {
+        SaveEntity entity = new SaveEntity();
+
+        // 存储board
+        Board board = ModelResource.board;
+        HashSet<Vector2Int> cells = board.ToPositionSet();
+        foreach(Vector2Int pos in cells) {
+            Cell cell = board.Get(pos);
+            if(cell.Walkable) {
+                // land
+                entity.map.Add(new LandSaveEntity(pos.x, pos.y));
+                // special
+                if(cell.Effect != SpecialEffect.None && cell.Effect != SpecialEffect.Portal)
+                    entity.special.Add(new SpecialSaveEntity(pos.x, pos.y, Transform.specialNameOfEffect[cell.Effect]));
+                // portal
+                if(cell.Effect == SpecialEffect.Portal)
+                    entity.portal.Add(new PortalSaveEntity(pos.x, pos.y, cell.Target.x, cell.Target.y));
+            }
+                
+        }
+
+        // 存储token
+        TokenSet tokenSet = ModelResource.tokenSet;
+        List<Vector2Int> tokens = tokenSet.Query(PlayerID.None, PlayerID.None);
+        foreach(Vector2Int pos in tokens) {
+            Token token = tokenSet.Get(pos);
+            entity.token.Add(new TokenSaveEntity(token.Position.x, token.Position.y, (int)token.Player));
+        }
+
+        return entity;
+    }
+
+    /// <summary>
     ///   <para> 已知地图名，返回完整路径 </para>
     /// </summary>
     static public string MapNameToPath(string name) {

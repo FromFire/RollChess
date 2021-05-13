@@ -21,22 +21,22 @@ public class SaveEntity {
     /// <summary>
     ///   <para> 棋子信息 </para>
     /// </summary>  
-    public List<TokenSaveEntity> token;
+    public List<TokenSaveEntity> token = new List<TokenSaveEntity>();
 
     /// <summary>
     ///   <para> 可走地图信息 </para>
     /// </summary>  
-    public List<LandSaveEntity> map;
+    public List<LandSaveEntity> map = new List<LandSaveEntity>();
 
     /// <summary>
     ///   <para> 特殊块信息 </para>
     /// </summary>  
-    public List<SpecialSaveEntity> special;
+    public List<SpecialSaveEntity> special = new List<SpecialSaveEntity>();
 
     /// <summary>
     ///   <para> 传送门信息 </para>
     /// </summary>  
-    public List<PortalSaveEntity> portal;
+    public List<PortalSaveEntity> portal = new List<PortalSaveEntity>();
 
     /// <summary>
     ///   <para> 转换为json格式文本 </para>
@@ -100,6 +100,13 @@ public class TokenSaveEntity {
     ///   <para> 棋子所属玩家 </para>
     /// </summary> 
     public int player;
+
+    public TokenSaveEntity() {}
+    public TokenSaveEntity(int _x, int _y, int _player) {
+        x = _x;
+        y = _y;
+        player = _player;
+    }
 }
 
 /// <summary>
@@ -117,6 +124,12 @@ public class LandSaveEntity {
     ///   <para> 格子y坐标 </para>
     /// </summary> 
     public int y;
+
+    public LandSaveEntity() {}
+    public LandSaveEntity(int _x, int _y) {
+        x = _x;
+        y = _y;
+    }
 }
 
 /// <summary>
@@ -139,6 +152,13 @@ public class SpecialSaveEntity {
     ///   <para> 格子效果 </para>
     /// </summary> 
     public string effect;
+
+    public SpecialSaveEntity(){}
+    public SpecialSaveEntity(int _x, int _y, string _effect) {
+        x = _x;
+        y = _y;
+        effect = _effect;
+    }
 }
 
 /// <summary>
@@ -166,4 +186,12 @@ public class PortalSaveEntity {
     ///   <para> 传送门目标y坐标 </para>
     /// </summary> 
     public int toY;
+
+    public PortalSaveEntity(){}
+    public PortalSaveEntity(int _fromX, int _fromY, int _toX, int _toY) {
+        fromX = _fromX;
+        fromY = _fromY;
+        toX = _toX;
+        toY = _toY;
+    }
 }
