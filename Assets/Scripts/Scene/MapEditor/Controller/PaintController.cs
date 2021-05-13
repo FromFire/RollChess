@@ -21,8 +21,10 @@ public class PaintController : MonoBehaviour {
 
     // 分析用户输入
     void Update() {
-        // 避免与UI按键冲突
-        if (CursorMonitor.CursorIsOverUI())
+        // 避免与UI冲突（还没画的时候）
+        // 如果任何时候都不能与UI冲突，那在UI上松键的时候会视作绘制还没有结束
+        // 如果只在按下的一刻判断，则点按钮的第2帧就会开始绘制
+        if (CursorMonitor.CursorIsOverUI() && painter.Count() == 0)
             return;
 
         // 获取鼠标所在点的点在tilemap上的坐标
