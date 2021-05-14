@@ -55,13 +55,13 @@ public class SaveLoader : MonoBehaviour {
     ///   <para> 截图 </para>
     ///   <para> 目前非常不完善，只能截现在屏幕上显示的，考虑将来加一个截图摄像机 </para>
     /// </summary>
-    public void CaptureToThumb() {
+    public void Capture() {
         // 使用协程，目的是在地图选然后截图
-        StartCoroutine(Capture());
+        StartCoroutine(CaptureCoro());
     }
 
     // 截图实现
-    IEnumerator Capture()
+    IEnumerator CaptureCoro()
     {
         // 必须地图渲染后才能截图，否则报错
         yield return new WaitForEndOfFrame();

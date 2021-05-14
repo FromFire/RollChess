@@ -58,6 +58,6 @@ public class OperateMenu : MonoBehaviour {
     /// </summary>
     public void Save() {
         toSave = true;
-        SaveResource.saveLoader.CaptureToThumb();
+        SaveResource.saveLoader.Capture();
     }
 }
