@@ -20,6 +20,11 @@ public class ModelResource : MonoBehaviour  {
     /// </summary>
     static public PositionSubject tokenSubject = new PositionSubject();
 
+    /// <summary>
+    ///   <para> 地图选择的推送 </para>
+    /// </summary>
+    static public Subject mapChooseSubject = new Subject();
+
     // 下面是用来实例化的
     // Model
     [SerializeField] private Board _board;

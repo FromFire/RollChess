@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour {
         // todo: 初始化myID
 
         // 读取存档
-        string filename = GameResource.mapChooseState.mapName;
+        string filename = GameResource.mapChooseState.MapFileName;
         SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
         SaveResource.saveLoader.Load(saveEntity);
 

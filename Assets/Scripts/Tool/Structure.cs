@@ -49,12 +49,16 @@ public enum ModelModifyEvent {
     // 游戏状态被修改 GameState
     Turn,           //回合数
     Roll_Result,    //掷骰子结果
-    Player_Form,    //玩家操作形式
     Now_Player,     //当前操作的玩家
     Stage,          //当前操作状态
     Is_Game_Over,   //游戏是否结束
     Winner,         //赢家
     Loser,          //输家
+
+    // 地图选择被修改 MapChooseState
+    Player_Limit,   //玩家人数限制
+    Map_File_Name,    //地图文件名称
+    Player_Form,    //玩家操作形式
 }
 
 

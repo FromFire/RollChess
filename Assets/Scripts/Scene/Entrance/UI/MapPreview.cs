@@ -9,20 +9,20 @@ using UnityEngine.UI;
 public class MapPreview : MonoBehaviour
 {
     // 预览图片
-    [SerializeField] Image thumbnail;
+    [SerializeField] private Image thumbnail;
 
     // 地图名称显示
-    [SerializeField] Text mapName;
+    [SerializeField] private Text mapName;
 
     /// <summary>
     ///   <para> 按model更新显示 </para>
     /// </summary>
     public void UpdateSelf(string filename) {
         // 预览地图
-        Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.mapName);
+        Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.MapFileName);
         thumbnail.sprite = image;
         thumbnail.color = Color.white;
         // 预览地图名
-        mapName.text = EntranceResource.mapChooseState.mapName;
+        mapName.text = EntranceResource.mapChooseState.MapFileName;
     }
 }

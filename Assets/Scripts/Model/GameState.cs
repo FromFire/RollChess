@@ -81,7 +81,7 @@ public class GameState : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 设置玩家操作形式 </para>
+    ///   <para> 获取玩家操作形式 </para>
     /// </summary>
     public PlayerForm GetPlayerForm(PlayerID playerID) {
         return playerForm[playerID];

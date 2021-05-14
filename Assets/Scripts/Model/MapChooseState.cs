@@ -11,40 +11,20 @@ using System.Text;
 /// </summary>
 public class MapChooseState : MonoBehaviour {
 
-    /// <summary>
-    ///   <para> 玩家操作形式，默认全部是玩家，默认4人 </para>
-    /// </summary>
-    public Dictionary<PlayerID, PlayerForm> playerForm = new Dictionary<PlayerID, PlayerForm> {
+    // 玩家操作形式，默认全部是玩家，默认4人
+    // 需要手动初始化
+    private Dictionary<PlayerID, PlayerForm> playerForm = new Dictionary<PlayerID, PlayerForm> {
         {PlayerID.Red, PlayerForm.Player},
         {PlayerID.Blue, PlayerForm.Player},
         {PlayerID.Green, PlayerForm.Player},
         {PlayerID.Yellow, PlayerForm.Player},
     };
 
-    /// <summary>
-    ///   <para> 最大玩家数量 </para>
-    /// </summary>
-    public int MaxPlayer;
+    // 玩家数量限制
+    private (int min, int max) playerLimit;
 
-    /// <summary>
-    ///   <para> 最小玩家数量 </para>
-    /// </summary>
-    public int MinPlayer;
-
-    /// <summary>
-    ///   <para> 当前选中的地图的文件名 </para>
-    /// </summary>
-    public string mapName;
-
-    /// <summary>
-    ///   <para> 地图略缩图 </para>
-    /// </summary>
-    public byte[] mapThumb;
-
-    /// <summary>
-    ///   <para> 当前选中的地图 </para>
-    /// </summary>
-    public SaveEntity currentMap {get;}
+    // 当前选中的地图的文件名
+    private string mapFileName;
 
     /// <summary>
     ///   <para> 构造一个MapChooseState，仅用于调试时 </para>
@@ -59,14 +39,51 @@ public class MapChooseState : MonoBehaviour {
         mapChooseState.playerForm[PlayerID.Yellow] = PlayerForm.Banned;
 
         // 设置地图路径
-        mapChooseState.mapName = "MapSample";
+        mapChooseState.mapFileName = "MapSample";
 
         // 使用样例地图：Texts/MapSample.json，将其复制到要读取的文件中
-        string filepath = SaveResource.saveManager.MapNameToPath(mapChooseState.mapName);
+        string filepath = SaveResource.saveManager.MapNameToPath(mapChooseState.mapFileName);
         TextAsset t = Resources.Load<TextAsset>("Texts/MapSample");
         byte[] bytes = t.bytes;
         SaveResource.saveManager.WriteFile(filepath, bytes);
 
         return mapChooseState;
+    }
+
+    /// <summary>
+    ///   <para> 玩家数量限制 </para>
+    /// </summary>
+    public (int min, int max) PlayerLimit {
+        get {return playerLimit;}
+        set {
+            playerLimit = value;
+            ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Player_Limit);
+        }
+    }
+
+    /// <summary>
+    ///   <para> 当前选中的地图的文件名 </para>
+    /// </summary>
+    public string MapFileName {
+        get {return mapFileName;}
+        set {
+            mapFileName = value;
+            ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Map_File_Name);
+        }
+    }
+
+    /// <summary>
+    ///   <para> 设置玩家操作形式 </para>
+    /// </summary>
+    public void SetPlayerForm(PlayerID playerID, PlayerForm _playerForm) {
+        playerForm[playerID] = _playerForm;
+        ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Player_Form);
+    }
+
+    /// <summary>
+    ///   <para> 获取玩家操作形式 </para>
+    /// </summary>
+    public PlayerForm GetPlayerForm(PlayerID playerID) {
+        return playerForm[playerID];
     }
 }
