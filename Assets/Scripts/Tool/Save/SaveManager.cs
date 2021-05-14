@@ -11,23 +11,18 @@ using System.Text;
 /// </summary>
 public class SaveManager : MonoBehaviour {
 
-    /// <summary>
-    ///   <para> 存档所在路径 </para>
-    /// </summary> 
+    // 存档所在路径
     string savePath;
 
-    /// <summary>
-    ///   <para> 地图数据所在路径 </para>
-    /// </summary> 
+    // 地图数据所在路径
     string savePathMap;
 
-    /// <summary>
-    ///   <para> 略缩图数据所在路径 </para>
-    /// </summary> 
+    // 略缩图数据所在路径
     string savePathThumb;
 
     /// <summary>
     ///   <para> 路径对应的存档 </para>
+    ///   <para> 简便起见直接开放了 </para>
     /// </summary>  
     public Dictionary<string, SaveEntity> saveEntities = new Dictionary<string, SaveEntity>();
 

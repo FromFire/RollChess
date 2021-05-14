@@ -14,10 +14,14 @@ public class MapPreview : MonoBehaviour
     // 地图名称显示
     [SerializeField] private Text mapName;
 
+    void Start() {
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_File_Name, UpdateSelf);
+    }
+
     /// <summary>
     ///   <para> 按model更新显示 </para>
     /// </summary>
-    public void UpdateSelf(string filename) {
+    public void UpdateSelf() {
         // 预览地图
         Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.MapFileName);
         thumbnail.sprite = image;

@@ -15,13 +15,16 @@ public class MapMenu : MonoBehaviour {
     [SerializeField] private GameObject itemPrefab;
 
     void Start() {
-        // 创建新的子节点
-        GameObject prefabInstance = Instantiate(itemPrefab);
-        prefabInstance.transform.SetParent(grid.transform);
-        prefabInstance.transform.localScale=new Vector3Int(1,1,1);
+        // 获取所有地图
+        foreach(KeyValuePair<string, SaveEntity> kvp in SaveResource.saveManager.saveEntities) {
+            // 创建新的子节点
+            GameObject prefabInstance = Instantiate(itemPrefab);
+            prefabInstance.transform.SetParent(grid.transform);
+            prefabInstance.transform.localScale=new Vector3Int(1,1,1);
 
-        // 设置子节点
-        MapItem item = prefabInstance.GetComponent<MapItem>();
-        item.Filename = "";
+            // 设置子节点
+            MapItem item = prefabInstance.GetComponent<MapItem>();
+            item.Filename = kvp.Key;
+        }
     }
 }

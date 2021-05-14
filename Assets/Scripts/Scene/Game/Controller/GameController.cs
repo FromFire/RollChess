@@ -30,8 +30,10 @@ public class GameController : MonoBehaviour {
     /// </summary>
     void Init() {
         // 初始化GameState，其数据来自于MapChooseState
-        foreach(KeyValuePair<PlayerID, PlayerForm> kvp in GameResource.mapChooseState.playerForm)
-            GameResource.gameState.SetPlayerForm(kvp.Key, kvp.Value);
+        foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
+            if(id != PlayerID.None)
+                GameResource.gameState.SetPlayerForm(id, GameResource.mapChooseState.GetPlayerForm(id));
+        }
         // nowPlayer是第一个不是Banned的玩家
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {
             // 排除PlayerID.None，排除PlayerForm.Banned

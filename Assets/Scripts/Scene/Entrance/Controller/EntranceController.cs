@@ -8,6 +8,10 @@ using UnityEngine.UI;
 /// </summary>
 public class EntranceController : MonoBehaviour {
 
+    void Start() {
+        SaveResource.saveManager.LoadAllSave();
+    }
+
     /// <summary>
     ///   <para> 选择地图 </para>
     /// </summary>
