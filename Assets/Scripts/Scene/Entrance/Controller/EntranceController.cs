@@ -10,13 +10,12 @@ public class EntranceController : MonoBehaviour {
 
     void Start() {
         SaveResource.saveManager.LoadAllSave();
-        Debug.Log(SaveResource.saveManager.saveEntities.Count);
     }
 
     /// <summary>
     ///   <para> 选择地图 </para>
     /// </summary>
     public void Choose(string filename) {
-
+        EntranceResource.mapChooseState.MapFileName = filename;
     }
 }

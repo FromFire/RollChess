@@ -29,13 +29,10 @@ public class SaveManager : MonoBehaviour {
     void Start() {
         // 必须在Start里获取路径
         savePath = Application.persistentDataPath;
-        Debug.Log(savePath);
 
         // 初始化路径
         savePathMap = Path.Combine(savePath, "Maps");
         savePathThumb = Path.Combine(savePath, "Thumbs");
-        Debug.Log(savePathMap);
-        Debug.Log(savePathThumb);
 
         // 判断路径是否存在，如果不存在，则新建文件夹
         if(!Directory.Exists(savePathMap))

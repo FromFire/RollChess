@@ -26,5 +26,6 @@ public class MapMenu : MonoBehaviour {
             MapItem item = prefabInstance.GetComponent<MapItem>();
             item.Filename = kvp.Key;
         }
+        itemPrefab.SetActive(false);
     }
 }
