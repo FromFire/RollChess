@@ -27,6 +27,7 @@ public class GameResource : MonoBehaviour  {
     // Model
     [SerializeField] private GameState _gameState;
     [SerializeField] private SpecialIntroduction _specialIntroduction;
+    [SerializeField] private MapChooseState _mapChooseState;
 
     // Controller
     [SerializeField] private BoardAssistant _boardAssistant;
@@ -40,6 +41,7 @@ public class GameResource : MonoBehaviour  {
         // Model
         gameState = _gameState;
         specialIntroduction = _specialIntroduction;
+        mapChooseState = _mapChooseState;
 
         // Controller
         boardAssistant = _boardAssistant;

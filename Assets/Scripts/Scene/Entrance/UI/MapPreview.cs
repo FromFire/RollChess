@@ -1,0 +1,28 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+///   <para> 预览地图信息，目前包括：图片、地图名称 </para>
+/// </summary>
+public class MapPreview : MonoBehaviour
+{
+    // 预览图片
+    [SerializeField] Image thumbnail;
+
+    // 地图名称显示
+    [SerializeField] Text mapName;
+
+    /// <summary>
+    ///   <para> 按model更新显示 </para>
+    /// </summary>
+    public void UpdateSelf(string filename) {
+        // 预览地图
+        Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.mapName);
+        thumbnail.sprite = image;
+        thumbnail.color = Color.white;
+        // 预览地图名
+        mapName.text = EntranceResource.mapChooseState.mapName;
+    }
+}
