@@ -10,6 +10,7 @@ public class EntranceController : MonoBehaviour {
 
     void Start() {
         SaveResource.saveManager.LoadAllSave();
+        Debug.Log(SaveResource.saveManager.saveEntities.Count);
     }
 
     /// <summary>

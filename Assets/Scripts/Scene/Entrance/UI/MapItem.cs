@@ -7,13 +7,18 @@ using UnityEngine.UI;
 ///   <para> 地图选择中的一项 </para>
 /// </summary>
 public class MapItem : MonoBehaviour {
+
+    // 地图文件名
     private string filename;
+
+    // 略缩图显示
+    [SerializeField] private Image image;
 
     /// <summary>
     ///   <para> 显示自身 </para>
     /// </summary>
     public void Show() {
-
+        image.sprite = SaveResource.saveManager.LoadThumb(filename);
     }
 
     /// <summary>

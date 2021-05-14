@@ -29,10 +29,13 @@ public class SaveManager : MonoBehaviour {
     void Start() {
         // 必须在Start里获取路径
         savePath = Application.persistentDataPath;
+        Debug.Log(savePath);
 
         // 初始化路径
         savePathMap = Path.Combine(savePath, "Maps");
         savePathThumb = Path.Combine(savePath, "Thumbs");
+        Debug.Log(savePathMap);
+        Debug.Log(savePathThumb);
 
         // 判断路径是否存在，如果不存在，则新建文件夹
         if(!Directory.Exists(savePathMap))
@@ -56,7 +59,7 @@ public class SaveManager : MonoBehaviour {
         // 要求地图文件在/Maps中，预览图片在/Thumbs中，缺一不可
         HashSet<string> mapsStrings = new HashSet<string>(GetFilenames(savePathMap, "json"));
         HashSet<string> thumbnailsStrings = new HashSet<string>(GetFilenames(savePathThumb, "png"));
-        List<string> mapNames = new List<string>(mapsStrings.Union(thumbnailsStrings));
+        List<string> mapNames = new List<string>(mapsStrings.Intersect(thumbnailsStrings));
 
         // 将合法地图名称作为键存入saveEntities，值为空
         foreach(string mapName in mapNames) {
@@ -98,7 +101,8 @@ public class SaveManager : MonoBehaviour {
     /// </summary>  
     public Sprite LoadThumb(string filename){
         // 以byte[]形式读取图片
-        byte[] imgByte = ReadFile(Path.Combine(savePathThumb, filename) + ".png");
+        string path = Path.Combine(savePathThumb, filename) + ".png";
+        byte[] imgByte = ReadFile(path);
 
         // 将byte[]转换为Texture2D
         Texture2D texture = new Texture2D(10, 10);
