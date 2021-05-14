@@ -8,7 +8,6 @@ using UnityEngine;
 public class ToolResource : MonoBehaviour  {
 
     // Tool
-    static public SaveManager saveManager;
     static public CameraController cameraController;
     static public CursorMonitor cursorMonitor;
     static public VisionController visionController;
@@ -20,7 +19,6 @@ public class ToolResource : MonoBehaviour  {
 
     // 下面是用来实例化的
     // Tool
-    [SerializeField] private SaveManager _saveManager;
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private CursorMonitor _cursorMonitor;
     [SerializeField] private VisionController _visionController;
@@ -31,7 +29,6 @@ public class ToolResource : MonoBehaviour  {
     // 实例化
     void Start() {
         // Tool
-        saveManager = _saveManager;
         cameraController = _cameraController;
         cursorMonitor = _cursorMonitor;
         visionController = _visionController;

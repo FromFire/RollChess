@@ -7,6 +7,7 @@ using UnityEngine.UI;
 ///   <para> 一级操作菜单 </para>
 /// </summary>
 public class OperateMenu : MonoBehaviour {
+    private bool toSave = false;
 
     //网格
     [SerializeField] private HexGridDisplay hexGridDisplay;
@@ -17,6 +18,21 @@ public class OperateMenu : MonoBehaviour {
         // 默认显示网格
         hexGridDisplay.Visible = false;
         SwitchHexGridVisible();
+    }
+
+    void Update() {
+        // 若截图好了，保存之
+        if(toSave) {
+            byte[] capture = SaveResource.saveLoader.ScreenShot;
+            if( !(capture is null)) {
+                // 保存
+                string filename = "save";
+                SaveResource.saveManager.SaveMap(SaveResource.saveLoader.Save(), filename);
+                SaveResource.saveManager.SaveThumb(capture, filename);
+                toSave = false;
+                Debug.Log("保存成功");
+            }
+        }
     }
 
     public void Undo() {
@@ -35,5 +51,13 @@ public class OperateMenu : MonoBehaviour {
         hexGridVisible.gameObject.GetComponent<Image>().color = 
             hexGridDisplay.Visible ? MapEditResource.highlightColor : MapEditResource.defaultColor;
         Debug.Log(hexGridDisplay.Visible);
+    }
+
+    /// <summary>
+    ///   <para> 存储到文件 </para>
+    /// </summary>
+    public void Save() {
+        toSave = true;
+        SaveResource.saveLoader.CaptureToThumb();
     }
 }

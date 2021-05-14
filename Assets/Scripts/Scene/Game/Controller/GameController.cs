@@ -45,8 +45,8 @@ public class GameController : MonoBehaviour {
 
         // 读取存档
         string filename = GameResource.mapChooseState.mapName;
-        SaveEntity saveEntity = SaveManager.LoadMap(filename);
-        SaveManager.Load(saveEntity);
+        SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
+        SaveResource.saveLoader.Load(saveEntity);
 
         // 删除Banned玩家的所有棋子
         foreach (PlayerID id in Enum.GetValues(typeof(PlayerID))) {

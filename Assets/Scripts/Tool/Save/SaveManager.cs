@@ -7,31 +7,34 @@ using System.Text;
 
 /// <summary>
 ///   <para> 存档管理 </para>
-///   <para> 本类是static类 </para>
+///   <para> 面向文件，负责saveEntity和存档文件之间的转换，以及存储这些saveEntity </para>
 /// </summary>
-public class SaveManager {
+public class SaveManager : MonoBehaviour {
 
     /// <summary>
     ///   <para> 存档所在路径 </para>
     /// </summary> 
-    static string savePath = Application.persistentDataPath;
+    string savePath;
 
     /// <summary>
     ///   <para> 地图数据所在路径 </para>
     /// </summary> 
-    static string savePathMap;
+    string savePathMap;
 
     /// <summary>
     ///   <para> 略缩图数据所在路径 </para>
     /// </summary> 
-    static string savePathThumb;
+    string savePathThumb;
 
     /// <summary>
     ///   <para> 路径对应的存档 </para>
     /// </summary>  
-    static public Dictionary<string, SaveEntity> saveEntities = new Dictionary<string, SaveEntity>();
+    public Dictionary<string, SaveEntity> saveEntities = new Dictionary<string, SaveEntity>();
 
-    static SaveManager() {
+    void Start() {
+        // 必须在Start里获取路径
+        savePath = Application.persistentDataPath;
+
         // 初始化路径
         savePathMap = Path.Combine(savePath, "Maps");
         savePathThumb = Path.Combine(savePath, "Thumbs");
@@ -44,59 +47,16 @@ public class SaveManager {
     }
 
     /// <summary>
-    ///   <para> 将saveEntity加载到内存，即初始化model </para>
-    /// </summary>
-    static public void Load(SaveEntity entity) {
-        ModelResource.board.Load(entity);
-        ModelResource.tokenSet.Load(entity);
-    }
-
-    /// <summary>
-    ///   <para> 将内存存储到saveEntity中，即输出model </para>
-    /// </summary>
-    static public SaveEntity Save() {
-        SaveEntity entity = new SaveEntity();
-
-        // 存储board
-        Board board = ModelResource.board;
-        HashSet<Vector2Int> cells = board.ToPositionSet();
-        foreach(Vector2Int pos in cells) {
-            Cell cell = board.Get(pos);
-            if(cell.Walkable) {
-                // land
-                entity.map.Add(new LandSaveEntity(pos.x, pos.y));
-                // special
-                if(cell.Effect != SpecialEffect.None && cell.Effect != SpecialEffect.Portal)
-                    entity.special.Add(new SpecialSaveEntity(pos.x, pos.y, Transform.specialNameOfEffect[cell.Effect]));
-                // portal
-                if(cell.Effect == SpecialEffect.Portal)
-                    entity.portal.Add(new PortalSaveEntity(pos.x, pos.y, cell.Target.x, cell.Target.y));
-            }
-                
-        }
-
-        // 存储token
-        TokenSet tokenSet = ModelResource.tokenSet;
-        List<Vector2Int> tokens = tokenSet.Query(PlayerID.None, PlayerID.None);
-        foreach(Vector2Int pos in tokens) {
-            Token token = tokenSet.Get(pos);
-            entity.token.Add(new TokenSaveEntity(token.Position.x, token.Position.y, (int)token.Player));
-        }
-
-        return entity;
-    }
-
-    /// <summary>
     ///   <para> 已知地图名，返回完整路径 </para>
     /// </summary>
-    static public string MapNameToPath(string name) {
+    public string MapNameToPath(string name) {
         return Path.Combine(savePathMap, name) + ".json"; 
     }
 
     /// <summary>
     ///   <para> 读取所有存档 </para>
     /// </summary>
-    static public void LoadAllSave(){
+    public void LoadAllSave(){
         // 获取所有合法的地图名称
         // 要求地图文件在/Maps中，预览图片在/Thumbs中，缺一不可
         HashSet<string> mapsStrings = new HashSet<string>(GetFilenames(savePathMap, "json"));
@@ -112,7 +72,7 @@ public class SaveManager {
     /// <summary>
     ///   <para> 读取单个存档 </para>
     /// </summary>  
-    static public SaveEntity LoadMap(string filename){
+    public SaveEntity LoadMap(string filename){
         // 若已有存储，直接返回
         if(saveEntities.ContainsKey(filename) && !(saveEntities[filename] is null))
             return saveEntities[filename];
@@ -132,16 +92,16 @@ public class SaveManager {
     /// <summary>
     ///   <para> 写入单个地图文件 </para>
     /// </summary>
-    static public void SaveMap(string filename, SaveEntity saveEntity){
-        string path = Path.Combine(savePath, filename) + ".json";
+    public void SaveMap(SaveEntity saveEntity, string filename){
+        string path = Path.Combine(savePathMap, filename) + ".json";
         byte[] bytes = Encoding.UTF8.GetBytes(saveEntity.ToJson());
-        WriteFile(path, bytes);
+        WriteFile(path, bytes); Debug.Log(path);
     }
 
     /// <summary>
     ///   <para> 存档路径获取略缩图 </para>
     /// </summary>  
-    static public Sprite LoadThumb(string filename){
+    public Sprite LoadThumb(string filename){
         // 以byte[]形式读取图片
         byte[] imgByte = ReadFile(Path.Combine(savePathThumb, filename) + ".png");
 
@@ -157,15 +117,15 @@ public class SaveManager {
     /// <summary>
     ///   <para> 存储略缩图，png格式 </para>
     /// </summary>  
-    static public void SaveThumb(byte[] image, string filename){
-        WriteFile(Path.Combine(savePathMap, filename) + ".png", image);
+    public void SaveThumb(byte[] image, string filename){
+        WriteFile(Path.Combine(savePathThumb, filename) + ".png", image);
     }
 
     /// <summary>
     ///   <para> 复制地图和略缩图 </para>
     ///   <returns> 返回副本的文件名 </returns>
     /// </summary>  
-    static public string Duplicate(string filename){
+    public string Duplicate(string filename){
         // 为副本起文件名
         // 格式是"原地图-2"，若文件名重复则继续增加数字
         string filenameDup = "";
@@ -187,7 +147,7 @@ public class SaveManager {
     /// <summary>
     ///   <para> 删除地图和略缩图 </para>
     /// </summary>  
-    static public void Delete(string filename){
+    public void Delete(string filename){
         File.Delete(Path.Combine(savePathMap, filename) + ".json");
         File.Delete(Path.Combine(savePathThumb, filename) + ".png");
     }
@@ -196,7 +156,7 @@ public class SaveManager {
     /// <para> 读取path目录下所有文件的文件名，后缀为extension </para>
     /// <para> 返回的文件名不包括文件夹路径和后缀 </para>
     /// </summary>
-    static private List<string> GetFilenames(string path, string extension) {
+    private List<string> GetFilenames(string path, string extension) {
         // 获取所有文件名
         List<string> ret = new List<string>();
         Debug.Assert(Directory.Exists(path));
@@ -216,7 +176,7 @@ public class SaveManager {
     /// <summary>
     /// <para> 存储文件，路径为path，内容为bytes </para>
     /// </summary>
-    static public void WriteFile(string path, byte[] bytes) {
+    public void WriteFile(string path, byte[] bytes) {
         FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
         fileStream.Write(bytes, 0, bytes.Length);
         fileStream.Flush();
@@ -226,7 +186,7 @@ public class SaveManager {
     /// <summary>
     /// <para> 读取文件，路径为path，byte[]格式返回 </para>
     /// </summary>
-    static public byte[] ReadFile(string path) {
+    public byte[] ReadFile(string path) {
         FileStream fs = new FileStream(path, FileMode.Open);
         byte[] bytes = new byte[fs.Length];
         fs.Read(bytes, 0, bytes.Length);
