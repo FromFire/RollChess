@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour {
             if(id == PlayerID.None || GameResource.gameState.GetPlayerForm(id) != PlayerForm.Banned)
                 continue;
             // 获取该玩家的所有棋子
-            List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, id);
+            List<Vector2Int> tokens = ModelResource.tokenSet.Query(id, PlayerID.None);
             // 移除
             foreach(Vector2Int token in tokens)
                 ModelResource.tokenSet.Remove(token);

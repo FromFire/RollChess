@@ -86,7 +86,7 @@ public class TokenSet : MonoBehaviour {
         List<Vector2Int> ret = new List<Vector2Int>();
 
         // 特殊情况：无参数，返回所有id
-        if(player == PlayerID.None || ignore == PlayerID.None) {
+        if(player == PlayerID.None && ignore == PlayerID.None) {
             foreach(KeyValuePair<Vector2Int, Token> kvp in tokens)
                 ret.Add(kvp.Key);
             return ret;
