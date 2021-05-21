@@ -131,7 +131,7 @@ public class GameController : MonoBehaviour {
                 continue;
                 
             // 查询非Loser玩家控制的棋子数量
-            List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, id);
+            List<Vector2Int> tokens = ModelResource.tokenSet.Query(id, PlayerID.None);
 
             // 若棋子数量为0就标记为Loser
             if(tokens is null || tokens.Count == 0)

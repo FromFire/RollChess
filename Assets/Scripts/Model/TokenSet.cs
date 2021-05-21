@@ -48,7 +48,6 @@ public class TokenSet : MonoBehaviour {
     ///   <para> 移除棋子 </para>
     /// </summary>
     public void Remove(Vector2Int position) {
-        List<Vector2Int> modified = new List<Vector2Int>();
         tokens.Remove(position);
         // 推送修改
         ModelResource.tokenSubject.Notify(ModelModifyEvent.Token, position);
@@ -70,11 +69,13 @@ public class TokenSet : MonoBehaviour {
         // 吃子
         Token sourceToken = Get(source);
         Token targetToken = Get(target);
-        if(target != null && targetToken.Player != sourceToken.Player)
+        if(targetToken != null && targetToken.Player != sourceToken.Player)
             Remove(target);
 
         // 修改该棋子位置
+        Remove(source);
         sourceToken.Position = target;
+        Add(sourceToken);
 
         // 无须推送修改，因为Token内部修改和Remove已有推送
     }
