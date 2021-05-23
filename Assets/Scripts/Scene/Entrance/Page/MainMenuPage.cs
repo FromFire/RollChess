@@ -26,6 +26,6 @@ public class MainMenuPage : MonoBehaviour {
     ///   <para> 选择地图编辑器，去地图编辑选地图界面 </para>
     /// </summary>
     public void ToChooseEditMapPage() {
-        
+        PanelManager.Get().NowPanel = PanelManager.Get().mapEdit;
     }
 }

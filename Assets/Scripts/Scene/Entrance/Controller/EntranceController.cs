@@ -33,7 +33,7 @@ public class EntranceController : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 选择地图 </para>
+    ///   <para> 开始游戏 </para>
     /// </summary>
     public void StartGame() {
         // 获取players
@@ -70,7 +70,6 @@ public class EntranceController : MonoBehaviour {
 
         //获取maps
         string mapName = EntranceResource.mapChooseState.MapFileName;
-
         //地图不能为空
         if(mapName.Length <= 1) {
             WarningManager.errors.Add(new WarningModel("请选择地图！"));
@@ -80,5 +79,32 @@ public class EntranceController : MonoBehaviour {
         //符合要求，进入游戏
         GameObject.DontDestroyOnLoad(EntranceResource.mapChooseState.gameObject);
         SceneManager.LoadScene("Game");
+    }
+
+    /// <summary>
+    ///   <para> 复制地图 </para>
+    /// </summary>
+    public string CopyMap() {
+        string origin = EntranceResource.mapChooseState.MapFileName;
+        string copy = SaveResource.saveManager.Duplicate(origin);
+        // 地图名称改为<地图名>-副本
+        SaveEntity saveEntity = SaveResource.saveManager.LoadMap(copy);
+        saveEntity.mapName = EntranceResource.mapChooseState.MapName + "-副本";
+        SaveResource.saveManager.SaveMap(saveEntity, copy);
+        return copy;
+    }
+
+    /// <summary>
+    ///   <para> 编辑地图 </para>
+    /// </summary>
+    public void EditMap() {
+        
+    }
+
+    /// <summary>
+    ///   <para> 删除地图 </para>
+    /// </summary>
+    public void DeleteMap() {
+        
     }
 }

@@ -68,8 +68,12 @@ public class SaveManager : MonoBehaviour {
     ///   <para> 读取单个存档 </para>
     /// </summary>  
     public SaveEntity LoadMap(string filename){
+        // 必须是合法的
+        if(!saveEntities.ContainsKey(filename))
+            return null;
+
         // 若已有存储，直接返回
-        if(saveEntities.ContainsKey(filename) && !(saveEntities[filename] is null))
+        if(!(saveEntities[filename] is null))
             return saveEntities[filename];
 
         // 读取文件内容
@@ -90,7 +94,8 @@ public class SaveManager : MonoBehaviour {
     public void SaveMap(SaveEntity saveEntity, string filename){
         string path = Path.Combine(savePathMap, filename) + ".json";
         byte[] bytes = Encoding.UTF8.GetBytes(saveEntity.ToJson());
-        WriteFile(path, bytes); Debug.Log(path);
+        WriteFile(path, bytes); 
+        Debug.Log(path);
     }
 
     /// <summary>
@@ -137,6 +142,9 @@ public class SaveManager : MonoBehaviour {
         File.Copy(Path.Combine(savePathMap, filename) + ".json", Path.Combine(savePathMap, filenameDup) + ".json");
         File.Copy(Path.Combine(savePathThumb, filename) + ".png", Path.Combine(savePathThumb, filenameDup) + ".png");
 
+        // 加入saveEntities
+        saveEntities.Add(filenameDup, null);
+
         return filenameDup;
     }
 
@@ -174,6 +182,7 @@ public class SaveManager : MonoBehaviour {
     /// </summary>
     public void WriteFile(string path, byte[] bytes) {
         FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+        fileStream.SetLength(0);
         fileStream.Write(bytes, 0, bytes.Length);
         fileStream.Flush();
         fileStream.Close();

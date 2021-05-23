@@ -17,6 +17,11 @@ public class PanelManager : MonoBehaviour {
     public Image mainMenu;
     // 单人页面
     public Image single;
+    // 地图编辑页面
+    public Image mapEdit;
+
+    // 返回按钮
+    [SerializeField] Button backButton;
 
     // 初始化，页面最开始是主菜单
     void Start() {
@@ -32,6 +37,15 @@ public class PanelManager : MonoBehaviour {
     }
 
     /// <summary>
+    ///   <para> 点击返回按钮 </para>
+    /// </summary>
+    public void Back() {
+        // 单人页 / 地图编辑页 -> 主页
+        if(nowPanel == single || nowPanel == mapEdit)
+            NowPanel = mainMenu;
+    }
+
+    /// <summary>
     ///   <para> 当前显示的页面 </para>
     /// </summary>
     public Image NowPanel {
@@ -41,6 +55,9 @@ public class PanelManager : MonoBehaviour {
                 nowPanel.gameObject.SetActive(false);
             nowPanel = value;
             nowPanel.gameObject.SetActive(true);
+
+            // 主菜单不显示按钮，其他页面显示
+            backButton.gameObject.SetActive(nowPanel != mainMenu);
         }
     }
 }
