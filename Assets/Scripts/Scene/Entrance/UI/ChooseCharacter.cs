@@ -10,10 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class ChooseCharacter : MonoBehaviour
 {
-    // 地图人数限制
-    private int _limitMax;
-    private int _limitMin;
-
     // 切换按钮
     [SerializeField] List<CharacterFormShift> buttons;
 
@@ -22,58 +18,29 @@ public class ChooseCharacter : MonoBehaviour
 
     // 初始化
     void Start() {
-        // todo: 绑定CharacterFormShift的点击响应函数
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Limit, UpdateSelf);
     }
 
     /// <summary>
-    ///   <para> 人数限制上限 </para>
+    ///   <para> 更新自身显示 </para>
     /// </summary>
-    public int LimitMax {
-        get {return _limitMax;}
-        set {
-            _limitMax = value;
-            // 保证Min<Max
-            if(_limitMin > _limitMax) {
-                _limitMin = _limitMax;
-            }
-            //更新显示
-            UpdateLimitLabel();
-            UpdateLock();
-        }
-    }
+    public void UpdateSelf() {
+        // 获取人数限制
+        (int min, int max) limit = EntranceResource.mapChooseState.PlayerLimit;
+        int max = limit.max;
+        int min = limit.min;
 
-    /// <summary>
-    ///   <para> 人数限制下限 </para>
-    /// </summary>
-    public int LimitMin {
-        get {return _limitMin;}
-        set {
-            _limitMin = value;
-            // 保证Min<Max
-            if(_limitMin > _limitMax) {
-                _limitMax = _limitMin;
-            }
-            //更新显示
-            UpdateLimitLabel();
-            UpdateLock();
-        }
-    }
-
-    // 更新玩家数量限制显示
-    void UpdateLimitLabel() {
-        if(_limitMin == _limitMax) {
-            playerLimit.text = _limitMin + "人";
+        // 更新标签显示
+        if(min == max) {
+            playerLimit.text = min + "人";
         } else {
-            playerLimit.text = _limitMin + "-" + _limitMax + "人";
+            playerLimit.text = min + "-" + max + "人";
         }
-    }
 
-    // 更新按钮锁定情况
-    void UpdateLock() {
+        // 更新按钮锁定
         for(int i=0; i<buttons.Count; i++) {
             // Max之前的解锁，之后的锁定
-            buttons[i].IsLocked = (i >= _limitMax);
+            buttons[i].IsLocked = (i >= max);
         }
     }
-
 }

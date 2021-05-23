@@ -20,11 +20,14 @@ public class MapChooseState : MonoBehaviour {
         {PlayerID.Yellow, PlayerForm.Player},
     };
 
+    // 当前选中的地图的文件名
+    private string mapFileName;
+
     // 玩家数量限制
     private (int min, int max) playerLimit;
 
-    // 当前选中的地图的文件名
-    private string mapFileName;
+    // 地图名称
+    private string mapName;
 
     /// <summary>
     ///   <para> 构造一个MapChooseState，仅用于调试时 </para>
@@ -51,6 +54,22 @@ public class MapChooseState : MonoBehaviour {
     }
 
     /// <summary>
+    ///   <para> 当前选中的地图的文件名 </para>
+    /// </summary>
+    public string MapFileName {
+        get {return mapFileName;}
+        set {
+            mapFileName = value;
+            ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Map_File_Name);
+            // 修改地图名称
+            SaveEntity saveEntity = SaveResource.saveManager.LoadMap(mapFileName);
+            MapName = saveEntity.mapName;
+            // 修改人数限制
+            PlayerLimit = (saveEntity.player.min, saveEntity.player.max);
+        }
+    }
+
+    /// <summary>
     ///   <para> 玩家数量限制 </para>
     /// </summary>
     public (int min, int max) PlayerLimit {
@@ -62,13 +81,13 @@ public class MapChooseState : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 当前选中的地图的文件名 </para>
+    ///   <para> 地图名称 </para>
     /// </summary>
-    public string MapFileName {
-        get {return mapFileName;}
+    public string MapName {
+        get {return mapName;}
         set {
-            mapFileName = value;
-            ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Map_File_Name);
+            mapName = value;
+            ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Map_Name);
         }
     }
 

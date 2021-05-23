@@ -56,8 +56,9 @@ public enum ModelModifyEvent {
     Loser,          //输家
 
     // 地图选择被修改 MapChooseState
+    Map_File_Name,  //地图文件名称
     Player_Limit,   //玩家人数限制
-    Map_File_Name,    //地图文件名称
+    Map_Name,       //地图名称
     Player_Form,    //玩家操作形式
 }
 

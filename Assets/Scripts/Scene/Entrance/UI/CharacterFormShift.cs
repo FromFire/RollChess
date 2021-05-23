@@ -4,28 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-///   <para> 切换角色操控方式的按钮 </para>
-///   <para> 功能1：面对用户。点击时触发响应函数，并切换显示。 </para>
-///   <para> 功能2：面对父对象。由上级控制锁定或解锁本按钮。 </para>
-///   <para> 需要父对象指定onLeft/RightClick。 </para>
+///   <para> 切换角色操控方式的按钮，可以锁定或解锁按钮 </para>
 /// </summary>
 public class CharacterFormShift : MonoBehaviour
 {
-    // 当前的操控方式，在锁定状态下存储锁定前的选择
-    private PlayerForm _currentPlayerForm;
+    // 自身的PlayerID
+    [SerializeField] PlayerID playerID;
 
     // 是否已锁定
     private bool _isLocked;
-
-    /// <summary>
-    ///   <para> 左键切换操控方式（用于单机和host） </para>
-    /// </summary>
-    public onClick onLeftClick;
-
-    /// <summary>
-    ///   <para> 右键选择操控该角色（仅用于Client） </para>
-    /// </summary>
-    public onClick onRightClick;
 
     // 切换按钮
     [SerializeField] Button button;
@@ -34,23 +21,23 @@ public class CharacterFormShift : MonoBehaviour
     // 选择栏的三个图标
     [SerializeField] List<Sprite> playerSprites;
 
-    // 点击响应函数
-    public delegate void onClick();
-
-    // 创建时绑定响应函数
     void Start() {
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Form, UpdateSelf);
     }
 
     /// <summary>
-    ///   <para> 当前的操控方式，在锁定状态下存储锁定前的选择 </para>
+    ///   <para> 更新自身显示 </para>
     /// </summary>
-    public PlayerForm CurrentPlayerForm {
-        set {
-            _currentPlayerForm = value;
-            // 更新显示
-            image.sprite = playerSprites[(int)_currentPlayerForm];
-        }
-        get {return _currentPlayerForm;}
+    public void UpdateSelf() {
+        PlayerForm form = EntranceResource.mapChooseState.GetPlayerForm(playerID);
+        Show(form);
+    }
+
+    /// <summary>
+    ///   <para> 显示自身 </para>
+    /// </summary>
+    public void Show(PlayerForm form) {
+        image.sprite = playerSprites[(int)form];
     }
 
     /// <summary>
@@ -61,28 +48,28 @@ public class CharacterFormShift : MonoBehaviour
     public bool IsLocked {
         get {return _isLocked;}
         set {
-            button.interactable = _isLocked = value;
-            CurrentPlayerForm = _isLocked ? PlayerForm.Banned : _currentPlayerForm;
+            _isLocked = value;
+            button.interactable = !_isLocked;
+            if(_isLocked)
+                Show(PlayerForm.Banned);
+            else
+                UpdateSelf();
         }
     }
 
     /// <summary>
     ///   <para> 点击响应函数，按左右键进行回调。 </para>
     /// </summary>
-    void OnClick() {
-        // 左键切换操控方式（用于单机和host）
-        if(onLeftClick != null && Input.GetMouseButtonDown(0)) {
-            onLeftClick();
-            // 修改显示，轮换至下一PlayerForm
-            for(int i=0; i<playerSprites.Count; i++) {
-                if(image.sprite == playerSprites[i]) {
-                    image.sprite = playerSprites[(i+1)%playerSprites.Count];
-                }
-            }
-        }
-        // 右键选择操控该角色（仅用于Client）
-        if(onRightClick != null && Input.GetMouseButtonDown(1)) {
-            onRightClick();
-        }
+    public void OnClick() {
+        EntranceResource.entranceController.ShiftPlayerFrom(playerID);
+        // // 左键切换操控方式（用于单机和host）
+        // if(Input.GetMouseButton(0)) {
+            
+        //     Debug.Log("yeah!");
+        // }
+        // // 右键选择操控该角色（仅用于Client）
+        // if(Input.GetMouseButton(1)) {
+        //     //onRightClick();
+        // }
     }
 }

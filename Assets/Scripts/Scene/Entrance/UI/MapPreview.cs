@@ -15,20 +15,25 @@ public class MapPreview : MonoBehaviour
     [SerializeField] private Text mapName;
 
     void Start() {
-        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_File_Name, UpdateSelf);
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_File_Name, UpdateThumb);
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_Name, UpdateName);
     }
 
     /// <summary>
-    ///   <para> 按model更新显示 </para>
+    ///   <para> 更新略缩图的显示 </para>
     /// </summary>
-    public void UpdateSelf() {
+    public void UpdateThumb() {
         // 预览地图
         Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.MapFileName);
         thumbnail.sprite = image;
         thumbnail.color = Color.white;
+    }
+
+    /// <summary>
+    ///   <para> 更新地图名的显示 </para>
+    /// </summary>
+    public void UpdateName() {
         // 预览地图名
-        string filename = EntranceResource.mapChooseState.MapFileName;
-        SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
-        mapName.text = saveEntity.mapName;
+        mapName.text = EntranceResource.mapChooseState.MapName;
     }
 }

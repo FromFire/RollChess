@@ -20,6 +20,18 @@ public class EntranceController : MonoBehaviour {
     }
 
     /// <summary>
+    ///   <para> 修改操作方式 </para>
+    /// </summary>
+    public void ShiftPlayerFrom(PlayerID id) {
+        // 轮换到下一个
+        PlayerForm form = EntranceResource.mapChooseState.GetPlayerForm(id);
+        int count = System.Enum.GetNames(typeof(PlayerForm)).Length;
+        form = (PlayerForm)( ((int)form+1) % count );
+        EntranceResource.mapChooseState.SetPlayerForm(id, form);
+        Debug.Log(id + ": " + form);
+    }
+
+    /// <summary>
     ///   <para> 选择地图 </para>
     /// </summary>
     public void StartGame() {
