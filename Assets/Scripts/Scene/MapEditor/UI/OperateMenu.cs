@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 ///   <para> 一级操作菜单 </para>
@@ -41,6 +42,13 @@ public class OperateMenu : MonoBehaviour {
     }
     public void Redo() {
         MapEditResource.momentoController.Redo();
+    }
+
+    /// <summary>
+    ///   <para> 退出地图编辑器 </para>
+    /// </summary>
+    public void Exit() {
+        SceneManager.LoadScene("Entrance");
     }
 
     /// <summary>
