@@ -111,4 +111,34 @@ public class EntranceController : MonoBehaviour {
         string toDel = EntranceResource.mapChooseState.MapFileName;
         SaveResource.saveManager.Delete(EntranceResource.mapChooseState.MapFileName);
     }
+
+    /// <summary>
+    ///   <para> 新建地图 </para>
+    /// </summary>
+    public void NewMap() {
+        
+    }
+
+    /// <summary>
+    ///   <para> 修改地图基本信息 </para>
+    /// </summary>
+    public void ModifySetting(string mapName, int min, int max) {
+        // 合法性检查
+        if(mapName.Length == 0 || min <= 0  || max < min || max > 4)
+            return;
+
+        // 修改
+        string filename = EntranceResource.mapChooseState.MapFileName;
+        SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
+        saveEntity.mapName = mapName;
+        saveEntity.player.min = min;
+        saveEntity.player.max = max;
+
+        // 修改状态
+        EntranceResource.mapChooseState.MapName = mapName;
+        EntranceResource.mapChooseState.PlayerLimit = (min, max);
+
+        // 保存
+        SaveResource.saveManager.SaveMap(saveEntity, filename);
+    }
 }
