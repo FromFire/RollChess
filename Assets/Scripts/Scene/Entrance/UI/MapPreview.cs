@@ -27,6 +27,8 @@ public class MapPreview : MonoBehaviour
         thumbnail.sprite = image;
         thumbnail.color = Color.white;
         // 预览地图名
-        mapName.text = EntranceResource.mapChooseState.MapFileName;
+        string filename = EntranceResource.mapChooseState.MapFileName;
+        SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
+        mapName.text = saveEntity.mapName;
     }
 }

@@ -7,5 +7,8 @@ using UnityEngine.UI;
 ///   <para> 单人玩家选地图 </para>
 /// </summary>
 public class SinglePage : MonoBehaviour {
-
+    // 开始游戏
+    public void StartGame() {
+        EntranceResource.entranceController.StartGame();
+    }
 }
