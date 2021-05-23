@@ -25,8 +25,9 @@ public class OperateMenu : MonoBehaviour {
         if(toSave) {
             byte[] capture = SaveResource.saveLoader.ScreenShot;
             if( !(capture is null)) {
+                // 获取文件名
+                string filename = MapEditResource.mapFilename.Length == 0 ? "save" : MapEditResource.mapFilename;
                 // 保存
-                string filename = "save";
                 SaveResource.saveManager.SaveMap(SaveResource.saveLoader.Save(), filename);
                 SaveResource.saveManager.SaveThumb(capture, filename);
                 toSave = false;
@@ -50,7 +51,6 @@ public class OperateMenu : MonoBehaviour {
         hexGridDisplay.Visible = !hexGridDisplay.Visible;
         hexGridVisible.gameObject.GetComponent<Image>().color = 
             hexGridDisplay.Visible ? MapEditResource.highlightColor : MapEditResource.defaultColor;
-        Debug.Log(hexGridDisplay.Visible);
     }
 
     /// <summary>

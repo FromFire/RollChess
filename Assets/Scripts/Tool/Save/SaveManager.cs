@@ -68,12 +68,8 @@ public class SaveManager : MonoBehaviour {
     ///   <para> 读取单个存档 </para>
     /// </summary>  
     public SaveEntity LoadMap(string filename){
-        // 必须是合法的
-        if(!saveEntities.ContainsKey(filename))
-            return null;
-
         // 若已有存储，直接返回
-        if(!(saveEntities[filename] is null))
+        if(saveEntities.ContainsKey(filename) && !(saveEntities[filename] is null))
             return saveEntities[filename];
 
         // 读取文件内容

@@ -99,7 +99,8 @@ public class EntranceController : MonoBehaviour {
     ///   <para> 编辑地图 </para>
     /// </summary>
     public void EditMap() {
-        
+        GameObject.DontDestroyOnLoad(EntranceResource.mapChooseState.gameObject);
+        SceneManager.LoadScene("MapEditor");
     }
 
     /// <summary>

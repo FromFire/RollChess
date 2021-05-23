@@ -6,6 +6,11 @@ using UnityEngine;
 ///   <para> 获取公有资源 </para>
 /// </summary>
 public class MapEditResource : MonoBehaviour  {
+    // 地图名称
+    static public string mapFilename;
+
+    // Model
+    static public MapChooseState mapChooseState;
 
     // 绘制器
     static public LandEditor landEditor;
@@ -32,6 +37,8 @@ public class MapEditResource : MonoBehaviour  {
     static public TilemapManager tilemapManager;
 
     // 下面是用来实例化的
+    // Model
+    [SerializeField] private MapChooseState _mapChooseState;
 
     // 绘制器
     [SerializeField] private LandEditor _landEditor;
@@ -82,6 +89,11 @@ public class MapEditResource : MonoBehaviour  {
             {MapEditObject.Special, specialEditor},
             {MapEditObject.Portal, portalEditor}
         };
+
+        // 此类来自Entrance类
+        GameObject mapChooseObject = GameObject.Find("MapChooseState");
+        if(mapChooseObject)
+            mapChooseState = mapChooseObject.GetComponent<MapChooseState>();
     }
 
     /// <summary>
