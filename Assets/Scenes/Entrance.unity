@@ -1112,6 +1112,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapMenu: {fileID: 717306508}
+  copyButton: {fileID: 850069922}
+  editButton: {fileID: 696564048}
+  deleteButton: {fileID: 322165972}
 --- !u!1 &988143299
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,8 +23,12 @@ public class MapPreview : MonoBehaviour
     ///   <para> 更新略缩图的显示 </para>
     /// </summary>
     public void UpdateThumb() {
+        string mapFileName = EntranceResource.mapChooseState.MapFileName;
+        // 空地图情况
+        if(mapFileName.Length == 0)
+            return;
         // 预览地图
-        Sprite image = SaveResource.saveManager.LoadThumb(EntranceResource.mapChooseState.MapFileName);
+        Sprite image = SaveResource.saveManager.LoadThumb(mapFileName);
         thumbnail.sprite = image;
         thumbnail.color = Color.white;
     }

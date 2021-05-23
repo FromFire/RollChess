@@ -21,13 +21,13 @@ public class MapChooseState : MonoBehaviour {
     };
 
     // 当前选中的地图的文件名
-    private string mapFileName;
+    private string mapFileName = "";
 
     // 玩家数量限制
     private (int min, int max) playerLimit;
 
     // 地图名称
-    private string mapName;
+    private string mapName = "";
 
     /// <summary>
     ///   <para> 构造一个MapChooseState，仅用于调试时 </para>
@@ -61,6 +61,9 @@ public class MapChooseState : MonoBehaviour {
         set {
             mapFileName = value;
             ModelResource.mapChooseSubject.Notify(ModelModifyEvent.Map_File_Name);
+            // FileName是空的情况
+            if(mapFileName.Length == 0)
+                return;
             // 修改地图名称
             SaveEntity saveEntity = SaveResource.saveManager.LoadMap(mapFileName);
             MapName = saveEntity.mapName;

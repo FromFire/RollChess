@@ -85,6 +85,7 @@ public class EntranceController : MonoBehaviour {
     ///   <para> 复制地图 </para>
     /// </summary>
     public string CopyMap() {
+        // 复制
         string origin = EntranceResource.mapChooseState.MapFileName;
         string copy = SaveResource.saveManager.Duplicate(origin);
         // 地图名称改为<地图名>-副本
@@ -105,6 +106,8 @@ public class EntranceController : MonoBehaviour {
     ///   <para> 删除地图 </para>
     /// </summary>
     public void DeleteMap() {
-        
+        // 地图为空的情况
+        string toDel = EntranceResource.mapChooseState.MapFileName;
+        SaveResource.saveManager.Delete(EntranceResource.mapChooseState.MapFileName);
     }
 }

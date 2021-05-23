@@ -154,6 +154,7 @@ public class SaveManager : MonoBehaviour {
     public void Delete(string filename){
         File.Delete(Path.Combine(savePathMap, filename) + ".json");
         File.Delete(Path.Combine(savePathThumb, filename) + ".png");
+        saveEntities.Remove(filename);
     }
 
     /// <summary>

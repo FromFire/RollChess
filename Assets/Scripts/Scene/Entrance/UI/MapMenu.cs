@@ -14,6 +14,9 @@ public class MapMenu : MonoBehaviour {
     // 地图一项的prefab
     [SerializeField] private GameObject itemPrefab;
 
+    // 所有item列表
+    List<MapItem> items = new List<MapItem>();
+
     void Start() {
         itemPrefab.SetActive(false);
         // 获取所有地图
@@ -34,8 +37,27 @@ public class MapMenu : MonoBehaviour {
         // 设置子节点
         MapItem item = prefabInstance.GetComponent<MapItem>();
         item.Filename = filename;
+        items.Add(item);
 
         // 显示
         item.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    ///   <para> 删除地图项 </para>
+    /// </summary>
+    public void RemoveItem(string filename) {
+        // 寻找节点
+        MapItem toDel = null;
+        foreach(MapItem item in items) {
+            if(item.Filename == filename) {
+                items.Remove(item);
+                toDel = item;
+                break;
+            }
+        }
+        
+        // 删除节点
+        toDel.gameObject.SetActive(false);
     }
 }
