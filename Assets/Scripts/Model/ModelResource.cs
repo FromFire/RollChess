@@ -13,17 +13,17 @@ public class ModelResource : MonoBehaviour  {
     /// <summary>
     ///   <para> 棋盘更新的推送 </para>
     /// </summary>
-    static public PositionSubject boardSubject = new PositionSubject();
+    static public PositionSubject boardSubject;
 
     /// <summary>
     ///   <para> 棋子更新的推送 </para>
     /// </summary>
-    static public PositionSubject tokenSubject = new PositionSubject();
+    static public PositionSubject tokenSubject;
 
     /// <summary>
     ///   <para> 地图选择的推送 </para>
     /// </summary>
-    static public Subject mapChooseSubject = new Subject();
+    static public Subject mapChooseSubject;
 
     // 下面是用来实例化的
     // Model
@@ -35,5 +35,10 @@ public class ModelResource : MonoBehaviour  {
         // Model
         board = _board;
         tokenSet = _tokenSet;
+
+        // 推送要在Start里初始化，不然切换场景会有bug！！
+        tokenSubject = new PositionSubject();
+        boardSubject = new PositionSubject();
+        mapChooseSubject = new Subject();
     }
 }

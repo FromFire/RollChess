@@ -21,7 +21,7 @@ public class GameResource : MonoBehaviour  {
     /// <summary>
     ///   <para> 游戏状态的推送 </para>
     /// </summary>
-    static public Subject gameStateSubject = new Subject();
+    static public Subject gameStateSubject;
 
     // 下面是用来实例化的
     // Model
@@ -54,5 +54,8 @@ public class GameResource : MonoBehaviour  {
         GameObject mapChooseObject = GameObject.Find("MapChooseState");
         if(mapChooseObject)
             mapChooseState = mapChooseObject.GetComponent<MapChooseState>();
+
+        // subject
+        gameStateSubject = new Subject();
     }
 }
