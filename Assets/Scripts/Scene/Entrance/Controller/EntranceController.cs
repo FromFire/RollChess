@@ -113,10 +113,37 @@ public class EntranceController : MonoBehaviour {
     }
 
     /// <summary>
+    ///   <para> 准备新建地图 </para>
+    /// </summary>
+    public void PrepareNewMap() {
+        EntranceResource.mapChooseState.MapFileName = "";
+    }
+
+    /// <summary>
     ///   <para> 新建地图 </para>
     /// </summary>
-    public void NewMap() {
+    public void NewMap(string mapName, int min, int max) {
+        // 合法性检查
+        if(mapName.Length == 0 || min <= 0  || max < min || max > 4)
+            return;
         
+        // 创建新地图
+        SaveEntity saveEntity = new SaveEntity();
+        string filename = SaveResource.saveManager.NewMap(saveEntity, mapName);
+
+        // 修改基本属性
+        saveEntity = SaveResource.saveManager.LoadMap(filename);
+        saveEntity.mapName = mapName;
+        saveEntity.player.min = min;
+        saveEntity.player.max = max;
+        SaveResource.saveManager.SaveMap(saveEntity, filename);
+
+        // 修改MapChooseState
+        EntranceResource.mapChooseState.MapFileName = filename;
+
+        // 进入地图编辑器
+        GameObject.DontDestroyOnLoad(EntranceResource.mapChooseState.gameObject);
+        SceneManager.LoadScene("MapEditor");
     }
 
     /// <summary>

@@ -95,12 +95,30 @@ public class SaveManager : MonoBehaviour {
     }
 
     /// <summary>
+    ///   <para> 创建新地图 </para>
+    /// </summary>
+    public string NewMap(SaveEntity saveEntity, string filename){
+        // 起文件名
+        // 格式是"filename"，若文件名重复则继续增加数字"filename-1"
+        string filenameNew = GenerateFileName(filename);
+
+        // 保存
+        SaveMap(saveEntity, filenameNew);
+
+        return filenameNew;
+    }
+
+    /// <summary>
     ///   <para> 存档路径获取略缩图 </para>
     /// </summary>  
     public Sprite LoadThumb(string filename){
         // 以byte[]形式读取图片
         string path = Path.Combine(savePathThumb, filename) + ".png";
         byte[] imgByte = ReadFile(path);
+
+        // 为空的情况
+        if(imgByte.Length == 0)
+            return null;
 
         // 将byte[]转换为Texture2D
         Texture2D texture = new Texture2D(10, 10);
@@ -124,15 +142,7 @@ public class SaveManager : MonoBehaviour {
     /// </summary>  
     public string Duplicate(string filename){
         // 为副本起文件名
-        // 格式是"原地图-2"，若文件名重复则继续增加数字
-        string filenameDup = "";
-        for(int i=2; ; i++) {
-            if( !File.Exists(Path.Combine(savePathMap, filename) + "-" + i + ".json") 
-                && !File.Exists(Path.Combine(savePathThumb, filename) + "-" + i + ".png") ) {
-                filenameDup = filename + "-" + i;
-                break;
-            }
-        }
+        string filenameDup = GenerateFileName(filename);
 
         // 复制文件，地图和略缩图各复制一次
         File.Copy(Path.Combine(savePathMap, filename) + ".json", Path.Combine(savePathMap, filenameDup) + ".json");
@@ -157,7 +167,7 @@ public class SaveManager : MonoBehaviour {
     /// <para> 读取path目录下所有文件的文件名，后缀为extension </para>
     /// <para> 返回的文件名不包括文件夹路径和后缀 </para>
     /// </summary>
-    private List<string> GetFilenames(string path, string extension) {
+    List<string> GetFilenames(string path, string extension) {
         // 获取所有文件名
         List<string> ret = new List<string>();
         Debug.Assert(Directory.Exists(path));
@@ -188,11 +198,30 @@ public class SaveManager : MonoBehaviour {
     /// <summary>
     /// <para> 读取文件，路径为path，byte[]格式返回 </para>
     /// </summary>
-    public byte[] ReadFile(string path) {
+    byte[] ReadFile(string path) {
+        // 为空的情况
+        if(!File.Exists(path))
+            return new byte[0];
+
+        // 读取
         FileStream fs = new FileStream(path, FileMode.Open);
         byte[] bytes = new byte[fs.Length];
         fs.Read(bytes, 0, bytes.Length);
         fs.Close();
         return bytes;
+    }
+
+    /// <summary>
+    ///   <para> 生成不重复的文件名 </para>
+    ///   <para> 如果有重复的，则格式是filename-1，数字依次增加 </para>
+    /// </summary>
+    string GenerateFileName(string filename) {
+        for(int i=1; ; i++) {
+            string tryName = (i == 1) ? filename : filename + "-" + i;
+            if( !File.Exists(Path.Combine(savePathMap, tryName) + ".json") 
+                && !File.Exists(Path.Combine(savePathThumb, tryName) + ".png") ) {
+                return tryName;
+            }
+        }
     }
 }

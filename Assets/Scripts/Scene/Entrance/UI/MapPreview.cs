@@ -29,6 +29,9 @@ public class MapPreview : MonoBehaviour
             return;
         // 预览地图
         Sprite image = SaveResource.saveManager.LoadThumb(mapFileName);
+        // 略缩图为空的情况
+        if(image == null)
+            return;
         thumbnail.sprite = image;
         thumbnail.color = Color.white;
     }

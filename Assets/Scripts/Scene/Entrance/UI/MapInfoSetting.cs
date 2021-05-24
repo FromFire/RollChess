@@ -65,11 +65,19 @@ public class MapInfoSetting : MonoBehaviour
     ///   <para> 确定修改 </para>
     /// </summary>
     public void Confirm() {
-        // 获取人数限制
+        // 获取面板信息
         int min, max;
         int.TryParse(limitMin.text, out min);
         int.TryParse(limitMax.text, out max);
+        string mapname = mapName.text;
 
-        EntranceResource.entranceController.ModifySetting(mapName.text, min, max);
+        // 若地图为空，说明正在创建新地图
+        if(EntranceResource.mapChooseState.MapFileName.Length == 0) {
+            EntranceResource.entranceController.NewMap(mapname, min, max);
+            return;
+        }
+
+        // 地图不为空，说明在修改已有地图的信息
+        EntranceResource.entranceController.ModifySetting(mapname, min, max);
     }
 }

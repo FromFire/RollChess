@@ -11,9 +11,13 @@ public class MapEditPage : MonoBehaviour {
     // 地图选择列表
     [SerializeField] MapMenu mapMenu;
 
+    // 地图操作按钮
     [SerializeField] Button copyButton;
     [SerializeField] Button editButton;
     [SerializeField] Button deleteButton;
+
+    // 地图设置面板
+    [SerializeField] MapInfoSetting mapInfoSetting;
 
     void Start() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_File_Name, UpdateSelf);
@@ -57,5 +61,14 @@ public class MapEditPage : MonoBehaviour {
 
         // 维护mapChooseState
         EntranceResource.mapChooseState.MapFileName = "";
+    }
+
+    /// <summary>
+    ///   <para> 准备新建地图 </para>
+    /// </summary>
+    public void PrepareNewMap() {
+        // 清空地图信息，解锁InfoSetting用来输入新地图的信息
+        EntranceResource.entranceController.PrepareNewMap();
+        mapInfoSetting.SetLock(false);
     }
 }
