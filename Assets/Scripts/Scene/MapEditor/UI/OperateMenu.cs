@@ -29,7 +29,7 @@ public class OperateMenu : MonoBehaviour {
                 // 获取文件名
                 string filename = MapEditResource.mapFilename.Length == 0 ? "save" : MapEditResource.mapFilename;
                 // 保存
-                SaveResource.saveManager.SaveMap(SaveResource.saveLoader.Save(), filename);
+                SaveResource.saveManager.SaveMap(SaveResource.saveLoader.Save(filename), filename);
                 SaveResource.saveManager.SaveThumb(capture, filename);
                 toSave = false;
                 Debug.Log("保存成功");

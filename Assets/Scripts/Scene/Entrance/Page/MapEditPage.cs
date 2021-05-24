@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-///   <para> 编辑地图选项 </para>
+///   <para> 编辑地图选项页 </para>
 /// </summary>
 public class MapEditPage : MonoBehaviour {
 
@@ -64,7 +64,7 @@ public class MapEditPage : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 准备新建地图 </para>
+    ///   <para> 准备新建地图，点击“新建地图”的响应函数 </para>
     /// </summary>
     public void PrepareNewMap() {
         // 清空地图信息，解锁InfoSetting用来输入新地图的信息

@@ -20,8 +20,14 @@ public class SaveLoader : MonoBehaviour {
     /// <summary>
     ///   <para> 将内存存储到saveEntity中，即输出model </para>
     /// </summary>
-    public SaveEntity Save() {
-        SaveEntity entity = new SaveEntity();
+    public SaveEntity Save(string filename) {
+        SaveEntity entity = SaveResource.saveManager.LoadMap(filename);
+
+        // 清空entity的所有列表
+        entity.token.Clear();
+        entity.map.Clear();
+        entity.special.Clear();
+        entity.portal.Clear();
 
         // 存储board
         Board board = ModelResource.board;
