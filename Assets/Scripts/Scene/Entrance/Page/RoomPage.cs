@@ -13,7 +13,7 @@ public class RoomPage : MonoBehaviour {
     /// </summary>
     public void CreateRoom()
     {
-        EntranceResource.entranceController.CreateR0oom();
+        EntranceResource.entranceController.CreateRoom();
     }
     
     /// <summary>
