@@ -168,4 +168,18 @@ public class EntranceController : MonoBehaviour {
         // 保存
         SaveResource.saveManager.SaveMap(saveEntity, filename);
     }
+    
+    /// <summary>
+    ///   <para> 创建房间 </para>
+    /// </summary>
+    public void CreateRoom() {
+        NetworkResource.networkManager.StartHost();
+    }
+    
+    /// <summary>
+    ///   <para> 加入房间 </para>
+    /// </summary>
+    public void JoinRoom() {
+        NetworkResource.networkManager.StartClient();
+    }
 }
