@@ -61,7 +61,7 @@ public class CharacterFormShift : MonoBehaviour
     ///   <para> 点击响应函数，按左右键进行回调。 </para>
     /// </summary>
     public void OnClick() {
-        EntranceResource.entranceController.ShiftPlayerFrom(playerID);
+        EntranceResource.playerOperationController.ShiftPlayerFrom(playerID);
         // // 左键切换操控方式（用于单机和host）
         // if(Input.GetMouseButton(0)) {
             

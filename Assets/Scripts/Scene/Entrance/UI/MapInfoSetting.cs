@@ -73,11 +73,11 @@ public class MapInfoSetting : MonoBehaviour
 
         // 若地图为空，说明正在创建新地图
         if(EntranceResource.mapChooseState.MapFileName.Length == 0) {
-            EntranceResource.entranceController.NewMap(mapname, min, max);
+            EntranceResource.mapOperationController.NewMap(mapname, min, max);
             return;
         }
 
         // 地图不为空，说明在修改已有地图的信息
-        EntranceResource.entranceController.ModifySetting(mapname, min, max);
+        EntranceResource.mapOperationController.ModifySetting(mapname, min, max);
     }
 }

@@ -11,6 +11,8 @@ public class EntranceResource : MonoBehaviour  {
 
     // Controller
     static public EntranceController entranceController;
+    static public MapOperationController mapOperationController;
+    static public PlayerOperationController playerOperationController;
 
     // 下面是用来实例化的
     // Model
@@ -18,6 +20,8 @@ public class EntranceResource : MonoBehaviour  {
 
     // Controller
     [SerializeField] private EntranceController _entranceController;
+    [SerializeField] private MapOperationController _mapOperationController;
+    [SerializeField] private PlayerOperationController _playerOperationController;
 
     // 实例化
     void Start() {
@@ -26,5 +30,7 @@ public class EntranceResource : MonoBehaviour  {
         
         // Controller
         entranceController = _entranceController;
+        mapOperationController = _mapOperationController;
+        playerOperationController = _playerOperationController;
     }
 }

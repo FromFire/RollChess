@@ -63,6 +63,7 @@ public enum ModelModifyEvent {
     
     // 网络状态
     Client_Success, //客户端连接成功
+    Server_Success, //服务器创建成功
 }
 
 
