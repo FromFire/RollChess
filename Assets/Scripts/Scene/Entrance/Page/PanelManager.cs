@@ -19,8 +19,12 @@ public class PanelManager : MonoBehaviour {
     public Image single;
     // 地图编辑页面
     public Image mapEdit;
-    // 地图编辑页面
+    // 创建和加入房间页面
+    public Image joinRoom;
+    // 房主选地图页面
     public Image roomOwnerChooseMap;
+    // 多人玩家选角色页面
+    public Image room;
 
     // 返回按钮
     [SerializeField] Button backButton;

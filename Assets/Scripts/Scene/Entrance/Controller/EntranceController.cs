@@ -198,9 +198,16 @@ public class EntranceController : MonoBehaviour {
     }
     
     /// <summary>
+    ///   <para> 创建房间 </para>
+    /// </summary>
+    public void CancelJoinRoom() {
+        NetworkResource.networkManager.StopClient();
+    }
+    
+    /// <summary>
     ///   <para> 判断ip地址是否合法 </para>
     /// </summary>
-    public bool IpIsValid(string ip)
+    bool IpIsValid(string ip)
     {
         string patternIp = @"^((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))$";
         return Regex.IsMatch(ip, patternIp);
