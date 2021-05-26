@@ -17,9 +17,9 @@ public class JoinRoomPage : MonoBehaviour
     // 加入房间按钮
     [SerializeField] private Button joinRoomButton;
 
-    private void Update()
+    private void Start()
     {
-        //if(NetworkResource.networkManager.)
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Success, JoinRoomSuccess);
     }
 
     /// <summary>

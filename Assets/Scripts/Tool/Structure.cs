@@ -60,6 +60,9 @@ public enum ModelModifyEvent {
     Player_Limit,   //玩家人数限制
     Map_Name,       //地图名称
     Player_Form,    //玩家操作形式
+    
+    // 网络状态
+    Client_Success, //客户端连接成功
 }
 
 
