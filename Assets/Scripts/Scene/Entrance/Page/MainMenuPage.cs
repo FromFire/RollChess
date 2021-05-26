@@ -18,8 +18,9 @@ public class MainMenuPage : MonoBehaviour {
     /// <summary>
     ///   <para> 选择多人游戏，去房间大厅界面 </para>
     /// </summary>
-    public void ToRoomPage() {
-        
+    public void ToRoomPage()
+    {
+        PanelManager.Get().NowPanel = PanelManager.Get().joinRoom;
     }
 
     /// <summary>
