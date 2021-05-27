@@ -191,9 +191,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 240, y: -150}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 173.13}
+  m_SizeDelta: {x: 240, y: 130.28098}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &513292961516278491
 CanvasRenderer:
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 513292962123178317}
   - component: {fileID: 513292962123178319}
   m_Layer: 5
-  m_Name: MainMenu
+  m_Name: Page-MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -489,9 +489,9 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 340, y: 0}
-  m_SizeDelta: {x: 240, y: -150}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 341, y: 173.13}
+  m_SizeDelta: {x: 240, y: 130.28098}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &513292962951982736
 CanvasRenderer:
@@ -619,9 +619,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -340, y: 0}
-  m_SizeDelta: {x: 240, y: -150}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -341, y: 173.13}
+  m_SizeDelta: {x: 240, y: 130.28098}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &513292963051081789
 CanvasRenderer:
