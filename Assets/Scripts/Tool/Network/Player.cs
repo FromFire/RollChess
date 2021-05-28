@@ -8,8 +8,10 @@ using Mirror;
 /// <summary>
 ///   <para> 玩家 </para>
 /// </summary>
-public class Player : NetworkBehaviour
-{
+public class Player : NetworkBehaviour {
+    // identity
+    [SerializeField] private NetworkIdentity identity;
+    
     /// <summary>
     ///   <para> 唯一id </para>
     /// </summary>
@@ -26,8 +28,7 @@ public class Player : NetworkBehaviour
     private void Start() {
         SetId();
         MakeName();
-        NetworkResource.networkInfo.CmdAddPlayer(this);
-        Debug.Log(NetworkResource.networkInfo.players.Count);
+        Debug.Log("新Player:" + id);
     }
     
     /// <summary>
@@ -36,7 +37,7 @@ public class Player : NetworkBehaviour
     public void SetId()
     {
         // 系统自带标识
-        id = GetComponent<NetworkIdentity>().netId;
+        id = identity.netId;
     }
 
     /// <summary>

@@ -85,3 +85,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  identity: {fileID: 1964018257726424919}
+  id: 0
+  name: 

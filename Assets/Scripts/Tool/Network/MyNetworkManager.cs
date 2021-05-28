@@ -14,8 +14,13 @@ public class MyNetworkManager : NetworkManager {
     {
         Debug.Log("服务器：客户端已连接");
         
-        NetworkResource.networkInfo.CmdAddPlayer(player.GetComponent<Player>());
-        conn.identity
+        // 生成player对象
+        GameObject playerObject = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        playerObject.transform.SetParent(transform);
+        Player player = playerObject.GetComponent<Player>();
+        
+        // 添加
+        NetworkResource.networkInfo.CmdAddPlayer(player);
     }
 
     /// <summary>

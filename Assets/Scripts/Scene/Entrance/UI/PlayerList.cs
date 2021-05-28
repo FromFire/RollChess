@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,28 +27,28 @@ public class PlayerList : MonoBehaviour {
     ///   <para> 新player加入时触发 </para>
     /// </summary>
     public void NewItem() {
-        HashSet<Player> players = new HashSet<Player>(NetworkResource.networkInfo.players);
+        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.players.Keys);
 
         // 没有增加新player
-        if (players.Count == items.Count)
+        if (ids.Count == items.Count)
             return;
         // 寻找新的player
         foreach (PlayerItem item in items) {
-            if (!players.Contains(item.player)) {
-                players.Remove(item.player);
+            if (!ids.Contains(item.Id)) {
+                ids.Remove(item.Id);
             }
         }
         
         // 新增条目
-        foreach (Player player in players) {
-            AddItem(player);
+        foreach (uint id in ids) {
+            AddItem(id);
         }
     }
 
     /// <summary>
     ///   <para> 添加项目 </para>
     /// </summary>
-    void AddItem(Player player) {
+    void AddItem(uint playerId) {
         // 创建新的子节点
         GameObject prefabInstance = Instantiate(prefab);
         prefabInstance.transform.SetParent(list.transform);
@@ -55,7 +56,7 @@ public class PlayerList : MonoBehaviour {
 
         // 设置子节点
         PlayerItem item = prefabInstance.GetComponent<PlayerItem>();
-        item.Display(player);
+        item.Id = playerId;
         items.Add(item);
 
         // 显示
