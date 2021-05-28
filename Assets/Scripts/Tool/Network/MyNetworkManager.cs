@@ -12,15 +12,24 @@ public class MyNetworkManager : NetworkManager {
     /// </summary>
     public override void OnServerConnect(NetworkConnection conn)
     {
-        Debug.Log("服务器：客户端已连接");
+        Debug.Log("我是服务器，我完成了一次连接");
+        
+        // 添加
+        NetworkResource.networkInfo.RpcAddPlayer();
         
         // 生成player对象
         GameObject playerObject = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
         playerObject.transform.SetParent(transform);
         Player player = playerObject.GetComponent<Player>();
         
-        // 添加
-        NetworkResource.networkInfo.CmdAddPlayer(player);
+        // 初始化player相关
+        // Debug.Log(conn.identity is null);
+        player.Identity = conn.identity;
+        NetworkResource.networkInfo.players.Add(player.id, player);
+        Debug.Log("当前玩家数：" + NetworkResource.networkInfo.players.Count);
+        
+        // 推送
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
     }
 
     /// <summary>
@@ -28,8 +37,11 @@ public class MyNetworkManager : NetworkManager {
     /// </summary>
     public override void OnClientConnect(NetworkConnection conn)
     {
-        Debug.Log("客户端：客户端已连接");
+        Debug.Log("我是客户端，我已连接");
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Success);
+        
+        // 添加
+        NetworkResource.networkInfo.RpcAddPlayer();
     }
 
     /// <summary>

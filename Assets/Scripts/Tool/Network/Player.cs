@@ -10,7 +10,7 @@ using Mirror;
 /// </summary>
 public class Player : NetworkBehaviour {
     // identity
-    [SerializeField] private NetworkIdentity identity;
+    private NetworkIdentity identity;
     
     /// <summary>
     ///   <para> 唯一id </para>
@@ -23,29 +23,16 @@ public class Player : NetworkBehaviour {
     [SyncVar] public string name;
 
     /// <summary>
-    ///   <para> 连接上时自动生成id和name </para>
+    ///   <para> 自动生成id和name </para>
     /// </summary>
-    private void Start() {
-        SetId();
-        MakeName();
-        Debug.Log("新Player:" + id);
-    }
-    
-    /// <summary>
-    ///   <para> 获取id </para>
-    /// </summary>
-    public void SetId()
-    {
-        // 系统自带标识
-        id = identity.netId;
-    }
-
-    /// <summary>
-    ///   <para> 生成name </para>
-    /// </summary>
-    public void MakeName()
-    {
-        name = id + "";
+    public NetworkIdentity Identity {
+        get { return identity; }
+        set {
+            identity = value;
+            // id = identity.netId;
+            name = "玩家" + id;
+            Debug.Log("新Player:" + id);
+        }
     }
 
 }

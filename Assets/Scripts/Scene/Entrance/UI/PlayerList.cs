@@ -20,6 +20,10 @@ public class PlayerList : MonoBehaviour {
     void Start() {
         prefab.SetActive(false);
         NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, NewItem);
+        // NewItem();
+    }
+
+    private void Update() {
         NewItem();
     }
 
