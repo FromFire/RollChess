@@ -17,13 +17,12 @@ public class PlayerList : MonoBehaviour {
     // 所有item列表
     List<PlayerItem> items = new List<PlayerItem>();
 
-    void Start() {
-        prefab.SetActive(false);
+    private void Awake() {
         NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, NewItem);
-        // NewItem();
     }
 
-    private void Update() {
+    void Start() {
+        prefab.SetActive(false);
         NewItem();
     }
 
@@ -38,7 +37,7 @@ public class PlayerList : MonoBehaviour {
             return;
         // 寻找新的player
         foreach (PlayerItem item in items) {
-            if (!ids.Contains(item.Id)) {
+            if (ids.Contains(item.Id)) {
                 ids.Remove(item.Id);
             }
         }

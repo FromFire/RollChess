@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using Random = System.Random;
 
 /// <summary>
 ///   <para> 玩家 </para>
@@ -30,6 +31,7 @@ public class Player : NetworkBehaviour {
         set {
             identity = value;
             // id = identity.netId;
+            id = (uint)new Random().Next(int.MaxValue);
             name = "玩家" + id;
             Debug.Log("新Player:" + id);
         }
