@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,17 +19,17 @@ public class Player : NetworkBehaviour
     ///   <para> 显示在UI上的玩家名字 </para>
     /// </summary>
     [SyncVar] public string name;
-    
+
     /// <summary>
     ///   <para> 连接上时自动生成id和name </para>
     /// </summary>
-    public override void OnStartLocalPlayer()
-    {
+    private void Start() {
         SetId();
         MakeName();
-        NetworkResource.networkManager.AddPlayer(this);
+        NetworkResource.networkInfo.CmdAddPlayer(this);
+        Debug.Log(NetworkResource.networkInfo.players.Count);
     }
-
+    
     /// <summary>
     ///   <para> 获取id </para>
     /// </summary>

@@ -18,7 +18,7 @@ public class PlayerList : MonoBehaviour {
 
     void Start() {
         prefab.SetActive(false);
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Success, NewItem);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, NewItem);
         NewItem();
     }
 
@@ -26,7 +26,7 @@ public class PlayerList : MonoBehaviour {
     ///   <para> 新player加入时触发 </para>
     /// </summary>
     public void NewItem() {
-        HashSet<Player> players = new HashSet<Player>(NetworkResource.networkManager.players);
+        HashSet<Player> players = new HashSet<Player>(NetworkResource.networkInfo.players);
 
         // 没有增加新player
         if (players.Count == items.Count)
