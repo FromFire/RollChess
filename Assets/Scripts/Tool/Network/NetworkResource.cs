@@ -11,7 +11,8 @@ using Mirror;
 public class NetworkResource : MonoBehaviour
 {
     public static MyNetworkManager networkManager;
-    
+
+    // 赋值用
     [SerializeField] MyNetworkManager _networkManager;
     
     /// <summary>

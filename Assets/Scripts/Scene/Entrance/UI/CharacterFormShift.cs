@@ -13,6 +13,9 @@ public class CharacterFormShift : MonoBehaviour
 
     // 是否已锁定
     private bool _isLocked;
+    
+    // 是否是多人模式
+    public bool isMultiplePlayer = true;
 
     // 切换按钮
     [SerializeField] Button button;
@@ -20,6 +23,9 @@ public class CharacterFormShift : MonoBehaviour
     [SerializeField] Image image;
     // 选择栏的三个图标
     [SerializeField] List<Sprite> playerSprites;
+    
+    // 上级的ChooseCharacter
+    [SerializeField] private ChooseCharacter chooseCharacter;
 
     void Start() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Form, UpdateSelf);
@@ -58,18 +64,12 @@ public class CharacterFormShift : MonoBehaviour
     }
 
     /// <summary>
-    ///   <para> 点击响应函数，按左右键进行回调。 </para>
+    ///   <para> 点击响应函数 </para>
     /// </summary>
     public void OnClick() {
-        EntranceResource.playerOperationController.ShiftPlayerFrom(playerID);
-        // // 左键切换操控方式（用于单机和host）
-        // if(Input.GetMouseButton(0)) {
-            
-        //     Debug.Log("yeah!");
-        // }
-        // // 右键选择操控该角色（仅用于Client）
-        // if(Input.GetMouseButton(1)) {
-        //     //onRightClick();
-        // }
+        if(isMultiplePlayer)
+            chooseCharacter.Choose(playerID);
+        else
+            EntranceResource.playerOperationController.ShiftPlayerFrom(playerID);
     }
 }

@@ -42,8 +42,8 @@ public class EntranceController : MonoBehaviour {
     ///   <para> 创建房间 </para>
     /// </summary>
     public void CreateRoom() {
-        if (!isGameAvalible())
-            return;
+        //if (!isGameAvalible())
+        //    return;
         
         // 创建host
         NetworkResource.networkManager.StartHost();

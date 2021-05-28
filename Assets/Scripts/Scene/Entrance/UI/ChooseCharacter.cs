@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 /// <summary>
 ///   <para> 选择角色操控方式和玩家 </para>
-///   <para> 本组件读取Model！ </para>
-///   <para> 子组件：CharacterFormShift </para>
 /// </summary>
 public class ChooseCharacter : MonoBehaviour
 {
@@ -21,6 +19,14 @@ public class ChooseCharacter : MonoBehaviour
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Limit, UpdateSelf);
     }
 
+    /// <summary>
+    ///   <para> 设置或取消多人模式 </para>
+    /// </summary>
+    public void SetMultiplePlayer(bool valid)
+    {
+        
+    }
+    
     /// <summary>
     ///   <para> 更新自身显示 </para>
     /// </summary>
@@ -42,5 +48,12 @@ public class ChooseCharacter : MonoBehaviour
             // Max之前的解锁，之后的锁定
             buttons[i].IsLocked = (i >= max);
         }
+    }
+    
+    /// <summary>
+    ///   <para> 选择该角色 </para>
+    /// </summary>
+    public void Choose(PlayerID id) {
+
     }
 }
