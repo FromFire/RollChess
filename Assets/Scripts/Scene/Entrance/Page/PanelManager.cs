@@ -32,6 +32,8 @@ public class PanelManager : MonoBehaviour {
     [SerializeField] private MapPreview mapPreview;
     // 地图选择：【显示】单人、地图编辑、房主选地图
     [SerializeField] private MapMenu mapMenu;
+    // 角色选择：【显示】单人、房主选地图、多人选角色
+    [SerializeField] private ChooseCharacter chooseCharacter;
 
     // 初始化，页面最开始是主菜单
     void Start() {
@@ -70,6 +72,7 @@ public class PanelManager : MonoBehaviour {
             backButton.gameObject.SetActive(nowPanel != mainMenu);
             mapPreview.gameObject.SetActive(nowPanel != mainMenu && nowPanel != joinRoom);
             mapMenu.gameObject.SetActive(nowPanel == single || nowPanel == mapEdit || nowPanel == roomOwnerChooseMap);
+            chooseCharacter.gameObject.SetActive(nowPanel == single || nowPanel == roomOwnerChooseMap || nowPanel == room);
         }
     }
 }
