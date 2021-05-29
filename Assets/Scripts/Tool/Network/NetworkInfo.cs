@@ -1,38 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using Random = System.Random;
 
 public class NetworkInfo : NetworkBehaviour {
-    // 所有player
-    public Dictionary<uint, Player> players;
-    
-    [SerializeField] public NetworkIdentity identity;
+    // 所有id
+    public SyncList<uint> ids = new SyncList<uint>();
+    // 所有name
+    public Dictionary<uint, string> names = new Dictionary<uint, string>();
 
-    public void Start() {
-        players = new Dictionary<uint, Player>();
+    private List<string> allName = new List<string>() {
+        "小明", "小霞", "小刚", "杰哥", "阿伟", "斌斌"
+    };
+
+    [ClientRpc]
+    public void RpcAddId() {
+        AddId();
+    }
+    
+    [Command]
+    public void CmdAddId() {
+        AddId();
     }
 
     /// <summary>
     ///   <para> 添加连接 </para>
     /// </summary>
-    public void AddPlayer() {
-        // 生成player对象
-        GameObject playerObject = Instantiate(NetworkResource.networkManager.playerPrefab, Vector3.zero, Quaternion.identity);
-        playerObject.transform.SetParent(transform);
-        Player player = playerObject.GetComponent<Player>();
-                
-        // 初始化player相关
-        // Debug.Log(conn.identity is null);
-        player.Identity = null;
-        NetworkResource.networkInfo.players.Add(player.id, player);
-        Debug.Log("当前玩家数：" + NetworkResource.networkInfo.players.Count);
-                
+    public void AddId() {
+        // 初始化所有
+        uint id = (uint)new Random().Next(int.MaxValue);
+        ids.Add(id);
+        names.Add(id, allName[ids.Count]);
+        
         // 推送
         NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
-    }
-
-    [ClientRpc]
-    void RpcAddPlayer() {
-        AddPlayer();
     }
 }

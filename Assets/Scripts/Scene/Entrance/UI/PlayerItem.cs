@@ -20,7 +20,7 @@ public class PlayerItem : MonoBehaviour {
         get { return id; }
         set {
             id = value;
-            playerName.text = NetworkResource.networkInfo.players[id].name;
+            playerName.text = NetworkResource.networkInfo.names[id];
         }
     }
 }

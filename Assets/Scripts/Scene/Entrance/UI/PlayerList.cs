@@ -30,7 +30,7 @@ public class PlayerList : MonoBehaviour {
     ///   <para> 新player加入时触发 </para>
     /// </summary>
     public void NewItem() {
-        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.players.Keys);
+        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.ids);
 
         // 没有增加新player
         if (ids.Count == items.Count)

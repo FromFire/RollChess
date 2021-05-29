@@ -13,9 +13,6 @@ public class MyNetworkManager : NetworkManager {
     public override void OnServerConnect(NetworkConnection conn)
     {
         Debug.Log("我是服务器，我完成了一次连接");
-
-        // 添加
-        NetworkResource.networkInfo.AddPlayer();
     }
 
     /// <summary>
@@ -25,6 +22,9 @@ public class MyNetworkManager : NetworkManager {
     {
         Debug.Log("我是客户端，我已连接");
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Success);
+        
+        // 添加
+        NetworkResource.networkInfo.AddId();
     }
 
     /// <summary>

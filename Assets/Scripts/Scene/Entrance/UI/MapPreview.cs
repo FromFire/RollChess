@@ -17,6 +17,8 @@ public class MapPreview : MonoBehaviour
     void Start() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_File_Name, UpdateThumb);
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Map_Name, UpdateName);
+        UpdateThumb();
+        UpdateName();
     }
 
     /// <summary>
