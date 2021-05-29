@@ -26,10 +26,12 @@ public class PanelManager : MonoBehaviour {
     // 多人玩家选角色页面
     public Image room;
 
-    // 返回按钮：主菜单【不显示】
-    [SerializeField] Button backButton;
-    // 地图预览：主菜单、创建房间【不显示】
+    // 返回按钮：【不显示】主菜单
+    [SerializeField] private Button backButton;
+    // 地图预览：【不显示】主菜单、创建房间
     [SerializeField] private MapPreview mapPreview;
+    // 地图选择：【显示】单人、地图编辑、房主选地图
+    [SerializeField] private MapMenu mapMenu;
 
     // 初始化，页面最开始是主菜单
     void Start() {
@@ -64,9 +66,10 @@ public class PanelManager : MonoBehaviour {
             nowPanel = value;
             nowPanel.gameObject.SetActive(true);
 
-            // 返回按钮、地图预览
+            // 返回按钮、地图预览、地图选择
             backButton.gameObject.SetActive(nowPanel != mainMenu);
             mapPreview.gameObject.SetActive(nowPanel != mainMenu && nowPanel != joinRoom);
+            mapMenu.gameObject.SetActive(nowPanel == single || nowPanel == mapEdit || nowPanel == roomOwnerChooseMap);
         }
     }
 }
