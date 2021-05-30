@@ -55,6 +55,15 @@ public class PanelManager : MonoBehaviour {
         // 单人页 / 地图编辑页 / 创建房间 -> 主页
         if(nowPanel == single || nowPanel == mapEdit || nowPanel == joinRoom)
             NowPanel = mainMenu;
+        // 房主选地图页 -> 创建房间
+        else if (nowPanel == roomOwnerChooseMap)
+            NowPanel = joinRoom;
+        // 多人房间页 -> 创建房间
+        // plus：回调，取消服务器的连接
+        else if (nowPanel == room) {
+            NowPanel = joinRoom;
+            EntranceResource.entranceController.ExitRoom();
+        }
     }
 
     /// <summary>

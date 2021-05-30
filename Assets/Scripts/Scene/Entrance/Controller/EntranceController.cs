@@ -70,10 +70,18 @@ public class EntranceController : MonoBehaviour {
     }
     
     /// <summary>
-    ///   <para> 创建房间 </para>
+    ///   <para> 取消加入房间 </para>
     /// </summary>
     public void CancelJoinRoom() {
         NetworkResource.networkManager.StopClient();
+    }
+    
+    /// <summary>
+    ///   <para> 断开网络连接 </para>
+    /// </summary>
+    public void ExitRoom() {
+        NetworkResource.networkManager.StopClient();
+        NetworkResource.networkManager.StopServer();
     }
     
     /// <summary>

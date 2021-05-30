@@ -17,6 +17,8 @@ public class JoinRoomPage : MonoBehaviour
     // 加入房间按钮
     [SerializeField] private Button joinRoomButton;
 
+    private bool isConnecting = false;
+
     private void Start()
     {
         NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Success, JoinRoomSuccess);
@@ -37,14 +39,7 @@ public class JoinRoomPage : MonoBehaviour
     {
         string ip = ipInputField.text;
         EntranceResource.entranceController.JoinRoom(ip);
-        
-        // 把“加入房间”按钮改为“取消加入”
-        joinRoomButtonText.text = "取消加入";
-        // 锁定ip输入框
-        ipInputField.interactable = false;
-        // 按钮响应函数修改为取消加入
-        joinRoomButton.onClick.RemoveAllListeners();
-        joinRoomButton.onClick.AddListener(CancelJoinRoom);
+        IsConnecting = true;
     }
     
     /// <summary>
@@ -53,14 +48,7 @@ public class JoinRoomPage : MonoBehaviour
     public void CancelJoinRoom()
     {
         EntranceResource.entranceController.CancelJoinRoom();
-        
-        // 把“取消房间”按钮改为“加入房间”
-        joinRoomButtonText.text = "加入房间";
-        // 解锁ip输入框
-        ipInputField.interactable = true;
-        // 按钮相应函数修改为加入房间
-        joinRoomButton.onClick.RemoveAllListeners();
-        joinRoomButton.onClick.AddListener(JoinRoom);
+        IsConnecting = false;
     }
 
     /// <summary>
@@ -69,5 +57,31 @@ public class JoinRoomPage : MonoBehaviour
     public void JoinRoomSuccess()
     {
         PanelManager.Get().NowPanel = PanelManager.Get().room;
+        IsConnecting = false;
+    }
+
+    public bool IsConnecting {
+        get { return isConnecting; }
+        set {
+            isConnecting = value;
+            if (isConnecting) {
+                // 把“加入房间”按钮改为“取消加入”
+                joinRoomButtonText.text = "取消加入";
+                // 锁定ip输入框
+                ipInputField.interactable = false;
+                // 按钮响应函数修改为取消加入
+                joinRoomButton.onClick.RemoveAllListeners();
+                joinRoomButton.onClick.AddListener(CancelJoinRoom);
+            }
+            else {
+                // 把“取消房间”按钮改为“加入房间”
+                joinRoomButtonText.text = "加入房间";
+                // 解锁ip输入框
+                ipInputField.interactable = true;
+                // 按钮相应函数修改为加入房间
+                joinRoomButton.onClick.RemoveAllListeners();
+                joinRoomButton.onClick.AddListener(JoinRoom);
+            }
+        }
     }
 }
