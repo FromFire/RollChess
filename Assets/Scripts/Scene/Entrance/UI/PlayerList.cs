@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,23 +30,23 @@ public class PlayerList : MonoBehaviour {
     /// <summary>
     ///   <para> 新player加入时触发 </para>
     /// </summary>
-    public void NewItem() {
-        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.ids);
-
-        // 没有增加新player
-        if (ids.Count == items.Count)
-            return;
-        // 寻找新的player
-        foreach (PlayerItem item in items) {
-            if (ids.Contains(item.Id)) {
-                ids.Remove(item.Id);
-            }
-        }
-        
-        // 新增条目
-        foreach (uint id in ids) {
-            AddItem(id);
-        }
+    void NewItem() {
+        // HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.ids);
+        //
+        // // 没有增加新player
+        // if (ids.Count == items.Count)
+        //     return;
+        // // 寻找新的player
+        // foreach (PlayerItem item in items) {
+        //     if (ids.Contains(item.Id)) {
+        //         ids.Remove(item.Id);
+        //     }
+        // }
+        //
+        // // 新增条目
+        // foreach (uint id in ids) {
+        //     AddItem(id);
+        // }
     }
 
     /// <summary>

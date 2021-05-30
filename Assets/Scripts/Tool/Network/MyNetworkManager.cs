@@ -13,6 +13,7 @@ public class MyNetworkManager : NetworkManager {
     public override void OnServerConnect(NetworkConnection conn)
     {
         Debug.Log("我是服务器，我完成了一次连接");
+        base.OnServerConnect(conn);
     }
 
     /// <summary>
@@ -24,7 +25,8 @@ public class MyNetworkManager : NetworkManager {
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Success);
         
         // 添加
-        NetworkResource.networkInfo.AddId();
+        //NetworkResource.networkInfo.AddId();
+        base.OnClientConnect(conn);
     }
 
     /// <summary>
@@ -34,5 +36,6 @@ public class MyNetworkManager : NetworkManager {
     {
         Debug.Log("启动Host");
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Server_Success);
+        base.OnStartHost();
     }
 }
