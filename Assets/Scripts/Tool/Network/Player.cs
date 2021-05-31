@@ -10,4 +10,8 @@ using Random = System.Random;
 ///   <para> 玩家 </para>
 /// </summary>
 public class Player : NetworkBehaviour {
+    public NetworkConnection conn;
+    public uint id;
+    public string name;
+
 }

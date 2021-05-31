@@ -31,22 +31,22 @@ public class PlayerList : MonoBehaviour {
     ///   <para> 新player加入时触发 </para>
     /// </summary>
     void NewItem() {
-        // HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.ids);
-        //
-        // // 没有增加新player
-        // if (ids.Count == items.Count)
-        //     return;
-        // // 寻找新的player
-        // foreach (PlayerItem item in items) {
-        //     if (ids.Contains(item.Id)) {
-        //         ids.Remove(item.Id);
-        //     }
-        // }
-        //
-        // // 新增条目
-        // foreach (uint id in ids) {
-        //     AddItem(id);
-        // }
+        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.players.Keys);
+        
+        // 没有增加新player
+        if (ids.Count == items.Count)
+            return;
+        // 寻找新的player
+        foreach (PlayerItem item in items) {
+            if (ids.Contains(item.Id)) {
+                ids.Remove(item.Id);
+            }
+        }
+        
+        // 新增条目
+        foreach (uint id in ids) {
+            AddItem(id);
+        }
     }
 
     /// <summary>
