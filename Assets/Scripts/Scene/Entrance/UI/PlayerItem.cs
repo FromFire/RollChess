@@ -33,7 +33,7 @@ public class PlayerItem : MonoBehaviour {
             // 显示房主图标
             crown.gameObject.SetActive(player.isHost);
             // 踢人按钮禁用
-            //kickOut.gameObject.SetActive();
+            kickOut.interactable = (NetworkResource.networkInfo.isServer && !player.isHost);
         }
     }
 }
