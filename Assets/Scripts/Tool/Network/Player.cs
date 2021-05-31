@@ -31,6 +31,7 @@ public class Player : NetworkBehaviour {
     
     // 同步name后，推送提醒
     void UpdateName(string oldValue, string newValue) {
+        Debug.Log("昵称同步成功，id: " + id + "，昵称：" + newValue);
         NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
     }
 

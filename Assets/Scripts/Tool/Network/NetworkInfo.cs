@@ -16,6 +16,9 @@ public class NetworkInfo : NetworkBehaviour {
         players.Add(player.Id, player);
         Debug.Log("新player：(id:" + player.Id + ", name:" + player.name + ")");
         
+        // 同步所有player
+        NetworkResource.networkInfo.SyncPlayers();
+        
         // 推送
         NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
     }
@@ -23,8 +26,7 @@ public class NetworkInfo : NetworkBehaviour {
     /// <summary>
     ///   <para> 同步players </para>
     /// </summary>
-    [ClientRpc]
-    public void RpcSyncPlayers() {
+    public void SyncPlayers() {
         Player[] _players = FindObjectsOfType<Player>();
         foreach (Player player in _players) {
             if(!players.ContainsKey(player.Id))
