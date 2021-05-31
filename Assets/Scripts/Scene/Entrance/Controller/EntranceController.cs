@@ -13,6 +13,7 @@ public class EntranceController : MonoBehaviour {
 
     void Start() {
         SaveResource.saveManager.LoadAllSave();
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Disconnect, OnDisconnect);
     }
 
     /// <summary>
@@ -97,5 +98,12 @@ public class EntranceController : MonoBehaviour {
         // 房主才能踢人，而且不能踢自己
         if(NetworkResource.networkInfo.isServer && !NetworkResource.networkInfo.players[id].isHost)
             NetworkResource.networkInfo.players[id].conn.Disconnect();
+    }
+
+    /// <summary>
+    ///   <para> 断开连接，返回创建房间页面 </para>
+    /// </summary>
+    public void OnDisconnect() {
+        PanelManager.Get().NowPanel = PanelManager.Get().joinRoom;
     }
 }

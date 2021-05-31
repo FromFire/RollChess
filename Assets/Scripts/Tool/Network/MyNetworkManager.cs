@@ -66,4 +66,13 @@ public class MyNetworkManager : NetworkManager {
         NetworkResource.networkInfo.RpcRemovePlayer(conn.identity.netId);
         base.OnServerDisconnect(conn);
     }
+
+    /// <summary>
+    ///   <para> Server断联后，在Client上回调 </para>
+    /// </summary>
+    public override void OnClientDisconnect(NetworkConnection conn) {
+        base.OnClientDisconnect(conn);
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Disconnect);
+        Debug.Log("被房主踢出房间");
+    }
 }
