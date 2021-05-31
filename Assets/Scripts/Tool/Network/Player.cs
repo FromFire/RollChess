@@ -11,8 +11,8 @@ using Random = System.Random;
 /// </summary>
 public class Player : NetworkBehaviour {
     public NetworkConnection conn;
-    [SyncVar] private uint id;
-    [SyncVar] private string name;
+    [SyncVar(hook = "AddPlayer")] private uint id;
+    [SyncVar(hook = "UpdateName")] private string name;
 
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
@@ -22,6 +22,17 @@ public class Player : NetworkBehaviour {
         "狡诈的变色龙", "矫健的豹猫", "华美的极乐鸟", "剧毒的狼蛛", "轻灵的曙凤蝶",
         "深海的大王乌贼", "潜伏的金环蛇", "美味的秋刀鱼", "掠食的军舰鸟", "洄游的座头鲸"
     };
+
+    // 同步id后，将自己加入networkInfo
+    // 必须保证先同步id，再AddPlayer
+    void AddPlayer(uint oldValue, uint newValue) {
+        NetworkResource.networkInfo.AddPlayer(gameObject);
+    }
+    
+    // 同步name后，推送提醒
+    void UpdateName(string oldValue, string newValue) {
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
+    }
 
     /// <summary>
     ///   <para> 玩家昵称池-用过的 </para>

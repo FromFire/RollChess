@@ -22,10 +22,6 @@ public class MyNetworkManager : NetworkManager {
         // 指定player的id，conn在上一步之前都是null，必须在addPlayer之后才行
         player.Id = conn.identity.netId;
 
-        // NetworkInfo添加player
-        NetworkResource.networkInfo.RpcAddPlayer(playerobject);
-        Debug.Log("新player：(id:" + player.Id + ", name:" + player.name + ")");
-        
         // 同步所有player
         NetworkResource.networkInfo.RpcSyncPlayers();
     }

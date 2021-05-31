@@ -11,10 +11,10 @@ public class NetworkInfo : NetworkBehaviour {
     /// <summary>
     ///   <para> 添加连接 </para>
     /// </summary>
-    [ClientRpc]
-    public void RpcAddPlayer(GameObject playerObject) {
+    public void AddPlayer(GameObject playerObject) {
         Player player = playerObject.GetComponent<Player>();
         players.Add(player.Id, player);
+        Debug.Log("新player：(id:" + player.Id + ", name:" + player.name + ")");
         
         // 推送
         NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);

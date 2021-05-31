@@ -26,6 +26,11 @@ public class PlayerList : MonoBehaviour {
         prefab.SetActive(false);
     }
 
+    private void Update() {
+        if(Input.GetMouseButtonDown(2))
+            UpdateSelf();
+    }
+
     /// <summary>
     ///   <para> 更新自身 </para>
     /// </summary>
