@@ -16,9 +16,12 @@ public class MyNetworkManager : NetworkManager {
         Player player = playerobject.GetComponent<Player>();
         player.conn = conn;
         
-        // 添加player在后面，因为需要同步player的属性
+        // 添加player，在初始化后面是因为需要同步player的属性
         NetworkServer.AddPlayerForConnection(conn, playerobject);
-        player.RpcSetId(conn.identity.netId);
+        
+        // 指定player的id和name并同步，在添加player后面是因为起名是随机的，需要起好后再同步
+        player.Id = conn.identity.netId;
+        player.RpcSetInfo(player.Id, player.Name);
 
         // NetworkInfo添加player
         NetworkResource.networkInfo.RpcAddPlayer(playerobject);

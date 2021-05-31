@@ -29,8 +29,9 @@ public class Player : NetworkBehaviour {
     public static List<string> namePoolUsed = new List<string>();
 
     [ClientRpc]
-    public void RpcSetId(uint _id) {
-        Id = _id;
+    public void RpcSetInfo(uint _id, string _name) {
+        id = _id;
+        name = _name;
     }
 
     public uint Id {
