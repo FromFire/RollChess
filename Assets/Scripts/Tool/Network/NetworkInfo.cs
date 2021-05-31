@@ -19,9 +19,6 @@ public class NetworkInfo : NetworkBehaviour {
         
         // 同步所有player
         NetworkResource.networkInfo.SyncPlayers();
-        
-        // 推送
-        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
     }
     
     /// <summary>
@@ -33,8 +30,23 @@ public class NetworkInfo : NetworkBehaviour {
             if(!players.ContainsKey(player.Id))
                 players.Add(player.Id, player);
         }
+    }
+    
+    /// <summary>
+    ///   <para> 移除Player </para>
+    /// </summary>
+    [ClientRpc]
+    public void RpcRemovePlayer(uint id) {
+        RemovePlayer(id);
+    }
+    
+    /// <summary>
+    ///   <para> 移除Player </para>
+    /// </summary>
+    public void RemovePlayer(uint id) {
+        players.Remove(id);
         
         // 推送
-        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Player_Change);
     }
 }

@@ -64,8 +64,10 @@ public class Player : NetworkBehaviour {
     }
 
     // 回收昵称
+    // 通知NetworkInfo
     private void OnDestroy() {
         namePoolUnused.Add(name);
         namePoolUsed.Remove(name);
+        NetworkResource.networkInfo.RemovePlayer(id);
     }
 }

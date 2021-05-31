@@ -58,4 +58,12 @@ public class MyNetworkManager : NetworkManager {
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Server_Success);
         base.OnStartHost();
     }
+
+    /// <summary>
+    ///   <para> Client断联后，在Server上回调 </para>
+    /// </summary>
+    public override void OnServerDisconnect(NetworkConnection conn) {
+        NetworkResource.networkInfo.RpcRemovePlayer(conn.identity.netId);
+        base.OnServerDisconnect(conn);
+    }
 }

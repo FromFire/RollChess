@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -87,5 +88,12 @@ public class EntranceController : MonoBehaviour {
     {
         string patternIp = @"^((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))$";
         return Regex.IsMatch(ip, patternIp);
+    }
+
+    /// <summary>
+    ///   <para> 踢人 </para>
+    /// </summary>
+    public void KickOut(uint id) {
+        
     }
 }

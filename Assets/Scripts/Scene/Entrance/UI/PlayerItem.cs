@@ -10,13 +10,15 @@ public class PlayerItem : MonoBehaviour {
     [SerializeField] private Text playerName;
     // 房主图标
     [SerializeField] private Image crown;
+    // 踢人按钮
+    [SerializeField] private Button kickOut;
 
     /// <summary>
     ///   <para> 把玩家踢出房间 </para>
     /// </summary>
     public void KickOut()
     {
-        
+        EntranceResource.entranceController.KickOut(id);
     }
 
     public uint Id {
@@ -30,6 +32,8 @@ public class PlayerItem : MonoBehaviour {
                 playerName.color = Color.red;
             // 显示房主图标
             crown.gameObject.SetActive(player.isHost);
+            // 踢人按钮禁用
+            //kickOut.gameObject.SetActive();
         }
     }
 }
