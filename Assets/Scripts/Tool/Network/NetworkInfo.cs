@@ -12,7 +12,8 @@ public class NetworkInfo : NetworkBehaviour {
     ///   <para> 添加连接 </para>
     /// </summary>
     [ClientRpc]
-    public void RpcAddPlayer(Player player) {
+    public void RpcAddPlayer(GameObject playerObject) {
+        Player player = playerObject.GetComponent<Player>();
         players.Add(player.Id, player);
         
         // 推送

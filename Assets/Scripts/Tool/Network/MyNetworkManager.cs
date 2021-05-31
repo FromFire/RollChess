@@ -11,17 +11,17 @@ public class MyNetworkManager : NetworkManager {
     ///   <para> 创建新Player </para>
     /// </summary>
     public override void OnServerAddPlayer(NetworkConnection conn) {
-        // base的内容
+        // 初始化player
         GameObject playerobject = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        NetworkServer.AddPlayerForConnection(conn, playerobject);
-        
-        // 修改player属性
         Player player = playerobject.GetComponent<Player>();
         player.conn = conn;
-        player.Id = conn.identity.netId;
         
+        // 添加player在后面，因为需要同步player的属性
+        NetworkServer.AddPlayerForConnection(conn, playerobject);
+        player.RpcSetId(conn.identity.netId);
+
         // NetworkInfo添加player
-        NetworkResource.networkInfo.RpcAddPlayer(player);
+        NetworkResource.networkInfo.RpcAddPlayer(playerobject);
         Debug.Log("新player：(id:" + player.Id + ", name:" + player.name + ")");
     }
 
