@@ -18,12 +18,11 @@ public class MyNetworkManager : NetworkManager {
         // 修改player属性
         Player player = playerobject.GetComponent<Player>();
         player.conn = conn;
-        player.id = conn.identity.netId;
-        player.name = "id" + player.id;
+        player.Id = conn.identity.netId;
         
         // NetworkInfo添加player
         NetworkResource.networkInfo.RpcAddPlayer(player);
-        Debug.Log("新player：(id:" + player.id + ", name:" + player.name + ")");
+        Debug.Log("新player：(id:" + player.Id + ", name:" + player.name + ")");
     }
 
     /// <summary>
