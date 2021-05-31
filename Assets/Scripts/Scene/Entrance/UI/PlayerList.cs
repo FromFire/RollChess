@@ -16,42 +16,51 @@ public class PlayerList : MonoBehaviour {
     [SerializeField] private VerticalLayoutGroup list;
 
     // 所有item列表
-    List<PlayerItem> items = new List<PlayerItem>();
+    Dictionary<uint, PlayerItem> items = new Dictionary<uint, PlayerItem>();
 
     private void Awake() {
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, NewItem);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, UpdateSelf);
     }
 
     void Start() {
         prefab.SetActive(false);
-        NewItem();
     }
 
     /// <summary>
-    ///   <para> 新player加入时触发 </para>
+    ///   <para> 更新自身 </para>
     /// </summary>
-    void NewItem() {
-        HashSet<uint> ids = new HashSet<uint>(NetworkResource.networkInfo.players.Keys);
+    void UpdateSelf() {
+        // 获取已显示的id（idShowing）和已有id（idAll）
+        List<uint> idShowing = new List<uint>();
+        foreach (uint id in items.Keys)
+            idShowing.Add(id);
+        List<uint> idAll = new List<uint>(NetworkResource.networkInfo.players.Keys);
         
-        // 没有增加新player
-        if (ids.Count == items.Count)
-            return;
-        // 寻找新的player
-        foreach (PlayerItem item in items) {
-            if (ids.Contains(item.Id)) {
-                ids.Remove(item.Id);
-            }
-        }
+        // 遍历idShowing，若idAll里有则更新显示，若没有则删除此item
+        foreach (uint id in idShowing)
+            if(idAll.Contains(id))
+                UpdateItem(items[id]);
+            else
+                RemoveItem(id);
         
-        // 新增条目
-        foreach (uint id in ids) {
-            AddItem(id);
-        }
+        // 遍历idAll，若idShowing里没有，则添加此item
+        foreach (uint id in idAll)
+            if(!idShowing.Contains(id))
+                AddItem(id);
     }
 
-    /// <summary>
-    ///   <para> 添加项目 </para>
-    /// </summary>
+    // 更新条目
+    void UpdateItem(PlayerItem item) {
+        item.Id = item.Id;
+    }
+    
+    // 删除条目
+    void RemoveItem(uint item) {
+        items[item].gameObject.SetActive(false);
+        items.Remove(item);
+    }
+    
+    // 添加条目
     void AddItem(uint playerId) {
         // 创建新的子节点
         GameObject prefabInstance = Instantiate(prefab);
@@ -61,7 +70,7 @@ public class PlayerList : MonoBehaviour {
         // 设置子节点
         PlayerItem item = prefabInstance.GetComponent<PlayerItem>();
         item.Id = playerId;
-        items.Add(item);
+        items.Add(item.Id, item);
 
         // 显示
         item.gameObject.SetActive(true);

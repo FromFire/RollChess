@@ -20,7 +20,10 @@ public class PlayerItem : MonoBehaviour {
         get { return id; }
         set {
             id = value;
-            playerName.text = NetworkResource.networkInfo.players[id].Name;
+            Player player = NetworkResource.networkInfo.players[id];
+            playerName.text = player.Name;
+            if(player.isLocalPlayer)
+                playerName.color = Color.red;
         }
     }
 }

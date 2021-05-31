@@ -19,4 +19,19 @@ public class NetworkInfo : NetworkBehaviour {
         // 推送
         NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
     }
+    
+    /// <summary>
+    ///   <para> 同步players </para>
+    /// </summary>
+    [ClientRpc]
+    public void RpcSyncPlayers() {
+        Player[] _players = FindObjectsOfType<Player>();
+        foreach (Player player in _players) {
+            if(!players.ContainsKey(player.Id))
+                players.Add(player.Id, player);
+        }
+        
+        // 推送
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
+    }
 }

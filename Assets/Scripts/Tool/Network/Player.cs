@@ -11,8 +11,8 @@ using Random = System.Random;
 /// </summary>
 public class Player : NetworkBehaviour {
     public NetworkConnection conn;
-    private uint id;
-    private string name;
+    [SyncVar] private uint id;
+    [SyncVar] private string name;
 
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
@@ -27,12 +27,6 @@ public class Player : NetworkBehaviour {
     ///   <para> 玩家昵称池-用过的 </para>
     /// </summary>
     public static List<string> namePoolUsed = new List<string>();
-
-    [ClientRpc]
-    public void RpcSetInfo(uint _id, string _name) {
-        id = _id;
-        name = _name;
-    }
 
     public uint Id {
         get { return id; }
