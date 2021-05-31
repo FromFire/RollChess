@@ -7,6 +7,7 @@ using UnityEngine;
 ///   <para> 继承NetworkManager </para>
 /// </summary>
 public class MyNetworkManager : NetworkManager {
+    
     /// <summary>
     ///   <para> 创建新Player </para>
     /// </summary>
@@ -18,9 +19,12 @@ public class MyNetworkManager : NetworkManager {
         
         // 添加player，在初始化后面是因为需要同步player的属性
         NetworkServer.AddPlayerForConnection(conn, playerobject);
-        
+
         // 指定player的id，conn在上一步之前都是null，必须在addPlayer之后才行
         player.Id = conn.identity.netId;
+        // 指定player的isHost，本地只有1个Player就说明此player是host
+        if (FindObjectsOfType<Player>().Length == 1)
+            player.isHost = true;
     }
 
     /// <summary>

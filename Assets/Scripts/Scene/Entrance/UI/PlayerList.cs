@@ -19,7 +19,7 @@ public class PlayerList : MonoBehaviour {
     Dictionary<uint, PlayerItem> items = new Dictionary<uint, PlayerItem>();
 
     private void Awake() {
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.New_Client, UpdateSelf);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Change, UpdateSelf);
     }
 
     void Start() {

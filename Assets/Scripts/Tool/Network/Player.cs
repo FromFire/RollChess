@@ -13,6 +13,7 @@ public class Player : NetworkBehaviour {
     public NetworkConnection conn;
     [SyncVar(hook = "AddPlayer")] private uint id;
     [SyncVar(hook = "UpdateName")] private string name;
+    [SyncVar(hook = "UpdateIsHost")] public bool isHost = false;
 
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
@@ -31,8 +32,13 @@ public class Player : NetworkBehaviour {
     
     // 同步name后，推送提醒
     void UpdateName(string oldValue, string newValue) {
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Player_Change);
+    }
+    
+    // 同步name后，推送提醒
+    void UpdateIsHost(bool oldValue, bool newValue) {
         Debug.Log("昵称同步成功，id: " + id + "，昵称：" + newValue);
-        NetworkResource.networkSubject.Notify(ModelModifyEvent.New_Client);
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Player_Change);
     }
 
     /// <summary>

@@ -54,19 +54,15 @@ public class EntranceController : MonoBehaviour {
     /// </summary>
     public void JoinRoom(string ip) {
         // localhost的情况
-        if (ip.Equals("localhost") || ip.Length == 0)
-        {
-            NetworkResource.networkManager.StartClient();
+        if (ip.Equals("localhost") || ip.Length == 0) ;
+        // ip不合法
+        else if (!IpIsValid(ip))
             return;
-        }
+        // 合法ip
+        else NetworkResource.networkManager.networkAddress = ip;
         
-        // 手动输入ip的情况
-        if (IpIsValid(ip))
-        {
-            // 运行客户端
-            NetworkResource.networkManager.networkAddress = ip;
-            NetworkResource.networkManager.StartClient();
-        }
+        // 启动客户端
+        NetworkResource.networkManager.StartClient();
     }
     
     /// <summary>
