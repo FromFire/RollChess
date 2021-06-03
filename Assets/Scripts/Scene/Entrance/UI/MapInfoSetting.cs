@@ -31,16 +31,16 @@ public class MapInfoSetting : MonoBehaviour
     /// </summary>
     public void UpdateSelf() {
         // 若没有地图，锁定
-        if(EntranceResource.mapChooseState.MapFileName.Length == 0) {
+        if(MapChooseState.Get().MapFileName.Length == 0) {
             SetLock(true);
             return;
         }
 
         // 地图合法，显示其信息
         SetLock(false);
-        mapName.text = EntranceResource.mapChooseState.MapName;
-        limitMin.text = EntranceResource.mapChooseState.PlayerLimit.min + "";
-        limitMax.text = EntranceResource.mapChooseState.PlayerLimit.max + "";
+        mapName.text = MapChooseState.Get().MapName;
+        limitMin.text = MapChooseState.Get().PlayerLimit.min + "";
+        limitMax.text = MapChooseState.Get().PlayerLimit.max + "";
     }
 
     /// <summary>
@@ -72,12 +72,12 @@ public class MapInfoSetting : MonoBehaviour
         string mapname = mapName.text;
 
         // 若地图为空，说明正在创建新地图
-        if(EntranceResource.mapChooseState.MapFileName.Length == 0) {
-            EntranceResource.mapOperationController.NewMap(mapname, min, max);
+        if(MapChooseState.Get().MapFileName.Length == 0) {
+            MapOperationController.Get().NewMap(mapname, min, max);
             return;
         }
 
         // 地图不为空，说明在修改已有地图的信息
-        EntranceResource.mapOperationController.ModifySetting(mapname, min, max);
+        MapOperationController.Get().ModifySetting(mapname, min, max);
     }
 }

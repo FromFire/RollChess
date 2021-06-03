@@ -32,7 +32,7 @@ public class ChooseCharacter : MonoBehaviour
     /// </summary>
     public void UpdateSelf() {
         // 获取人数限制
-        (int min, int max) limit = EntranceResource.mapChooseState.PlayerLimit;
+        (int min, int max) limit = MapChooseState.Get().PlayerLimit;
         int max = limit.max;
         int min = limit.min;
 

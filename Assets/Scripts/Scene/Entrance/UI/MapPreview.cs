@@ -25,7 +25,7 @@ public class MapPreview : MonoBehaviour
     ///   <para> 更新略缩图的显示 </para>
     /// </summary>
     public void UpdateThumb() {
-        string mapFileName = EntranceResource.mapChooseState.MapFileName;
+        string mapFileName = MapChooseState.Get().MapFileName;
         // 空地图情况
         if(mapFileName.Length == 0)
             return;
@@ -43,6 +43,6 @@ public class MapPreview : MonoBehaviour
     /// </summary>
     public void UpdateName() {
         // 预览地图名
-        mapName.text = EntranceResource.mapChooseState.MapName;
+        mapName.text = MapChooseState.Get().MapName;
     }
 }

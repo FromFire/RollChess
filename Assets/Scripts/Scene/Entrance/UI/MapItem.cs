@@ -25,7 +25,7 @@ public class MapItem : MonoBehaviour {
     ///   <para> 选择此项，是本按钮的点击函数 </para>
     /// </summary>
     public void Choose() {
-        EntranceResource.mapOperationController.Choose(filename);
+        MapOperationController.Get().Choose(filename);
     }
 
     /// <summary>

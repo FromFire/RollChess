@@ -28,7 +28,7 @@ public class MapEditPage : MonoBehaviour {
     ///   <para> 更新自身 </para>
     /// </summary>
     public void UpdateSelf() {
-        string filename = EntranceResource.mapChooseState.MapFileName;
+        string filename = MapChooseState.Get().MapFileName;
         bool valid = (filename.Length != 0);
         copyButton.interactable = valid;
         editButton.interactable = valid;
@@ -39,7 +39,7 @@ public class MapEditPage : MonoBehaviour {
     ///   <para> 复制地图 </para>
     /// </summary>
     public void CopyMap() {
-        string filename = EntranceResource.mapOperationController.CopyMap();
+        string filename = MapOperationController.Get().CopyMap();
         mapMenu.AddItem(filename);
     }
 
@@ -47,7 +47,7 @@ public class MapEditPage : MonoBehaviour {
     ///   <para> 编辑地图 </para>
     /// </summary>
     public void EditMap() {
-        EntranceResource.mapOperationController.EditMap();
+        MapOperationController.Get().EditMap();
     }
 
     /// <summary>
@@ -55,12 +55,12 @@ public class MapEditPage : MonoBehaviour {
     /// </summary>
     public void DeleteMap() {
         // 删除文件
-        string filename = EntranceResource.mapChooseState.MapFileName;
-        EntranceResource.mapOperationController.DeleteMap();
+        string filename = MapChooseState.Get().MapFileName;
+        MapOperationController.Get().DeleteMap();
         mapMenu.RemoveItem(filename);
 
         // 维护mapChooseState
-        EntranceResource.mapChooseState.MapFileName = "";
+        MapChooseState.Get().MapFileName = "";
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class MapEditPage : MonoBehaviour {
     /// </summary>
     public void PrepareNewMap() {
         // 清空地图信息，解锁InfoSetting用来输入新地图的信息
-        EntranceResource.mapOperationController.PrepareNewMap();
+        MapOperationController.Get().PrepareNewMap();
         mapInfoSetting.SetLock(false);
     }
 }

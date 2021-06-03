@@ -35,7 +35,7 @@ public class CharacterFormShift : MonoBehaviour
     ///   <para> 更新自身显示 </para>
     /// </summary>
     public void UpdateSelf() {
-        PlayerForm form = EntranceResource.mapChooseState.GetPlayerForm(playerID);
+        PlayerForm form = MapChooseState.Get().GetPlayerForm(playerID);
         Show(form);
     }
 
@@ -70,6 +70,6 @@ public class CharacterFormShift : MonoBehaviour
         if(isMultiplePlayer)
             chooseCharacter.Choose(playerID);
         else
-            EntranceResource.playerOperationController.ShiftPlayerFrom(playerID);
+            PlayerOperationController.Get().ShiftPlayerFrom(playerID);
     }
 }

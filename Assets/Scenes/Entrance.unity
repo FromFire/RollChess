@@ -230,8 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f465060d01d9ffe48b8188860fcbd3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _board: {fileID: 0}
-  _tokenSet: {fileID: 0}
 --- !u!1001 &174638361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -477,7 +475,6 @@ Transform:
   m_Children:
   - {fileID: 134185184}
   - {fileID: 180692987}
-  - {fileID: 2039869516}
   - {fileID: 468013475}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -550,7 +547,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 384818543}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &468013476
 MonoBehaviour:
@@ -2500,53 +2497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724ed76cb17940441959e3781211646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2039869515
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2039869516}
-  - component: {fileID: 2039869517}
-  m_Layer: 0
-  m_Name: EntranceResource
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2039869516
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039869515}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 384818543}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2039869517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039869515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c7d760f311a99148b98f91b6bab0375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mapChooseState: {fileID: 2086550436}
-  _entranceController: {fileID: 1767898389}
-  _mapOperationController: {fileID: 1296248718}
-  _playerOperationController: {fileID: 1727064956}
 --- !u!1 &2086550434
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,8 +36,8 @@ public class MapChooseStateSync : NetworkBehaviour {
     // mapChooseState修改时更新自身
     [Server]
     void UpdateSelf() {
-        if (EntranceResource.mapChooseState.MapFileName != mapFileName) {
-            mapFileName = EntranceResource.mapChooseState.MapFileName;
+        if (MapChooseState.Get().MapFileName != mapFileName) {
+            mapFileName = MapChooseState.Get().MapFileName;
             thumb = new SyncList<byte>(SaveResource.saveManager.LoadThumb(mapFileName).texture.EncodeToPNG());
             map = SaveResource.saveManager.LoadMap(mapFileName).ToJson();
         }
@@ -46,7 +46,7 @@ public class MapChooseStateSync : NetworkBehaviour {
     // 将MapChooseState所需的信息同步。需要mapFileName，thumb和map都同步完成后再调用
     void SyncMapChooseState() {
         if (mapFileNameFlag && thumbFlag && mapFlag) {
-            EntranceResource.mapChooseState.MapFileName = mapFileName;
+            MapChooseState.Get().MapFileName = mapFileName;
             mapFileNameFlag = thumbFlag = mapFlag = false;
         }
         Debug.Log("同步地图：" + mapFileName);

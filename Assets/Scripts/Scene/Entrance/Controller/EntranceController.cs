@@ -10,8 +10,13 @@ using UnityEngine.SceneManagement;
 ///   <para> Entrance整体管理 </para>
 /// </summary>
 public class EntranceController : MonoBehaviour {
+    // 单例
+    static EntranceController singleton;
+    // 获取单例
+    public static EntranceController Get() { return singleton; }
 
     void Start() {
+        singleton = this;
         SaveResource.saveManager.LoadAllSave();
         NetworkResource.networkSubject.Attach(ModelModifyEvent.Disconnect, OnDisconnect);
     }
@@ -25,7 +30,7 @@ public class EntranceController : MonoBehaviour {
             return;
 
         //符合要求，进入游戏
-        GameObject.DontDestroyOnLoad(EntranceResource.mapChooseState.gameObject);
+        GameObject.DontDestroyOnLoad(MapChooseState.Get().gameObject);
         SceneManager.LoadScene("Game");
     }
 
@@ -34,8 +39,8 @@ public class EntranceController : MonoBehaviour {
     /// </summary>
     bool isGameAvalible()
     {
-        if (!EntranceResource.playerOperationController.IsPlayerValid() ||
-            !EntranceResource.mapOperationController.IsMapValid())
+        if (!PlayerOperationController.Get().IsPlayerValid() ||
+            !MapOperationController.Get().IsMapValid())
             return false;
         return true;
     }

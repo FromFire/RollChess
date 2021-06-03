@@ -18,7 +18,7 @@ public class PlayerItem : MonoBehaviour {
     /// </summary>
     public void KickOut()
     {
-        EntranceResource.entranceController.KickOut(id);
+        EntranceController.Get().KickOut(id);
     }
 
     public uint Id {

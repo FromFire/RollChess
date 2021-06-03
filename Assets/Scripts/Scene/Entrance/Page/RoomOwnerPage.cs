@@ -15,7 +15,7 @@ public class RoomOwnerPage : MonoBehaviour
     /// </summary>
     public void CreateRoom()
     {
-        EntranceResource.entranceController.CreateRoom();
+        EntranceController.Get().CreateRoom();
     }
     
     /// <summary>

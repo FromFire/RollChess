@@ -57,7 +57,7 @@ public class PanelManager : MonoBehaviour {
         // plus：回调，取消服务器的连接
         else if (nowPanel == room) {
             NowPanel = joinRoom;
-            EntranceResource.entranceController.ExitRoom();
+            EntranceController.Get().ExitRoom();
         }
     }
 
