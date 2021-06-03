@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,10 @@ using System.Text;
 ///   <para> 只用于Entrance，以及Game初始化，游戏开始后不使用 </para>
 /// </summary>
 public class MapChooseState : MonoBehaviour {
+    // 单例
+    static MapChooseState singleton;
+    // 获取单例
+    public static MapChooseState Get() { return singleton; }
 
     // 玩家操作形式，默认全部是玩家，默认4人
     // 需要手动初始化
@@ -28,6 +33,10 @@ public class MapChooseState : MonoBehaviour {
 
     // 地图名称
     private string mapName = "";
+
+    private void Start() {
+        singleton = this;
+    }
 
     /// <summary>
     ///   <para> 构造一个MapChooseState，仅用于调试时 </para>

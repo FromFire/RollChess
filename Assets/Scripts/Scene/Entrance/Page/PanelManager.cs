@@ -8,7 +8,9 @@ using UnityEngine.UI;
 /// </summary>
 public class PanelManager : MonoBehaviour {
     // 单例
-    static PanelManager menuManager;
+    static PanelManager singleton;
+    // 获取单例
+    public static PanelManager Get() { return singleton; }
 
     // 当前显示的页面
     private Image nowPanel;
@@ -38,14 +40,7 @@ public class PanelManager : MonoBehaviour {
     // 初始化，页面最开始是主菜单
     void Start() {
         NowPanel = mainMenu;
-        menuManager = this;
-    }
-
-    /// <summary>
-    ///   <para> 获取单例 </para>
-    /// </summary>
-    public static PanelManager Get() {
-        return menuManager;
+        singleton = this;
     }
 
     /// <summary>

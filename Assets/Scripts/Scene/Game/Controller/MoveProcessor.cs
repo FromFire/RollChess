@@ -12,7 +12,7 @@ public class MoveProcessor: MonoBehaviour  {
     ///   <para> 移动棋子 </para>
     /// </summary>
     public void Move(Vector2Int from, List<Vector2Int> route) {
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         Vector2Int to = route.Last();
         Debug.Log("走子: ("+ from.x + "." + from.y + ") -> (" + to.x + "." + to.y + ") ");
 

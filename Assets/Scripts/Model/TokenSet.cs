@@ -6,11 +6,17 @@ using UnityEngine;
 ///   <para> 所有棋子 </para>
 /// </summary>
 public class TokenSet : MonoBehaviour {
+    // 单例
+    static TokenSet singleton;
+    // 获取单例
+    public static TokenSet Get() { return singleton; }
+    
     // 数据存储，坐标到棋子
     private Dictionary<Vector2Int, Token> tokens;
 
     // 构造函数
     public TokenSet() {
+        singleton = this;
         tokens = new Dictionary<Vector2Int, Token> ();
     }
 

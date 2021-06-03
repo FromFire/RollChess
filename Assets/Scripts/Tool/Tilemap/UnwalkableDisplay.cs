@@ -30,7 +30,7 @@ public class UnwalkableDisplay : MonoBehaviour
     /// </summary>
     public void Display() {
         // 获取地图的边界，若没有边界（地图为空），则认为地图边界是(0,0)
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         border = GetBoarder();
 
         // 绘制，边界余量20
@@ -48,7 +48,7 @@ public class UnwalkableDisplay : MonoBehaviour
     ///   <para> 响应Board更新</para>
     /// </summary>
     public void UpdateSelf(Vector2Int position) {
-        Cell cell = ModelResource.board.Get(position);
+        Cell cell = Board.Get().Get(position);
 
         // 不可走 + 无特效：代表该格子已被移除，填充为海洋
         if(!cell.Walkable && cell.Effect == SpecialEffect.None) {
@@ -62,7 +62,7 @@ public class UnwalkableDisplay : MonoBehaviour
         // 边界扩大时，绘制随之扩大，缩小的不管
         for(int i=newBorder.left; i<=newBorder.right; i++) {
             for(int j=newBorder.down; j<=newBorder.up; j++) {
-                cell = ModelResource.board.Get(new Vector2Int(i, j));
+                cell = Board.Get().Get(new Vector2Int(i, j));
                 // 如果在newBorder内而不在border内，则画之
                 // 和上面的不合并，因为不确定position是否在newBorder内
                 if( cell is null || (!cell.Walkable && cell.Effect == SpecialEffect.None) )
@@ -74,7 +74,7 @@ public class UnwalkableDisplay : MonoBehaviour
 
     // 获取应填充的边界
     (int up, int down, int left, int right) GetBoarder() {
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         int up = ((board.BorderUp == int.MinValue) ? 0 : board.BorderUp) + padding;
         int right = ((board.BorderRight == int.MinValue) ? 0 : board.BorderRight) + padding;
         int left = ((board.BorderLeft == int.MaxValue) ? 0 : board.BorderLeft) - padding;

@@ -13,7 +13,7 @@ public class DragLimit : MonoBehaviour {
         
         // 判定是否已超过地图边界，若越界，则不允许向那个方向继续滑动
         VisionController visionController = ToolResource.visionController;
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         visionController.allowMoveLeft = screenCenter.x > board.BorderLeft;
         visionController.allowMoveRight = screenCenter.x < board.BorderRight;
         visionController.allowMoveUp = screenCenter.y < board.BorderUp;

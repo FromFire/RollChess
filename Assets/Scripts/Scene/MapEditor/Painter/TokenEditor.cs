@@ -23,7 +23,7 @@ public class TokenEditor : MonoBehaviour, Paint {
     // 执行momento上的操作
     void Execute(EditMomento momento) {
         // 把对应坐标上的都改成after
-        TokenSet tokenSet = ModelResource.tokenSet;
+        TokenSet tokenSet = TokenSet.Get();
         for(int i=0; i<momento.position.Count; i++) {
             Token after = (Token)(momento.after[i]);
             // 若after的player为none，则移除此棋子
@@ -37,17 +37,17 @@ public class TokenEditor : MonoBehaviour, Paint {
     // 绘制块
     public EditMomento Paint(Vector2Int position) {
         // 无需调用Display，因为修改Model后显示会自动更新
-        TokenSet tokenSet = ModelResource.tokenSet;
+        TokenSet tokenSet = TokenSet.Get();
 
         // 不允许在没有实体块的格子上加人
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         if(!board.Contains(position) || board.Get(position).Walkable == false)
             return null;
 
         // 记录修改前后的状态
         Token pre, after;
         // 若已有记录，只需把player改为当前的player
-        if(ModelResource.tokenSet.Contains(position)) {
+        if(TokenSet.Get().Contains(position)) {
             pre = tokenSet.Get(position);
             after = new Token(pre);
             after.Player = player;

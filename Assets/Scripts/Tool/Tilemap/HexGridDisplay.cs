@@ -30,7 +30,7 @@ public class HexGridDisplay : MonoBehaviour
     // 显示格子
     void ShowGrid() {
         // 获取地图的边界，若没有边界（地图为空），则认为地图边界是(0,0)
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         border = GetBoarder();
 
         // 绘制，边界余量20
@@ -68,7 +68,7 @@ public class HexGridDisplay : MonoBehaviour
 
     // 获取应填充的边界
     (int up, int down, int left, int right) GetBoarder() {
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         int up = ((board.BorderUp == int.MinValue) ? 0 : board.BorderUp) + padding;
         int right = ((board.BorderRight == int.MinValue) ? 0 : board.BorderRight) + padding;
         int left = ((board.BorderLeft == int.MaxValue) ? 0 : board.BorderLeft) - padding;

@@ -14,7 +14,7 @@ public class PopupController : MonoBehaviour {
 
     void Update() {
         // 当鼠标所在格子是特殊格子时，在画面左上角显示该格子的介绍
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         Vector2Int pointedCell = ToolResource.tilemapManager.CursorPointingCell();
         // 避免空格子
         if(!board.Contains(pointedCell))
@@ -23,7 +23,7 @@ public class PopupController : MonoBehaviour {
         SpecialEffect pointedEffect = board.Get(pointedCell).Effect;
         if(pointedEffect != SpecialEffect.None) {
             // 设置SpecialPopupContent的内容
-            SpecialIntroductionItem item = GameResource.specialIntroduction.introduction[pointedEffect];
+            SpecialIntroductionItem item = SpecialIntroduction.Get().introduction[pointedEffect];
             SpecialPopupContent content = popup.Content.GetComponent<SpecialPopupContent>();
             content.Title = item.introTitle;
             content.Describe = item.introText;

@@ -6,6 +6,10 @@ using UnityEngine;
 ///   <para> 棋盘数据 </para>
 /// </summary>
 public class Board : MonoBehaviour {
+    // 单例
+    static Board singleton;
+    // 获取单例
+    public static Board Get() { return singleton; }
 
     /// <summary>
     ///   <para> 存储坐标和格子 </para>
@@ -20,6 +24,7 @@ public class Board : MonoBehaviour {
 
     // 构造函数
     public Board() {
+        singleton = this;
         map = new Dictionary<Vector2Int, Cell>();
         borderUp = borderRight = int.MinValue;
         borderDown = borderLeft = int.MaxValue;

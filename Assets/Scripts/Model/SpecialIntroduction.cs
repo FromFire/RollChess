@@ -5,6 +5,11 @@ using UnityEngine;
 ///   <para> 提供特殊格子的信息介绍 </para>
 /// </summary>
 public class SpecialIntroduction : MonoBehaviour {
+    // 单例
+    static SpecialIntroduction singleton;
+    // 获取单例
+    public static SpecialIntroduction Get() { return singleton; }
+    
     /// <summary>
     ///   <para> 特殊格子信息 </para>
     /// </summary>
@@ -15,6 +20,8 @@ public class SpecialIntroduction : MonoBehaviour {
     ///   <para> 从文件中读取介绍，完成初始化 </para>
     /// </summary>
     void Start() {
+        singleton = this;
+        
         // 读取文件
         TextAsset text = Resources.Load<TextAsset>("Texts/SpecialIntroductions");
         string json = text.text;

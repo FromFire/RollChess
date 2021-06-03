@@ -22,7 +22,7 @@ public class PortalEditor : MonoBehaviour, Paint {
     // 执行momento上的操作
     void Execute(EditMomento momento) {
         // 只需改source，momento里只会有一个position
-        ModelResource.board.Add(momento.position[0], (Cell)momento.after[0]);
+        Board.Get().Add(momento.position[0], (Cell)momento.after[0]);
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public class PortalEditor : MonoBehaviour, Paint {
     /// </summary>
     public void Preview(Vector2Int position) {
         // 若此格子没有陆地，则无视之
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         if(!board.Contains(position) || board.Get(position).Walkable == false)
             return;
 

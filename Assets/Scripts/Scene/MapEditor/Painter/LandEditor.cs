@@ -23,7 +23,7 @@ public class LandEditor : MonoBehaviour, Paint {
     // 执行momento上的操作
     void Execute(EditMomento momento) {
         // 把对应坐标上的都改成after
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         for(int i=0; i<momento.position.Count; i++) {
             board.Add(momento.position[i], (Cell)momento.after[i]);
         }
@@ -32,11 +32,11 @@ public class LandEditor : MonoBehaviour, Paint {
     // 绘制块
     EditMomento Paint(Vector2Int position) {
         // 无需调用Display，因为修改Model后显示会自动更新
-        Board board = ModelResource.board;
+        Board board = Board.Get();
 
         // 不允许在有棋子、特殊块或传送门的地方擦除
         if(board.Contains(position) 
-            && ( ModelResource.tokenSet.Contains(position) || ModelResource.board.Get(position).Effect != SpecialEffect.None) ) 
+            && ( TokenSet.Get().Contains(position) || Board.Get().Get(position).Effect != SpecialEffect.None) ) 
             return null;
 
         // 记录修改前后的状态

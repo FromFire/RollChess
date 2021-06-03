@@ -13,8 +13,8 @@ public class SaveLoader : MonoBehaviour {
     ///   <para> 将saveEntity加载到内存，即初始化model </para>
     /// </summary>
     public void Load(SaveEntity entity) {
-        ModelResource.board.Load(entity);
-        ModelResource.tokenSet.Load(entity);
+        Board.Get().Load(entity);
+        TokenSet.Get().Load(entity);
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class SaveLoader : MonoBehaviour {
         entity.portal.Clear();
 
         // 存储board
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         HashSet<Vector2Int> cells = board.ToPositionSet();
         foreach(Vector2Int pos in cells) {
             Cell cell = board.Get(pos);
@@ -47,7 +47,7 @@ public class SaveLoader : MonoBehaviour {
         }
 
         // 存储token
-        TokenSet tokenSet = ModelResource.tokenSet;
+        TokenSet tokenSet = TokenSet.Get();
         List<Vector2Int> tokens = tokenSet.Query(PlayerID.None, PlayerID.None);
         foreach(Vector2Int pos in tokens) {
             Token token = tokenSet.Get(pos);

@@ -23,7 +23,7 @@ public class SpecialEditor : MonoBehaviour, Paint {
     // 执行momento上的操作
     void Execute(EditMomento momento) {
         // 把对应坐标上的都改成after
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         for(int i=0; i<momento.position.Count; i++) {
             board.Add(momento.position[i], (Cell)momento.after[i]);
         }
@@ -32,7 +32,7 @@ public class SpecialEditor : MonoBehaviour, Paint {
     // 绘制块
     EditMomento Paint(Vector2Int position) {
         // 无需调用Display，因为修改Model后显示会自动更新
-        Board board = ModelResource.board;
+        Board board = Board.Get();
 
         // 不允许在没有陆地的格子添加
         if( !board.Contains(position) || board.Get(position).Walkable == false) 

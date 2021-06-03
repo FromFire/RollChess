@@ -6,10 +6,6 @@ using UnityEngine;
 ///   <para> 获取公有资源 </para>
 /// </summary>
 public class GameResource : MonoBehaviour  {
-    // Model
-    static public GameState gameState;
-    static public SpecialIntroduction specialIntroduction;
-    static public MapChooseState mapChooseState;
 
     // Controller
     static public BoardAssistant boardAssistant;
@@ -24,10 +20,6 @@ public class GameResource : MonoBehaviour  {
     static public Subject gameStateSubject;
 
     // 下面是用来实例化的
-    // Model
-    [SerializeField] private GameState _gameState;
-    [SerializeField] private SpecialIntroduction _specialIntroduction;
-    [SerializeField] private MapChooseState _mapChooseState;
 
     // Controller
     [SerializeField] private BoardAssistant _boardAssistant;
@@ -38,10 +30,6 @@ public class GameResource : MonoBehaviour  {
 
     // 实例化
     void Start() {
-        // Model
-        gameState = _gameState;
-        specialIntroduction = _specialIntroduction;
-        mapChooseState = _mapChooseState;
 
         // Controller
         boardAssistant = _boardAssistant;
@@ -49,11 +37,6 @@ public class GameResource : MonoBehaviour  {
         tokenController = _tokenController;
         gameController = _gameController;
         moveProcessor = _moveProcessor;
-
-        // 此类来自Entrance类
-        GameObject mapChooseObject = GameObject.Find("MapChooseState");
-        if(mapChooseObject)
-            mapChooseState = mapChooseObject.GetComponent<MapChooseState>();
 
         // subject
         gameStateSubject = new Subject();

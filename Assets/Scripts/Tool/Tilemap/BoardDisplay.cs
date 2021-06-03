@@ -33,7 +33,7 @@ public class BoardDisplay : MonoBehaviour {
     /// </summary>
     public void Display() {
         // 获取有效数据列表
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         HashSet<Vector2Int> keyInfo = board.ToPositionSet();
         foreach (Vector2Int pos in keyInfo) {
             Draw(pos);
@@ -44,7 +44,7 @@ public class BoardDisplay : MonoBehaviour {
     ///   <para> 绘制此坐标 </para>
     /// </summary>
     public void Draw(Vector2Int position) {
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         Cell cell = board.Get(position);
 
         // 若不可走且无特效，则抹去它

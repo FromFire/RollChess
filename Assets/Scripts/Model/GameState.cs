@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,10 @@ using UnityEngine;
 ///   <para> 只用于Game场景 </para>
 /// </summary>
 public class GameState : MonoBehaviour {
+    // 单例
+    static GameState singleton;
+    // 获取单例
+    public static GameState Get() { return singleton; }
 
     // 回合数
     // 游戏开始时是第1回合
@@ -43,6 +48,10 @@ public class GameState : MonoBehaviour {
 
     // 输家
     private HashSet<PlayerID> losers = new HashSet<PlayerID>();
+
+    private void Start() {
+        singleton = this;
+    }
 
     /// <summary>
     ///   <para> 角色总数 </para>

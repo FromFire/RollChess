@@ -19,7 +19,7 @@ public class BoardController: MonoBehaviour  {
     ///   <para> 移除一座危桥 </para>
     /// </summary>
     public void RemoveBrokenBridge(Vector2Int position) {
-        Board board = ModelResource.board;
+        Board board = Board.Get();
         board.Get(position).Effect = SpecialEffect.None;
         board.Get(position).Walkable = false;
     }

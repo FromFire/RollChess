@@ -33,7 +33,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 是gameStage修改的响应函数，仅当该本机操作时生效 </para>
     /// </summary>
     public void ShowRollButton() {
-        if(GameResource.gameState.Stage != GameStage.Self_Operating)
+        if(GameState.Get().Stage != GameStage.Self_Operating)
             return;
         rollButton.gameObject.SetActive(true);
         rollNumber.text = "";
@@ -44,10 +44,10 @@ public class HUD : MonoBehaviour {
     ///   <para> 是RollResult修改的响应函数，仅当RollResult不为0时生效 </para>
     /// </summary>
     public void ShowRollStep() {
-        if(GameResource.gameState.RollResult == 0)
+        if(GameState.Get().RollResult == 0)
             return;
         rollButton.gameObject.SetActive(false);
-        rollNumber.text = GameResource.gameState.RollResult + "步";
+        rollNumber.text = GameState.Get().RollResult + "步";
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 是Turn修改的响应函数 </para>
     /// </summary>
     public void UpdateTurn() {
-        turnCount.text = "第 " + GameResource.gameState.Turn + " 回合";
+        turnCount.text = "第 " + GameState.Get().Turn + " 回合";
     }
 
     /// <summary>
@@ -64,10 +64,10 @@ public class HUD : MonoBehaviour {
     /// </summary>
     public void PlayerOperating() {
         // 排除游戏结束
-        if(GameResource.gameState.Stage == GameStage.Game_Over)
+        if(GameState.Get().Stage == GameStage.Game_Over)
             return;
         // 显示正在行动的玩家
-        PlayerID nowPlayer = GameResource.gameState.NowPlayer;
+        PlayerID nowPlayer = GameState.Get().NowPlayer;
         string str = Transform.ColorString(nowPlayer, Transform.PlayerNameOfID[nowPlayer]) + " 行动中";
         actionPlayer.text = str;
     }

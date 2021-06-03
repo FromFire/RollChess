@@ -29,8 +29,8 @@ public class ReviewPanel : MonoBehaviour {
     /// </summary>
     public void Show() {
         // 仅当游戏结束时弹出
-        PlayerID winner = GameResource.gameState.Winner;
-        if(winner == PlayerID.None || GameResource.gameState.Stage != GameStage.Game_Over)
+        PlayerID winner = GameState.Get().Winner;
+        if(winner == PlayerID.None || GameState.Get().Stage != GameStage.Game_Over)
             return;
         // 显示自身
         reviewPanel.gameObject.SetActive(true);

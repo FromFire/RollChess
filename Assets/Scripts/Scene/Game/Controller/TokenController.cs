@@ -12,7 +12,7 @@ public class TokenController : MonoBehaviour  {
     /// </summary>
     public void Move(Vector2Int from, Vector2Int to) {
         // 移动
-        ModelResource.tokenSet.Move(from, to);
+        TokenSet.Get().Move(from, to);
     }
 
     /// <summary>
@@ -20,6 +20,6 @@ public class TokenController : MonoBehaviour  {
     /// </summary>
     public void Kill(Vector2Int pos) {
         // 移除
-        ModelResource.tokenSet.Remove(pos);
+        TokenSet.Get().Remove(pos);
     }
 }

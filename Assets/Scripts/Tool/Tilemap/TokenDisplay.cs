@@ -29,10 +29,10 @@ public class TokenDisplay : MonoBehaviour {
     /// </summary>
     public void Display() {
         // 获取所有棋子
-        List<Vector2Int> tokens = ModelResource.tokenSet.Query(PlayerID.None, PlayerID.None);
+        List<Vector2Int> tokens = TokenSet.Get().Query(PlayerID.None, PlayerID.None);
         // 按阵营显示棋子
         foreach (Vector2Int tokenPos in tokens) {
-            Token token = ModelResource.tokenSet.Get(tokenPos);
+            Token token = TokenSet.Get().Get(tokenPos);
             tilemap.SetTile(token.Position, Transform.tileTypeOfPlayerId[token.Player]);
         }
     }
@@ -42,13 +42,13 @@ public class TokenDisplay : MonoBehaviour {
     /// </summary>
     public void UpdateSelf(Vector2Int pos) {
         // 若此处已无棋子，则清空此格
-        if(!ModelResource.tokenSet.Contains(pos))
+        if(!TokenSet.Get().Contains(pos))
             tilemap.RemoveTile(pos);
 
         // 若此处有棋子，更新阵营
         else {
             // 由于一个位置上的棋子都是同一阵营的，所以用第一个为代表
-            Token token = ModelResource.tokenSet.Get(pos);
+            Token token = TokenSet.Get().Get(pos);
             // 重新显示此格
             tilemap.SetTile(token.Position, Transform.tileTypeOfPlayerId[token.Player]);
         }
