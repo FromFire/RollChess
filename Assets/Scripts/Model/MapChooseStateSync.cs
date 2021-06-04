@@ -13,14 +13,14 @@ public class MapChooseStateSync : NetworkBehaviour {
     }
 
     // 将数据同步到Client
-    [Server]
     void Sync() {
         Debug.Log("尝试同步");
         MapChooseState model = MapChooseState.Get();
         string mapFileName = model.MapFileName;
-        string map = SaveResource.saveManager.LoadMap(mapFileName).ToJson();
-        byte[] thumb = SaveResource.saveManager.LoadThumb(mapFileName).texture.EncodeToPNG();
-        RpcSetModel(mapFileName, map, thumb);
+        RpcSyncFileName(mapFileName);
+        // string map = SaveResource.saveManager.LoadMap(mapFileName).ToJson();
+        // byte[] thumb = SaveResource.saveManager.LoadThumb(mapFileName).texture.EncodeToPNG();
+        // RpcSetModel(mapFileName, map, thumb);
     }
 
     // mapChooseState修改时更新自身
@@ -37,5 +37,12 @@ public class MapChooseStateSync : NetworkBehaviour {
             model.MapFileName = mapFileName;
         
         Debug.Log("地图同步成功：" + mapFileName);
+    }
+
+    [ClientRpc]
+    void RpcSyncFileName(string mapFileName) {
+        MapChooseState model = MapChooseState.Get();
+        if (model.MapFileName != mapFileName) 
+            model.MapFileName = mapFileName;
     }
 }
