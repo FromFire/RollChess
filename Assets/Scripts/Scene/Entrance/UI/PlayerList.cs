@@ -31,9 +31,7 @@ public class PlayerList : MonoBehaviour {
     /// </summary>
     void UpdateList() {
         // 获取已显示的id（idShowing）和已有id（idAll）
-        List<uint> idShowing = new List<uint>();
-        foreach (uint id in items.Keys)
-            idShowing.Add(id);
+        List<uint> idShowing = new List<uint>(items.Keys);
         List<uint> idAll = new List<uint>(Players.Get().players.Keys);
         
         // 遍历idShowing，若idAll里有则更新显示，若没有则删除此item

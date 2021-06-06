@@ -43,9 +43,6 @@ public class MyNetworkManager : NetworkManager {
     {
         base.OnClientConnect(conn);
         Debug.Log("我是客户端，我已连接");
-
-        // 添加                      
-        //NetworkResource.networkInfo.AddId();
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Success);
     }
 

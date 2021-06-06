@@ -594,7 +594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _networkManager: {fileID: 1492908563}
-  _networkInfo: {fileID: 0}
 --- !u!1 &524223359
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,6 +2981,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.0000101412525
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589197480334417447, guid: 6e6bc461b5b66014b8e796839ccd267f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8589197480562460057, guid: 6e6bc461b5b66014b8e796839ccd267f,
         type: 3}

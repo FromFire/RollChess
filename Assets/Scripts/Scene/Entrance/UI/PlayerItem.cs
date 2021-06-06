@@ -24,11 +24,20 @@ public class PlayerItem : MonoBehaviour {
         NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Player_ID, UpdatePlayerToken);
     }
 
+    // 用来防止触发prefab的响应函数
+    private void OnDisable() {
+        NetworkResource.networkSubject.Detach(ModelModifyEvent.Client_Player_ID, UpdatePlayerToken);
+    }
+
     /// <summary>
-    /// 设置选择的角色
+    ///   <para> 把玩家踢出房间 </para>
     /// </summary>
-    public void UpdatePlayerToken() {
-        Debug.Log(Players.Get().players.Count);
+    public void KickOut() {
+        EntranceController.Get().KickOut(id);
+    }
+    
+    // 设置选择的角色
+    void UpdatePlayerToken() {
         Debug.Log(id);
         foreach (KeyValuePair<uint,Player> kvp in Players.Get().players) {
             Debug.Log(kvp.Key);
@@ -41,27 +50,26 @@ public class PlayerItem : MonoBehaviour {
             token.sprite = tokenSprites[(int)playerID];
         }
     }
-
-    /// <summary>
-    ///   <para> 把玩家踢出房间 </para>
-    /// </summary>
-    public void KickOut() {
-        EntranceController.Get().KickOut(id);
+    
+    // 更新自身显示
+    private void UpdateSelf() {
+        Player player = Players.Get().players[id];
+        playerName.text = player.Name;
+        // 高亮自己
+        if(player.isLocalPlayer)
+            playerName.color = Color.red;
+        // 显示房主图标
+        crown.gameObject.SetActive(player.isHost);
+        // 踢人按钮禁用
+        kickOut.interactable = (Players.Get().isServer && !player.isHost);
     }
 
     public uint Id {
         get { return id; }
         set {
             id = value;
-            Player player = Players.Get().players[id];
-            playerName.text = player.Name;
-            // 高亮自己
-            if(player.isLocalPlayer)
-                playerName.color = Color.red;
-            // 显示房主图标
-            crown.gameObject.SetActive(player.isHost);
-            // 踢人按钮禁用
-            kickOut.interactable = (Players.Get().isServer && !player.isHost);
+            Debug.Log(id);
+            UpdateSelf();
         }
     }
 }
