@@ -17,14 +17,25 @@ public class ChooseCharacter : MonoBehaviour
     // 初始化
     void Start() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Limit, UpdateSelf);
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Client_Success, EnableMultiplayer);
+        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Disconnect, DisableMultiplayer);
+    }
+
+    void EnableMultiplayer() {
+        SetMultiplePlayer(true);
+    }
+
+    void DisableMultiplayer() {
+        SetMultiplePlayer(false);
     }
 
     /// <summary>
     ///   <para> 设置或取消多人模式 </para>
     /// </summary>
-    public void SetMultiplePlayer(bool valid)
-    {
-        
+    public void SetMultiplePlayer(bool valid) {
+        foreach (CharacterFormShift formShift in buttons) {
+            formShift.isMultiplePlayer = valid;
+        }
     }
     
     /// <summary>
@@ -48,12 +59,5 @@ public class ChooseCharacter : MonoBehaviour
             // Max之前的解锁，之后的锁定
             buttons[i].IsLocked = (i >= max);
         }
-    }
-    
-    /// <summary>
-    ///   <para> 选择该角色 </para>
-    /// </summary>
-    public void Choose(PlayerID id) {
-
     }
 }

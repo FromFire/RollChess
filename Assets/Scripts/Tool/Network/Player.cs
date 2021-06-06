@@ -14,7 +14,7 @@ public class Player : NetworkBehaviour {
     [SyncVar(hook = "AddPlayer")] private uint id;
     [SyncVar(hook = "UpdateName")] private string name;
     [SyncVar(hook = "UpdateIsHost")] public bool isHost = false;
-    [SyncVar] public int _playerID;
+    [SyncVar(hook = "UpdatePlayerID")] private int _playerID = (int)PlayerID.None;
 
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
@@ -43,12 +43,16 @@ public class Player : NetworkBehaviour {
     }
 
     // 同步PlayerID后，推送提醒
-    void UpdatePlayerID() {
+    void UpdatePlayerID(int oldValue, int newValue) {
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Player_ID);
     }
 
+    public void SetPlayerID(PlayerID _id) {
+        CmdSetPlayerID(_id);
+    }
+
     [Command]
-    public void CmdSetPlayerID(PlayerID _id) {
+    void CmdSetPlayerID(PlayerID _id) {
         // 检查是否与其他player重复
         if (_id != PlayerID.None) {
             List<Player> players = new List<Player>(Players.Get().players.Values);
@@ -84,9 +88,7 @@ public class Player : NetworkBehaviour {
 
     public PlayerID playerID {
         get { return (PlayerID)_playerID; }
-        set {
-            _playerID = (int)value;
-        }
+        set { _playerID = (int)value; }
     }
 
     // 回收昵称

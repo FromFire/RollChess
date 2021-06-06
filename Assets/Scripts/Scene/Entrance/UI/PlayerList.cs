@@ -19,22 +19,17 @@ public class PlayerList : MonoBehaviour {
     Dictionary<uint, PlayerItem> items = new Dictionary<uint, PlayerItem>();
 
     private void Awake() {
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Change, UpdateSelf);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Change, UpdateList);
     }
 
     void Start() {
         prefab.SetActive(false);
     }
 
-    private void Update() {
-        if(Input.GetMouseButtonDown(2))
-            UpdateSelf();
-    }
-
     /// <summary>
-    ///   <para> 更新自身 </para>
+    ///   <para> 更新列表 </para>
     /// </summary>
-    void UpdateSelf() {
+    void UpdateList() {
         // 获取已显示的id（idShowing）和已有id（idAll）
         List<uint> idShowing = new List<uint>();
         foreach (uint id in items.Keys)
@@ -43,8 +38,8 @@ public class PlayerList : MonoBehaviour {
         
         // 遍历idShowing，若idAll里有则更新显示，若没有则删除此item
         foreach (uint id in idShowing)
-            if(idAll.Contains(id))
-                UpdateItem(items[id]);
+            if (idAll.Contains(id))
+                items[id].Id = id;
             else
                 RemoveItem(id);
         
@@ -54,11 +49,6 @@ public class PlayerList : MonoBehaviour {
                 AddItem(id);
     }
 
-    // 更新条目
-    void UpdateItem(PlayerItem item) {
-        item.Id = item.Id;
-    }
-    
     // 删除条目
     void RemoveItem(uint item) {
         items[item].gameObject.SetActive(false);

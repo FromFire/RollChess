@@ -17,6 +17,16 @@ public class Players : NetworkBehaviour {
     }
 
     /// <summary>
+    /// 获取本地player
+    /// </summary>
+    public Player LocalPlayer() {
+        foreach (KeyValuePair<uint,Player> kvp in players)
+            if (kvp.Value.isLocalPlayer)
+                return kvp.Value;
+        return null;
+    }
+
+    /// <summary>
     ///   <para> 添加连接 </para>
     /// </summary>
     public void AddPlayer(GameObject playerObject) {

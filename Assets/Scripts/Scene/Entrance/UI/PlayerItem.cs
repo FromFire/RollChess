@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 ///   <para> 玩家列表中的一项 </para>
 /// </summary>
 public class PlayerItem : MonoBehaviour {
+    // 表示的玩家的id
     private uint id;
     // 昵称
     [SerializeField] private Text playerName;
@@ -12,12 +15,37 @@ public class PlayerItem : MonoBehaviour {
     [SerializeField] private Image crown;
     // 踢人按钮
     [SerializeField] private Button kickOut;
+    // 棋子图标
+    [SerializeField] private Image token;
+    // 棋子图标素材
+    [SerializeField] private List<Sprite> tokenSprites;
+
+    private void Start() {
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Player_ID, UpdatePlayerToken);
+    }
+
+    /// <summary>
+    /// 设置选择的角色
+    /// </summary>
+    public void UpdatePlayerToken() {
+        Debug.Log(Players.Get().players.Count);
+        Debug.Log(id);
+        foreach (KeyValuePair<uint,Player> kvp in Players.Get().players) {
+            Debug.Log(kvp.Key);
+        }
+        PlayerID playerID = Players.Get().players[id].playerID;
+        if(playerID == PlayerID.None)
+            token.gameObject.SetActive(false);
+        else {
+            token.gameObject.SetActive(true);
+            token.sprite = tokenSprites[(int)playerID];
+        }
+    }
 
     /// <summary>
     ///   <para> 把玩家踢出房间 </para>
     /// </summary>
-    public void KickOut()
-    {
+    public void KickOut() {
         EntranceController.Get().KickOut(id);
     }
 
