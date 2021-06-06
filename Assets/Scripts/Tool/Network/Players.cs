@@ -12,7 +12,7 @@ public class Players : NetworkBehaviour {
     // 所有player
     public Dictionary<uint, Player> players = new Dictionary<uint, Player>();
 
-    private void Start() {
+    private void Awake() {
         singleton = this;
     }
 

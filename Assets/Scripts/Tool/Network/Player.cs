@@ -28,6 +28,7 @@ public class Player : NetworkBehaviour {
     // 同步id后，将自己加入networkInfo
     // 必须保证先同步id，再AddPlayer
     void AddPlayer(uint oldValue, uint newValue) {
+        Debug.Log(Players.Get() is null);
         Players.Get().AddPlayer(gameObject);
     }
     
