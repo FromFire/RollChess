@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,14 +15,14 @@ public class ChooseCharacter : MonoBehaviour
     // 人数限制显示
     [SerializeField] Text playerLimit;
 
-    // 初始化
-    void Start() {
+    private void Awake() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Limit, UpdateSelf);
-        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Client_Success, EnableMultiplayer);
-        ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Disconnect, DisableMultiplayer);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Success, EnableMultiplayer);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Disconnect, DisableMultiplayer);
     }
 
     void EnableMultiplayer() {
+        Debug.Log("enable");
         SetMultiplePlayer(true);
     }
 
@@ -35,6 +36,7 @@ public class ChooseCharacter : MonoBehaviour
     public void SetMultiplePlayer(bool valid) {
         foreach (CharacterFormShift formShift in buttons) {
             formShift.isMultiplePlayer = valid;
+            Debug.Log(valid);
         }
     }
     

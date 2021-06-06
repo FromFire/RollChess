@@ -38,10 +38,6 @@ public class PlayerItem : MonoBehaviour {
     
     // 设置选择的角色
     void UpdatePlayerToken() {
-        Debug.Log(id);
-        foreach (KeyValuePair<uint,Player> kvp in Players.Get().players) {
-            Debug.Log(kvp.Key);
-        }
         PlayerID playerID = Players.Get().players[id].playerID;
         if(playerID == PlayerID.None)
             token.gameObject.SetActive(false);
@@ -68,7 +64,6 @@ public class PlayerItem : MonoBehaviour {
         get { return id; }
         set {
             id = value;
-            Debug.Log(id);
             UpdateSelf();
         }
     }

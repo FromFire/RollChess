@@ -23,9 +23,6 @@ public class CharacterFormShift : MonoBehaviour
     [SerializeField] Image image;
     // 选择栏的三个图标
     [SerializeField] List<Sprite> playerSprites;
-    
-    // 上级的ChooseCharacter
-    [SerializeField] private ChooseCharacter chooseCharacter;
 
     void Start() {
         ModelResource.mapChooseSubject.Attach(ModelModifyEvent.Player_Form, UpdateSelf);
@@ -67,8 +64,10 @@ public class CharacterFormShift : MonoBehaviour
     ///   <para> 点击响应函数 </para>
     /// </summary>
     public void OnClick() {
-        if(isMultiplePlayer)
+        // 多人模式：切换控制的角色
+        if (isMultiplePlayer)
             Players.Get().LocalPlayer().SetPlayerID(playerID);
+        // 单人模式：切换角色操控方式
         else
             PlayerOperationController.Get().ShiftPlayerFrom(playerID);
     }

@@ -28,7 +28,6 @@ public class Player : NetworkBehaviour {
     // 同步id后，将自己加入networkInfo
     // 必须保证先同步id，再AddPlayer
     void AddPlayer(uint oldValue, uint newValue) {
-        Debug.Log(Players.Get() is null);
         Players.Get().AddPlayer(gameObject);
     }
     
@@ -49,6 +48,7 @@ public class Player : NetworkBehaviour {
     }
 
     public void SetPlayerID(PlayerID _id) {
+        _id = (playerID == _id) ? PlayerID.None : _id;
         CmdSetPlayerID(_id);
     }
 
@@ -58,7 +58,7 @@ public class Player : NetworkBehaviour {
         if (_id != PlayerID.None) {
             List<Player> players = new List<Player>(Players.Get().players.Values);
             foreach (Player player in players)
-                if (player.playerID == _id && !player.isLocalPlayer)
+                if (player.playerID == _id)
                     return;
         }
 
