@@ -39,7 +39,7 @@ public class PlayerList : MonoBehaviour {
         List<uint> idShowing = new List<uint>();
         foreach (uint id in items.Keys)
             idShowing.Add(id);
-        List<uint> idAll = new List<uint>(NetworkResource.networkInfo.players.Keys);
+        List<uint> idAll = new List<uint>(Players.Get().players.Keys);
         
         // 遍历idShowing，若idAll里有则更新显示，若没有则删除此item
         foreach (uint id in idShowing)

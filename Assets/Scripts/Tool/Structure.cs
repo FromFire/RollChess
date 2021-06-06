@@ -62,10 +62,11 @@ public enum ModelModifyEvent {
     Player_Form,    //玩家操作形式
     
     // 网络状态
-    Client_Success, //客户端连接成功
-    Server_Success, //服务器创建成功
-    Player_Change,  //Player修改
-    Disconnect,     //断联
+    Client_Success,     //客户端连接成功
+    Server_Success,     //服务器创建成功
+    Player_Change,      //Player修改
+    Client_Player_ID,   //Player控制的角色
+    Disconnect,         //断联
 }
 
 

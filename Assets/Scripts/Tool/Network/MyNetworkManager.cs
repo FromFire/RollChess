@@ -36,11 +36,6 @@ public class MyNetworkManager : NetworkManager {
         Debug.Log("我是服务器，我完成了一次连接");
     }
 
-    public override void OnServerReady(NetworkConnection conn) {
-        base.OnServerReady(conn);
-        NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Success);
-    }
-
     /// <summary>
     ///   <para> 连接成功后，在Client上回调 </para>
     /// </summary>
@@ -68,7 +63,7 @@ public class MyNetworkManager : NetworkManager {
     ///   <para> Client断联后，在Server上回调 </para>
     /// </summary>
     public override void OnServerDisconnect(NetworkConnection conn) {
-        NetworkResource.networkInfo.RpcRemovePlayer(conn.identity.netId);
+        Players.Get().RpcRemovePlayer(conn.identity.netId);
         base.OnServerDisconnect(conn);
     }
 

@@ -101,8 +101,8 @@ public class EntranceController : MonoBehaviour {
     /// </summary>
     public void KickOut(uint id) {
         // 房主才能踢人，而且不能踢自己
-        if(NetworkResource.networkInfo.isServer && !NetworkResource.networkInfo.players[id].isHost)
-            NetworkResource.networkInfo.players[id].conn.Disconnect();
+        if(Players.Get().isServer && !Players.Get().players[id].isHost)
+            Players.Get().players[id].conn.Disconnect();
     }
 
     /// <summary>

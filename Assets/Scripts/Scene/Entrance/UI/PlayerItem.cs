@@ -25,7 +25,7 @@ public class PlayerItem : MonoBehaviour {
         get { return id; }
         set {
             id = value;
-            Player player = NetworkResource.networkInfo.players[id];
+            Player player = Players.Get().players[id];
             playerName.text = player.Name;
             // 高亮自己
             if(player.isLocalPlayer)
@@ -33,7 +33,7 @@ public class PlayerItem : MonoBehaviour {
             // 显示房主图标
             crown.gameObject.SetActive(player.isHost);
             // 踢人按钮禁用
-            kickOut.interactable = (NetworkResource.networkInfo.isServer && !player.isHost);
+            kickOut.interactable = (Players.Get().isServer && !player.isHost);
         }
     }
 }

@@ -14,6 +14,7 @@ public class Player : NetworkBehaviour {
     [SyncVar(hook = "AddPlayer")] private uint id;
     [SyncVar(hook = "UpdateName")] private string name;
     [SyncVar(hook = "UpdateIsHost")] public bool isHost = false;
+    [SyncVar] public int _playerID;
 
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
@@ -27,7 +28,7 @@ public class Player : NetworkBehaviour {
     // 同步id后，将自己加入networkInfo
     // 必须保证先同步id，再AddPlayer
     void AddPlayer(uint oldValue, uint newValue) {
-        NetworkResource.networkInfo.AddPlayer(gameObject);
+        Players.Get().AddPlayer(gameObject);
     }
     
     // 同步name后，推送提醒
@@ -39,6 +40,24 @@ public class Player : NetworkBehaviour {
     // 同步name后，推送提醒
     void UpdateIsHost(bool oldValue, bool newValue) {
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Player_Change);
+    }
+
+    // 同步PlayerID后，推送提醒
+    void UpdatePlayerID() {
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Client_Player_ID);
+    }
+
+    [Command]
+    public void CmdSetPlayerID(PlayerID _id) {
+        // 检查是否与其他player重复
+        if (_id != PlayerID.None) {
+            List<Player> players = new List<Player>(Players.Get().players.Values);
+            foreach (Player player in players)
+                if (player.playerID == _id && !player.isLocalPlayer)
+                    return;
+        }
+
+        playerID = _id;
     }
 
     /// <summary>
@@ -63,11 +82,18 @@ public class Player : NetworkBehaviour {
         get { return name; }
     }
 
+    public PlayerID playerID {
+        get { return (PlayerID)_playerID; }
+        set {
+            _playerID = (int)value;
+        }
+    }
+
     // 回收昵称
     // 通知NetworkInfo
     private void OnDestroy() {
         namePoolUnused.Add(name);
         namePoolUsed.Remove(name);
-        NetworkResource.networkInfo.RemovePlayer(id);
+        Players.Get().RemovePlayer(id);
     }
 }

@@ -594,7 +594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _networkManager: {fileID: 1492908563}
-  _networkInfo: {fileID: 1800150330}
+  _networkInfo: {fileID: 0}
 --- !u!1 &524223359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,9 +1062,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  mapFileName: 
-  thumb: 
-  map: 
 --- !u!114 &592887113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2341,7 +2338,7 @@ GameObject:
   - component: {fileID: 1800150331}
   - component: {fileID: 1800150330}
   m_Layer: 0
-  m_Name: NetworkInfo
+  m_Name: Players
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2370,7 +2367,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1800150328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4156eceef91748aba28d2da81414f35c, type: 3}
+  m_Script: {fileID: 11500000, guid: ea7f2b37dd9b4b28b49ef89a2dd83055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0

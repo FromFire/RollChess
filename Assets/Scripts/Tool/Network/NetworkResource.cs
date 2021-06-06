@@ -11,11 +11,9 @@ using Mirror;
 public class NetworkResource : MonoBehaviour
 {
     public static MyNetworkManager networkManager;
-    public static NetworkInfo networkInfo;
 
     // 赋值用
     [SerializeField] MyNetworkManager _networkManager;
-    [SerializeField] NetworkInfo _networkInfo;
     
     /// <summary>
     ///   <para> 地图选择的推送 </para>
@@ -25,7 +23,6 @@ public class NetworkResource : MonoBehaviour
     private void Start()
     {
         networkManager = _networkManager;
-        networkInfo = _networkInfo;
         networkSubject = new Subject();
     }
 }
