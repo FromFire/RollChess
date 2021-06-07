@@ -1736,6 +1736,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1335909854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8589197480584823388, guid: 6e6bc461b5b66014b8e796839ccd267f,
+    type: 3}
+  m_PrefabInstance: {fileID: 8589197479513031055}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1416172592 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7416645418145401730, guid: d5dc86e9666e849449dd53a0a7baf01d,
@@ -3153,6 +3165,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartGame
       objectReference: {fileID: 0}
+    - target: {fileID: 8589197480692245408, guid: 6e6bc461b5b66014b8e796839ccd267f,
+        type: 3}
+      propertyPath: startGameButton
+      value: 
+      objectReference: {fileID: 1335909854}
     - target: {fileID: 8589197480692245409, guid: 6e6bc461b5b66014b8e796839ccd267f,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -21,7 +21,7 @@ public class EntranceController : MonoBehaviour {
     /// </summary>
     public void StartMultipleGame() {
         if (!isMutipleGameAvalible()) return;
-        StartGame();
+        MultiPlay.singleton.StartGame();
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class EntranceController : MonoBehaviour {
     bool isMutipleGameAvalible() {
         if (!isGameAvalible())
             return false;
-        
+
         // 玩家人数必须达标
         if (Players.Get().players.Count != MapChooseState.Get().AvaliablePlayerNumber())
             return false;

@@ -7,18 +7,15 @@ public class RoomPage : MonoBehaviour {
     [SerializeField] private Button startGameButton;
 
     private void Start() {
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.Client_Success, UpdateEnable);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Change, UpdateEnable);
     }
 
     public void StartGame() {
-        EntranceController.Get().StartSingleGame();
+        EntranceController.Get().StartMultipleGame();
     }
 
     // 禁用Client上的开始游戏按钮
     private void UpdateEnable() {
-        if (!Players.Get().LocalPlayer().isHost)
-            startGameButton.interactable = false;
+            startGameButton.interactable = (Players.Get().LocalPlayer().isHost);
     }
-    
-    
 }

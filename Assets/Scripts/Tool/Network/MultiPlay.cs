@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class MultiPlay : NetworkBehaviour {
     // 单例
-    static MultiPlay singleton;
-    // 获取单例
-    public static MultiPlay Get() { return singleton; }
+    static public MultiPlay singleton;
 
     private void Awake() {
         singleton = this;
@@ -15,8 +13,13 @@ public class MultiPlay : NetworkBehaviour {
     /// <summary>
     /// 开始游戏
     /// </summary>
+    public void StartGame() {
+        RpcStartGame();
+    }
+
+    // 开始游戏
     [ClientRpc]
-    public void RpcStartGame() {
-        EntranceController.Get().StartSingleGame();    
+    void RpcStartGame() {
+        EntranceController.Get().StartGame();
     }
 }
