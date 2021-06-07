@@ -70,7 +70,7 @@ public class CellChooseController : MonoBehaviour {
         //      否：继续
         if(isTokenChoosed && route.ContainsKey(pos) && opeartingAvailable) {
             // 触发走子
-            GameResource.gameController.Move(choosedTokenPos, route[pos]);
+            GameResource.gameController.TryMove(choosedTokenPos, route[pos]);
             // 取消所有选中
             ClearTokenChoose();
             return;

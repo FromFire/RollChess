@@ -70,6 +70,16 @@ public class GameController : MonoBehaviour {
     }
 
     /// <summary>
+    /// 移动棋子
+    /// </summary>
+    public void TryMove(Vector2Int from, List<Vector2Int> route) {
+        if(MyNetworkManager.singleton.isNetworkActive)
+            Players.Get().LocalPlayer().Move(from, route);
+        else
+            Move(from, route);
+    }
+
+    /// <summary>
     ///   <para> 移动棋子，移动结束后本角色的回合也结束 </para>
     /// </summary>
     public void Move(Vector2Int from, List<Vector2Int> route) {

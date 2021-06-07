@@ -28,6 +28,29 @@ public class Player : NetworkBehaviour {
         "狡诈的变色龙", "矫健的豹猫", "华美的极乐鸟", "剧毒的狼蛛", "轻灵的曙凤蝶",
         "深海的大王乌贼", "潜伏的金环蛇", "美味的秋刀鱼", "掠食的军舰鸟", "洄游的座头鲸"
     };
+    
+    /// <summary>
+    ///   <para> 玩家昵称池-用过的 </para>
+    /// </summary>
+    public static List<string> namePoolUsed = new List<string>();
+
+    /// <summary>
+    /// 移动棋子
+    /// </summary>
+    public void Move(Vector2Int from, List<Vector2Int> route) {
+        CmdMove(from, route.ToArray());
+    }
+
+    [Command]
+    void CmdMove(Vector2Int from, Vector2Int[] route) {
+        RpcMove(from, route);
+    }
+    
+    [ClientRpc]
+    void RpcMove(Vector2Int from, Vector2Int[] route) {
+        GameResource.gameController.Move(from, new List<Vector2Int>(route));
+        Debug.Log("move success");
+    }
 
     // 同步id后，将自己加入networkInfo
     // 必须保证先同步id，再AddPlayer
@@ -68,11 +91,6 @@ public class Player : NetworkBehaviour {
 
         playerID = _id;
     }
-
-    /// <summary>
-    ///   <para> 玩家昵称池-用过的 </para>
-    /// </summary>
-    public static List<string> namePoolUsed = new List<string>();
 
     public uint Id {
         get { return id; }
