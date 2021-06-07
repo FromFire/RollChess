@@ -107,6 +107,10 @@ public class GameController : MonoBehaviour {
         //生成随机数
         GameState.Get().RollResult = new System.Random().Next(6)+1;
         Debug.Log("roll点结果: " + GameState.Get().RollResult);
+        
+        // 同步给其他用户
+        if(MyNetworkManager.singleton.isNetworkActive)
+            Players.Get().LocalPlayer().RollDice(GameState.Get().RollResult);
     }
 
     /// <summary>
@@ -173,8 +177,8 @@ public class GameController : MonoBehaviour {
         } while(gameState.GetPlayerForm(nowPlayer) == PlayerForm.Banned || gameState.IsLoser(nowPlayer) || nowPlayer == PlayerID.None);
         gameState.NowPlayer = nowPlayer;
 
-        // 将rollResult还原为-1
-        gameState.RollResult = -1;
+        // 将rollResult还原为0
+        gameState.RollResult = 0;
 
         // 所有处理完成后，操作权归还玩家
         StartOperating();

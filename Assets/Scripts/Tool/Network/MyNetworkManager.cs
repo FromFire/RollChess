@@ -7,7 +7,7 @@ using UnityEngine;
 ///   <para> 继承NetworkManager </para>
 /// </summary>
 public class MyNetworkManager : NetworkManager {
-    
+
     /// <summary>
     ///   <para> 创建新Player </para>
     /// </summary>
@@ -51,9 +51,9 @@ public class MyNetworkManager : NetworkManager {
     /// </summary>
     public override void OnStartHost()
     {
+        base.OnStartHost();
         Debug.Log("启动Host");
         NetworkResource.networkSubject.Notify(ModelModifyEvent.Server_Success);
-        base.OnStartHost();
     }
 
     /// <summary>

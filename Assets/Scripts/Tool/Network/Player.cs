@@ -49,7 +49,23 @@ public class Player : NetworkBehaviour {
     [ClientRpc]
     void RpcMove(Vector2Int from, Vector2Int[] route) {
         GameResource.gameController.Move(from, new List<Vector2Int>(route));
-        Debug.Log("move success");
+    }
+    
+    /// <summary>
+    /// Roll点
+    /// </summary>
+    public void RollDice(int result) {
+        CmdRollDice(result);
+    }
+
+    [Command]
+    void CmdRollDice(int result) {
+        RpcRollDice(result);
+    }
+    
+    [ClientRpc]
+    void RpcRollDice(int result) {
+        GameState.Get().RollResult = result;
     }
 
     // 同步id后，将自己加入networkInfo

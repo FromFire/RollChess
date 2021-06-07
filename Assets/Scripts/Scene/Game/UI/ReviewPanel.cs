@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -36,5 +37,12 @@ public class ReviewPanel : MonoBehaviour {
         reviewPanel.gameObject.SetActive(true);
         string winnerInfo = Transform.ColorString(winner, Transform.PlayerNameOfID[winner]) + " 获胜了！";
         winnerText.text =  winnerInfo;
+    }
+    
+    /// <summary>
+    ///   <para> 返回主菜单 </para>
+    /// </summary>
+    public void BackMainMenu() {
+        SceneManager.LoadScene("Entrance");
     }
 }

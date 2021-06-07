@@ -47,8 +47,10 @@ public class HUD : MonoBehaviour {
     ///   <para> 是RollResult修改的响应函数，仅当RollResult不为0时生效 </para>
     /// </summary>
     void ShowRollStep() {
-        if(GameState.Get().RollResult == 0)
+        if (GameState.Get().RollResult == 0) {
+            rollNumber.text = "";
             return;
+        }
         rollButton.gameObject.SetActive(false);
         rollNumber.text = GameState.Get().RollResult + "步";
     }
