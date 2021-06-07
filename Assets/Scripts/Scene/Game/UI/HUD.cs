@@ -26,6 +26,7 @@ public class HUD : MonoBehaviour {
         GameResource.gameStateSubject.Attach(ModelModifyEvent.Roll_Result, ShowRollStep);
         GameResource.gameStateSubject.Attach(ModelModifyEvent.Turn, UpdateTurn);
         GameResource.gameStateSubject.Attach(ModelModifyEvent.Now_Player, PlayerOperating);
+        ShowRollButton();
     }
 
     /// <summary>
@@ -33,8 +34,10 @@ public class HUD : MonoBehaviour {
     ///   <para> 是gameStage修改的响应函数，仅当该本机操作时生效 </para>
     /// </summary>
    void ShowRollButton() {
-        if(GameState.Get().Stage != GameStage.Self_Operating)
+        if (GameState.Get().Stage != GameStage.Self_Operating) {
+            rollButton.gameObject.SetActive(false);
             return;
+        }
         rollButton.gameObject.SetActive(true);
         rollNumber.text = "";
     }

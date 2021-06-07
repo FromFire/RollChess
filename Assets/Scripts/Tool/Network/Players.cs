@@ -40,6 +40,7 @@ public class Players : NetworkBehaviour {
                 
         // 同步所有player
         SyncPlayers();
+        NetworkResource.networkSubject.Notify(ModelModifyEvent.Player_Add);
     }
             
     /// <summary>

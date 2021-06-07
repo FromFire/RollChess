@@ -7,15 +7,19 @@ public class RoomPage : MonoBehaviour {
     [SerializeField] private Button startGameButton;
 
     private void Start() {
-        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Change, UpdateEnable);
+        NetworkResource.networkSubject.Attach(ModelModifyEvent.Player_Add, SetButtonEnable);
     }
 
+    /// <summary>
+    /// 开始多人游戏
+    /// </summary>
     public void StartGame() {
         EntranceController.Get().StartMultipleGame();
     }
 
     // 禁用Client上的开始游戏按钮
-    private void UpdateEnable() {
+    void SetButtonEnable() {
+        if (Players.Get().LocalPlayer() is null) return;
         startGameButton.interactable = (Players.Get().LocalPlayer().isHost);
     }
 }

@@ -61,9 +61,8 @@ public class Subject {
             return;
 
         // 推送
-        foreach(Observer observer in observers[modelModifyEvent]) {
-            observer();
-        }
+        for (int i = 0; i < observers[modelModifyEvent].Count; i++)
+            observers[modelModifyEvent][i]();
     }
 }
 
