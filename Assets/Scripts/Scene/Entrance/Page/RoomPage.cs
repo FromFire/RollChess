@@ -16,6 +16,6 @@ public class RoomPage : MonoBehaviour {
 
     // 禁用Client上的开始游戏按钮
     private void UpdateEnable() {
-            startGameButton.interactable = (Players.Get().LocalPlayer().isHost);
+        startGameButton.interactable = (Players.Get().LocalPlayer().isHost);
     }
 }

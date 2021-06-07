@@ -37,9 +37,6 @@ public class MapEditResource : MonoBehaviour  {
     static public TilemapManager tilemapManager;
 
     // 下面是用来实例化的
-    // Model
-    [SerializeField] private MapChooseState _mapChooseState;
-
     // 绘制器
     [SerializeField] private LandEditor _landEditor;
     [SerializeField] private TokenEditor _tokenEditor;

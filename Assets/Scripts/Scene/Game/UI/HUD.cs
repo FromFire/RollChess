@@ -32,7 +32,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 显示roll点按钮，隐藏步数 </para>
     ///   <para> 是gameStage修改的响应函数，仅当该本机操作时生效 </para>
     /// </summary>
-    public void ShowRollButton() {
+   void ShowRollButton() {
         if(GameState.Get().Stage != GameStage.Self_Operating)
             return;
         rollButton.gameObject.SetActive(true);
@@ -43,7 +43,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 隐藏roll点按钮，显示步数 </para>
     ///   <para> 是RollResult修改的响应函数，仅当RollResult不为0时生效 </para>
     /// </summary>
-    public void ShowRollStep() {
+    void ShowRollStep() {
         if(GameState.Get().RollResult == 0)
             return;
         rollButton.gameObject.SetActive(false);
@@ -54,7 +54,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 更新回合数 </para>
     ///   <para> 是Turn修改的响应函数 </para>
     /// </summary>
-    public void UpdateTurn() {
+    void UpdateTurn() {
         turnCount.text = "第 " + GameState.Get().Turn + " 回合";
     }
 
@@ -62,7 +62,7 @@ public class HUD : MonoBehaviour {
     ///   <para> 更新正在行动提示 </para>
     ///   <para> 是nowPlayer修改的响应函数，仅当该某玩家操作时生效 </para>
     /// </summary>
-    public void PlayerOperating() {
+    void PlayerOperating() {
         // 排除游戏结束
         if(GameState.Get().Stage == GameStage.Game_Over)
             return;

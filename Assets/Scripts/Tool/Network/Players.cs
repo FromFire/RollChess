@@ -16,6 +16,10 @@ public class Players : NetworkBehaviour {
         singleton = this;
     }
 
+    private void Start() {
+        DontDestroyOnLoad(gameObject);
+    }
+
     /// <summary>
     /// 获取本地player
     /// </summary>

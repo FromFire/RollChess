@@ -53,7 +53,7 @@ public class MapOperationController : MonoBehaviour {
     ///   <para> 编辑地图 </para>
     /// </summary>
     public void EditMap() {
-        GameObject.DontDestroyOnLoad(MapChooseState.Get().gameObject);
+        DontDestroyOnLoad(MapChooseState.Get().gameObject);
         SceneManager.LoadScene("MapEditor");
     }
 
@@ -96,7 +96,7 @@ public class MapOperationController : MonoBehaviour {
         MapChooseState.Get().MapFileName = filename;
 
         // 进入地图编辑器
-        GameObject.DontDestroyOnLoad(MapChooseState.Get().gameObject);
+        DontDestroyOnLoad(MapChooseState.Get().gameObject);
         SceneManager.LoadScene("MapEditor");
     }
 

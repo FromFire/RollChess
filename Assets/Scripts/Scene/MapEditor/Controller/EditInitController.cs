@@ -22,7 +22,7 @@ public class EditInitController : MonoBehaviour {
 
         // 读取存档
         string filename = MapEditResource.mapChooseState.MapFileName;
-        Debug.Log(filename);
+        Debug.Log("加载地图：" + filename);
         MapEditResource.mapFilename = filename;
         SaveEntity saveEntity = SaveResource.saveManager.LoadMap(filename);
         SaveResource.saveLoader.Load(saveEntity);

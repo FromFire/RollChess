@@ -46,15 +46,18 @@ public class EntranceController : MonoBehaviour {
     bool isMutipleGameAvalible() {
         if (!isGameAvalible())
             return false;
+        Debug.Log("单人游戏条件满足");
 
-        // 玩家人数必须达标
-        if (Players.Get().players.Count != MapChooseState.Get().AvaliablePlayerNumber())
-            return false;
-
+        // // 玩家人数必须达标
+        // if (Players.Get().players.Count != MapChooseState.Get().AvaliablePlayerNumber())
+        //     return false;
+        // Debug.Log("玩家人数满足");
+        
         // 玩家必须全部选完角色
         foreach (KeyValuePair<uint,Player> kvp in Players.Get().players)
             if (kvp.Value.playerID == PlayerID.None)
                 return false;
+        Debug.Log("角色选择满足");
 
         return true;
     }
@@ -63,8 +66,6 @@ public class EntranceController : MonoBehaviour {
     ///   <para> 判断是否可以开始游戏 </para>
     /// </summary>
     public bool isGameAvalible() {
-        Debug.Log(PlayerOperationController.Get().IsPlayerValid());
-        Debug.Log(MapOperationController.Get().IsMapValid());
         if (!PlayerOperationController.Get().IsPlayerValid() ||
             !MapOperationController.Get().IsMapValid())
             return false;

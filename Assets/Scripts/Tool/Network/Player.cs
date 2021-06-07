@@ -16,6 +16,10 @@ public class Player : NetworkBehaviour {
     [SyncVar(hook = "UpdateIsHost")] public bool isHost = false;
     [SyncVar(hook = "UpdatePlayerID")] private int _playerID = (int)PlayerID.None;
 
+    private void Start() {
+        DontDestroyOnLoad(gameObject);
+    }
+
     /// <summary>
     ///   <para> 玩家昵称池-没用过的 </para>
     /// </summary>

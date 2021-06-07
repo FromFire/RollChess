@@ -9,6 +9,10 @@ public class MultiPlay : NetworkBehaviour {
     private void Awake() {
         singleton = this;
     }
+    
+    private void Start() {
+        DontDestroyOnLoad(gameObject);
+    }
 
     /// <summary>
     /// 开始游戏

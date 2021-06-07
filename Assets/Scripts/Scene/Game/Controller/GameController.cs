@@ -43,7 +43,9 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        // todo: 初始化myID
+        // 初始化MyID
+        if (MyNetworkManager.singleton.isNetworkActive)
+            GameState.Get().MyID = Players.Get().LocalPlayer().playerID;
 
         // 读取存档
         string filename = MapChooseState.Get().MapFileName;

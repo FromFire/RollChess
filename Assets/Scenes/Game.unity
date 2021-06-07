@@ -934,8 +934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f465060d01d9ffe48b8188860fcbd3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _board: {fileID: 1570245302}
-  _tokenSet: {fileID: 1014239629}
 --- !u!1 &1490270145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,9 +1183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb46309fe42c5847b8d02ae4c23da40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 443833248}
-  _specialIntroduction: {fileID: 1780828467}
-  _mapChooseState: {fileID: 0}
   _boardAssistant: {fileID: 879444372}
   _boardController: {fileID: 1216442596}
   _tokenController: {fileID: 2118276248}
@@ -1928,6 +1923,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RollDice
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238090886331118781, guid: 44f8a68610a5ad643bb1f1b0baa57a30,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238090886331118781, guid: 44f8a68610a5ad643bb1f1b0baa57a30,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -836.18024
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238090886331118781, guid: 44f8a68610a5ad643bb1f1b0baa57a30,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 3238090887150131978, guid: 44f8a68610a5ad643bb1f1b0baa57a30,
         type: 3}
