@@ -112,9 +112,27 @@ public class MapChooseState : MonoBehaviour {
     }
 
     /// <summary>
-    ///   <para> 获取玩家操作形式 </para>
+    ///   <para> 获取角色操作形式 </para>
     /// </summary>
     public PlayerForm GetPlayerForm(PlayerID playerID) {
         return playerForm[playerID];
+    }
+
+    /// <summary>
+    ///   <para> 获取角色操作形式 </para>
+    /// </summary>
+    public Dictionary<PlayerID, PlayerForm> AllPlayerForm() {
+        return new Dictionary<PlayerID, PlayerForm>(playerForm);
+    }
+
+    /// <summary>
+    ///   <para> 玩家数量 </para>
+    /// </summary>
+    public int AvaliablePlayerNumber() {
+        int ret = 0;
+        foreach (KeyValuePair<PlayerID, PlayerForm> kvp in playerForm)
+            if (kvp.Value == PlayerForm.Player)
+                ret += 1;
+        return ret;
     }
 }

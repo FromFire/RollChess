@@ -9,6 +9,6 @@ using UnityEngine.UI;
 public class SinglePage : MonoBehaviour {
     // 开始游戏
     public void StartGame() {
-        EntranceController.Get().StartGame();
+        EntranceController.Get().StartSingleGame();
     }
 }

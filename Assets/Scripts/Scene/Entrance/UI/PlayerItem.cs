@@ -33,7 +33,7 @@ public class PlayerItem : MonoBehaviour {
     ///   <para> 把玩家踢出房间 </para>
     /// </summary>
     public void KickOut() {
-        EntranceController.Get().KickOut(id);
+        ConnectionController.singleton.KickOut(id);
     }
     
     // 设置选择的角色

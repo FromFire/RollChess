@@ -21,12 +21,11 @@ public class MapOperationController : MonoBehaviour {
         //获取maps
         string mapName = MapChooseState.Get().MapFileName;
         //地图不能为空
-        if(mapName.Length <= 1) {
+        if(mapName is null || mapName.Length <= 1) {
             WarningManager.errors.Add(new WarningModel("请选择地图！"));
             return false;
         }
-
-        return false;
+        return true;
     }
     
     /// <summary>

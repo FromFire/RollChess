@@ -22,7 +22,6 @@ public class ChooseCharacter : MonoBehaviour
     }
 
     void EnableMultiplayer() {
-        Debug.Log("enable");
         SetMultiplePlayer(true);
     }
 
@@ -34,10 +33,8 @@ public class ChooseCharacter : MonoBehaviour
     ///   <para> 设置或取消多人模式 </para>
     /// </summary>
     public void SetMultiplePlayer(bool valid) {
-        foreach (CharacterFormShift formShift in buttons) {
+        foreach (CharacterFormShift formShift in buttons)
             formShift.isMultiplePlayer = valid;
-            Debug.Log(valid);
-        }
     }
     
     /// <summary>

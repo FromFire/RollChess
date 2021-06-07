@@ -38,7 +38,7 @@ public class JoinRoomPage : MonoBehaviour
     public void JoinRoom()
     {
         string ip = ipInputField.text;
-        EntranceController.Get().JoinRoom(ip);
+        ConnectionController.singleton.JoinRoom(ip);
         IsConnecting = true;
     }
     
@@ -47,7 +47,7 @@ public class JoinRoomPage : MonoBehaviour
     /// </summary>
     public void CancelJoinRoom()
     {
-        EntranceController.Get().CancelJoinRoom();
+        ConnectionController.singleton.CancelJoinRoom();
         IsConnecting = false;
     }
 
